@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ strings values FR
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
+  -->
+
+<resources>
+    <string name="app_name">Chronos</string>
+    <string name="app_name_stopwatches">Chronos-Chronomètres</string>
+    <string name="txt_view_name_text">Nom : </string>
+    <string name="txt_view_units">Units : </string>
+    <string name="txt_view_speed_text">Vitesse : </string>
+    <string name="cm_long">Centimètre</string>
+    <string name="m_long">Mètre</string>
+    <string name="km_long">Kilomètre</string>
+    <string name="ft_long">Pieds</string>
+    <string name="n.m_long">Mile Nautique</string>
+    <string name="btn_stopwatchActivity">Chronomètres</string>
+    <string name="btn_timerActivity">Minuteur</string>
+    <string name="btn_alarmActivity">Alarmes</string>
+    <string name="btn_metronome">Métronome</string>
+</resources>

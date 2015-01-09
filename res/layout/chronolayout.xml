@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ /*  $NAME
+  ~  *
+  ~  *  Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~  *  http://opensource.org/licenses/MIT
+  ~  */
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"  android:weightSum="1"
+              android:clickable="false" android:id="@+id/mainlayout">
+
+    <ExpandableListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/expandableListView" android:layout_gravity="left|center_horizontal"
+            android:clickable="true"/>
+</LinearLayout>

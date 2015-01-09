@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Chronos</string>
+    <string name="app_name_stopwatches">Chronos-Stopwatches</string>
+    <string name="bnt_moins_txt">_</string>
+    <string name="btn_plus_txt">+</string>
+    <string name="txt_view_name_text">Name : </string>
+    <string name="txt_view_type_text">Type : </string>
+    <string name="txt_view_distance_text">Distance : </string>
+    <string name="txt_view_units">Units : </string>
+    <string name="txt_view_d_text">Distances :</string>
+    <string name="txt_view_speed_text">Speed : </string>
+    <string name="cm_long">Centimeter</string>
+    <string name="cm_short">cm</string>
+    <string name="cms">cm/s</string>
+    <string name="cmh">cm/h</string>
+    <string name="m_long">Meter</string>
+    <string name="m_short">m</string>
+    <string name="ms">m/s</string>
+    <string name="mh">m/h</string>
+    <string name="km_long">Kilometer</string>
+    <string name="km_short">km</string>
+    <string name="kms">km/s</string>
+    <string name="kmh">km/h</string>
+    <string name="ft_long">Foot</string>
+    <string name="ft_short">ft</string>
+    <string name="fts">ft/s</string>
+    <string name="fth">ft/h</string>
+    <string name="mi_long">Mile</string>
+    <string name="mi_short">mi</string>
+    <string name="mps">mi/s</string>
+    <string name="mph">mph</string>
+    <string name="n.m_long">Nautic Mile</string>
+    <string name="n.m_short">n.m</string>
+    <string name="nms">n.m/s</string>
+    <string name="kt">kt</string>
+    <string name="btn_stopwatchActivity">Stopwatches</string>
+    <string name="btn_timerActivity">Timer</string>
+    <string name="btn_alarmActivity">Alarms</string>
+    <string name="btn_metronome">Metronome</string>
+
+</resources>

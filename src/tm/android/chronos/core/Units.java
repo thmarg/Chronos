@@ -22,10 +22,17 @@ import static tm.android.chronos.core.Units.TIME_UNIT.SECOND;
  * The goal of this class is to provide static enums and methods to convert length and speed, and to show units names and their abbreviations on the UI.
  */
 public class Units {
+
     private static Resources _resources;
-    public static void setActivity(Resources resources){
+
+    /**
+     *
+     * @param resources necessary for internationalization
+     */
+    public static void setResources(Resources resources){
         _resources = resources;
     }
+
     public static enum LENGTH_UNIT {
         CENTIMETER(0.01d, "cm"), METER(1.0d, "m"), KILOMETER(1000.0d, "km"), FOOT(0.3048d, "ft"), MILES(1609.344d, "mi"), MILES_NAUTIC(1852.0d, "n.m");
         private double value;
@@ -50,13 +57,19 @@ public class Units {
         }
 
         private String getName(String type){
-            int id = _resources.getIdentifier(key+type,"string","tm.android.chronos");
-            return _resources.getString(id);
+            if (_resources ==null)
+                return key;
+                int id = _resources.getIdentifier(key + type, "string", "tm.android.chronos");
+                if (id>0)
+                    return _resources.getString(id);
+            return key;
+
         }
 
         public String getKey(){
             return key;
-        }
+        }// used by test
+
         @Override
         public String toString() {
             return getLongName();
@@ -106,17 +119,13 @@ public class Units {
             this.key = key;
         }
 
-        public String getShortName() {
-            int id = _resources.getIdentifier(key, "string", "tm.android.chronos");
-            return _resources.getString(id);
-        }
 
         public String getKey(){
             return key;
         }
         @Override
         public String toString() {
-            return getShortName();
+            return getLocalizedText(key, null);
         }
 
         public LENGTH_UNIT getLengthUnit() {
@@ -127,6 +136,9 @@ public class Units {
             return timeUnit;
         }
     }
+
+
+    public static enum CHRONO_TYPE {LAPS,INSIDE_LAP,PREDEFINED_TIMES}
 
     /**
      * Length conversion.
@@ -146,7 +158,7 @@ public class Units {
      * @param lengthUnit length unit
      * @param time expressed in milli seconds
      * @param requestedSpeedUnit units of the returned speed
-     * @return
+     * @return double
      */
     public static double getSpeed(double length, LENGTH_UNIT lengthUnit,long time, SPEED_UNIT requestedSpeedUnit){
         return (getLength(length,lengthUnit,requestedSpeedUnit.lengthUnit)/time) * requestedSpeedUnit.timeUnit.value();
@@ -167,6 +179,25 @@ public class Units {
      */
     public static List<SPEED_UNIT> getSpeedUnitList() {
         return Arrays.asList(SPEED_UNIT.values());
+    }
+
+    /**
+     *
+     * @return the mode's list, (mode of a stopwatch)
+     */
+    public static List<CHRONO_TYPE> getModeList(){
+        return Arrays.asList(CHRONO_TYPE.values());
+    }
+
+
+    public static synchronized String getLocalizedText(String key, String type){
+        if (_resources ==null)
+            return key;
+        int id = _resources.getIdentifier(key + (type==null?"":type), "string", "tm.android.chronos");
+        if (id>0)
+            return _resources.getString(id);
+        return key;
+
     }
 
 }

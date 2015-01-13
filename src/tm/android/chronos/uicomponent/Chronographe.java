@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Toast;
+import tm.android.chronos.R;
 import tm.android.chronos.core.*;
 import tm.android.chronos.dialogs.ChronographeDialog;
 import tm.android.chronos.dialogs.OnDialogClickListener;
@@ -124,7 +125,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		private final int MOVE = 1;
 		private int status = WAIT;
 		private long now;
-		private float lastY = 0;
+		private float lastFingerY = 0;
 
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
@@ -137,7 +138,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			System.out.println("[EVENT] pointer size " + event.getPointerCount());
 			if (status == WAIT && event.getAction() == MotionEvent.ACTION_DOWN) {
 				this.now = now;
-				lastY = event.getRawY();
+				lastFingerY = event.getRawY();
 				System.out.println("[EVENT] wait+down");
 				status = DOWN_DONE;
 				return true;
@@ -149,22 +150,25 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			}
 			if (status == MOVE && event.getAction() == MotionEvent.ACTION_MOVE) {
 				System.out.println("[EVENT] move+move");
-				if (event.getY() > lastY) {
+
+
+				if (event.getY() > lastFingerY) {
 					if (scrollView.top >= 5) {
 						scrollView.top -= 5;
 						scrollView.bottom -= 5;
 						scrollOffset -= 5;
 					}
 				} else {
-
-					scrollView.top += 5;
-					scrollView.bottom += 5;
-					scrollOffset += 5;
+					if (lastY-scrollOffset > viewPort.bottom) {
+						scrollView.top += 5;
+						scrollView.bottom += 5;
+						scrollOffset += 5;
+					}
 
 				}
 				if (clockWorker.noneChronoIsRunning())
 					updateUI();
-				lastY = event.getY();
+				lastFingerY = event.getY();
 				System.out.println("scrollView" + scrollView.toShortString());
 				System.out.println("scrollOffset " + scrollOffset);
 				return true;//
@@ -257,14 +261,14 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			updateUI();
 			return true;
 		} catch (RuntimeException e){
-			Toast.makeText(getContext(),clockWorker.getClocksCount()+" chronomètres !!!!! On ne peut plus ajouter de chronomètre",Toast.LENGTH_LONG).show();
+			Toast.makeText(getContext(), (clockWorker.getClocksCount()+""+ getContext().getString(R.string.msg_max_stopwatch_count)),Toast.LENGTH_LONG).show();
 			return false;
 		}
 
 	}
 
 	public void removeLastStopwatch(){
-		// No need to update lastY here, it is done in renderOnCacheAll with the flag mustDelete.
+		// No need to update lastFingerY here, it is done in renderOnCacheAll with the flag mustDelete.
 		// the initial cachedCanvas height is about 1000  and can contain about 4 stopwatches.
 		// When remove stopwatch ,  we must decrease some times the height to regain memory. and never go down to an height of say 1000.
 		if (bufferBitmap.getHeight()-lastY>600 && lastY>1000){
@@ -274,12 +278,12 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 		int size = clockWorker.getClocksCount();
 		if (size <= 1) {
-			Toast.makeText(getContext(),"Vous ne pouvez pas supprimer le premier chronomètre.",Toast.LENGTH_LONG).show();
+			Toast.makeText(getContext(), getContext().getString(R.string.msg_first_stopwatch_no_delete),Toast.LENGTH_LONG).show();
 			return;
 		}
 		Stopwatch stopwatch = clockWorker.get(size - 1);
 		if (stopwatch.isRunning()){
-			Toast.makeText(getContext(),"Vous ne pouvez supprimer que le dernier chronomètre or il tourne !",Toast.LENGTH_LONG).show();
+			Toast.makeText(getContext(),getContext().getString(R.string.msg_only_delete_last),Toast.LENGTH_LONG).show();
 			return;
 		}
 		stopwatch.setMustDelete();
@@ -345,6 +349,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			return;
 		}
 		cachedCanvas.drawText(stopwatch.getName(), SPACING, offSet + topLineVerticalPosition, paintOtherTextWhiteLeft);
+		cachedCanvas.drawText(stopwatch.getStopwatchData().getChronoType().toString(), getScreenWidth()-SPACING, offSet + topLineVerticalPosition, paintOtherTextWhiteRigth);
 		cachedCanvas.drawText(stopwatch.getStopwatchData().getInfo(), SPACING, offSet + middleLineVerticalPosition, paintOtherTextWhiteLeft);
 		cachedCanvas.drawText(stopwatch.getTime().toString(), getScreenWidth() - SPACING, offSet + bottomLineVerticalPosition, paintWhiteRight);
 		rect.set(0, offSet + fullHeight - SPACING - SPACING / 2, getScreenWidth(), offSet + fullHeight - SPACING);
@@ -355,9 +360,10 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 	private void renderOnCacheRunning(T stopwatch, int i) {
 		int offSet = fullHeight * i;
-		rect.set(getScreenWidth() - SPACING - allDigitWidth, offSet + middleLineVerticalPosition, getScreenWidth() - SPACING, offSet + fullHeight);
+		//rect.set(getScreenWidth() - SPACING - allDigitWidth, offSet + middleLineVerticalPosition, getScreenWidth() - SPACING, offSet + fullHeight);
+		rect.set(getScreenWidth() - SPACING - allDigitWidth, offSet + middleLineVerticalPosition, getScreenWidth() - SPACING, offSet + bottomLineVerticalPosition+SPACING);
 		//cachedCanvas.clipRect(rect);
-		cachedCanvas.drawRect(rect, paintWhileRunning);
+		cachedCanvas.drawRect(rect, paintWileWaitToStart);
 		cachedCanvas.drawText(stopwatch.getTime().toString(), getScreenWidth() - SPACING, offSet + bottomLineVerticalPosition, paintWhiteRight);
 
 	}

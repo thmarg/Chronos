@@ -1,7 +1,8 @@
-/*  Clock
+/*
+ * Clock
  *
- *  Copyright (c) 2014 Thierry Margenstern under MIT license
- *  http://opensource.org/licenses/MIT
+ * Copyright (c) 2014 Thierry Margenstern under MIT license
+ * http://opensource.org/licenses/MIT
  */
 
 package tm.android.chronos.core;
@@ -10,7 +11,8 @@ package tm.android.chronos.core;
 
 /**
  * Interface Clock<br>
- *     <p>Represent basic time duration actions. A clock can measure a duration from a start, or down to an end</p>
+ * <p>Represent basic time duration actions such as start stop reset.
+ * A clock can measure a duration from a start, or down to an end, and has a name.</p>
  *
  */
 public interface Clock {
@@ -32,22 +34,17 @@ public interface Clock {
      */
     void reset();
 
-    /**
-     *  Completely stop the clock, restart not possible after this method call.
-     */
-    void fullStop();
-
-    /**
-     * Pause the clock, (this will stop ui update to render the running digits).<br>
-     * Change state to paused only if current state is running.<br>
-     * Useful state (if clock time is stored) to maintain a running clock across device shutdown.
-     */
-    void pause();
-
-    /**
-     * Use this method to restart, state changed to running only if previous state is paused
-     */
-    void restart();
+//    /**
+//     * Pause the clock, (this will stop ui update to render the running digits).<br>
+//     * Change state to paused only if current state is running.<br>
+//     * Useful state (if clock time is stored) to maintain a running clock across device shutdown.
+//     */
+//    void pause();
+//
+//    /**
+//     * Use this method to restart, state changed to running only if previous state is paused
+//     */
+//    void restart();
 
     /**
      *
@@ -67,13 +64,22 @@ public interface Clock {
      */
     boolean isWaitingStart();
 
+//    /**
+//     *
+//     * @return <code>boolean</code> true if pause action has been done
+//     */
+//    boolean isPaused();
+
+
     /**
-     *
-     * @return <code>boolean</code> true if pause action has been done
+     * *
+     * @return current time from the clock.
      */
-    boolean isPaused();
+    Digit getTime();
 
 
+    String getName();
+    void setName(String name);
 
 
 }

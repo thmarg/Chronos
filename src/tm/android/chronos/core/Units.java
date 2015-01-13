@@ -1,8 +1,8 @@
 /*
  * Units
  *
- *   Copyright (c) 2014 Thierry Margenstern under MIT license
- *   http://opensource.org/licenses/MIT
+ * Copyright (c) 2014 Thierry Margenstern under MIT license
+ * http://opensource.org/licenses/MIT
  */
 
 package tm.android.chronos.core;
@@ -19,7 +19,9 @@ import static tm.android.chronos.core.Units.TIME_UNIT.SECOND;
 
 /**
  * Created by thmarg on 06/01/15.
- * The goal of this class is to provide static enums and methods to convert length and speed, and to show units names and their abbreviations on the UI.
+ * The goal of this class is to provide static enums and methods to convert length and speed, and to show units names and their abbreviations on the UI.<br>
+ * Some other constant such as CHRONO_TYPE and ZONE_ACTION are here.<br>
+ * The static method <code>setResources</code> must be call to have localized name.
  */
 public class Units {
 
@@ -66,9 +68,6 @@ public class Units {
 
         }
 
-        public String getKey(){
-            return key;
-        }// used by test
 
         @Override
         public String toString() {
@@ -79,23 +78,25 @@ public class Units {
     public static enum TIME_UNIT {
         MILLISECONDES(1.0d,"ms"), SECOND(1000.0d, "s"), HOUR(3600000.0d, "h");
         private double value;
-        private String shortName;
+        private String key;
 
-        TIME_UNIT(double value, String shortName) {
+        TIME_UNIT(double value, String key) {
             this.value = value;
-            this.shortName = shortName;
+            this.key = key;
         }
 
          double value() {
             return value;
         }
 
-        String getShortName() {
-            return shortName;
-        }
-
         public double getValue() {
             return value;
+        }
+
+
+        @Override
+        public String toString() {
+            return getLocalizedText(key,null);
         }
     }
 
@@ -119,10 +120,6 @@ public class Units {
             this.key = key;
         }
 
-
-        public String getKey(){
-            return key;
-        }
         @Override
         public String toString() {
             return getLocalizedText(key, null);
@@ -138,7 +135,19 @@ public class Units {
     }
 
 
-    public static enum CHRONO_TYPE {LAPS,INSIDE_LAP,PREDEFINED_TIMES}
+    public static enum CHRONO_TYPE {DEFAULT("default"),LAPS("laps"),INSIDE_LAP("legs"),PREDEFINED_TIMES("times");
+        private String key;
+        CHRONO_TYPE(String key){
+            this.key=key;
+        }
+
+        @Override
+        public String toString() {
+            return getLocalizedText(key,null);
+        }
+    }
+
+    public static enum ZONE_ACTION{LAP_TIME, START_STOP_RESET,PARAM,SHOW_HIDE}
 
     /**
      * Length conversion.

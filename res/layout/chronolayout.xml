@@ -1,21 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ /*  $NAME
-  ~  *
-  ~  *  Copyright (c) 2014 Thierry Margenstern under MIT license
-  ~  *  http://opensource.org/licenses/MIT
-  ~  */
+  ~   chronolayout
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"  android:weightSum="1"
-              android:clickable="false" android:id="@+id/mainlayout">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"  android:weightSum="1"
+                android:clickable="false" android:id="@+id/mainlayout"
+        >
 
-    <ExpandableListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/expandableListView" android:layout_gravity="left|center_horizontal"
-            android:clickable="true"/>
-</LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" android:layout_above="@+id/linearLayout" android:id="@+id/fond">
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout" android:clickable="false" android:isScrollContainer="false">
+        <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/img_btn_moins" android:background="@drawable/moins"
+                android:layout_marginLeft="@dimen/pading5dp" android:contentDescription="@string/img_btn_moins"
+                android:clickable="true" android:onClick="onClick"/>
+        <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/img_btn_startAll" android:background="@drawable/playall96x96"
+                android:layout_marginLeft="@dimen/pading5dp"/>
+        <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/imageButton" android:background="@drawable/refresh128x128"
+                android:layout_marginLeft="@dimen/pading5dp"/>
+        <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/img_btn_plus" android:layout_marginLeft="@dimen/pading5dp"
+                android:background="@drawable/plus" android:clickable="true" android:onClick="onClick"/>
+    </LinearLayout>
+</RelativeLayout>

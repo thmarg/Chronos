@@ -57,6 +57,8 @@ public class BaseChronographe extends SurfaceView {
     protected static Paint paintWileWaitToStart;// to erase before writing digit
     protected static Paint paintWhilePaused;
     protected static Paint paintWhileStoppedAndWaitReset;
+
+    protected static Paint paintOtherTextWhiteRigth;
     protected static Paint paintOtherTextWhiteLeft;
     protected static Paint paintLine;
 
@@ -107,7 +109,12 @@ public class BaseChronographe extends SurfaceView {
         //
         paintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintLine.setColor(Color.BLUE);
+        //
 
+        paintOtherTextWhiteRigth = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintOtherTextWhiteRigth.setTextSize(otherTextSize);
+        paintOtherTextWhiteRigth.setTextAlign(Paint.Align.RIGHT);
+        paintOtherTextWhiteRigth.setColor(Color.WHITE);
         //
         paintOtherTextWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintOtherTextWhiteLeft.setTextSize(otherTextSize);

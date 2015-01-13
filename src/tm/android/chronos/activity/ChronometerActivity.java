@@ -1,40 +1,68 @@
 /*
- *   ChronometerActivity
+ *  ChronometerActivity
  *
- *    Copyright (c) 2014 Thierry Margenstern under MIT license
- *    http://opensource.org/licenses/MIT
- *
+ *   Copyright (c) 2014 Thierry Margenstern under MIT license
+ *   http://opensource.org/licenses/MIT
  */
 
 package tm.android.chronos.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.widget.ExpandableListView;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import tm.android.chronos.R;
+import tm.android.chronos.core.ClockWorker;
+import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units;
-import tm.android.chronos.uicomponent.ExpandableAdapter;
-import tm.android.chronos.uicomponent.IntermediateTimeListener;
+import tm.android.chronos.uicomponent.BaseChronographe;
+import tm.android.chronos.uicomponent.Chronographe;
 
 /**
  *
  */
-public class ChronometerActivity extends Activity  {
+public class ChronometerActivity<T extends Stopwatch> extends Activity {
 
-    private ExpandableListView listView;
+
+    private ClockWorker<T> clockWorker;
+    private Chronographe<T> chronographe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chronolayout);
-        listView = (ExpandableListView)findViewById(R.id.expandableListView);
 
-        ExpandableAdapter expandableAdapter = new ExpandableAdapter(this);
+        chronographe = new Chronographe<T>(this);
+        clockWorker = chronographe.getClockWorker();
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Chronographe.getScreenWidth(), ViewGroup.LayoutParams.MATCH_PARENT);
+        //layoutParams.rightMargin = Chronographe2.getLeftMargin();
+        chronographe.setLayoutParams(layoutParams);
+        chronographe.setBackground(new ColorDrawable(Color.TRANSPARENT));
+        chronographe.setVerticalScrollBarEnabled(true);
+        chronographe.setScrollContainer(true);
 
-        listView.setAdapter(expandableAdapter);
-        expandableAdapter.setHisExpandableListView(listView);
+        // surfaceLayout.addView(chronographe2);
+        ((LinearLayout) findViewById(R.id.fond)).addView(chronographe);
+
+
+        //adaptation to very wide screen so that the application stay centered and no more wide than 1024 pixel which is enough See BaseChronographe.
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.mainlayout);
+        FrameLayout.LayoutParams layoutParams1 = new FrameLayout.LayoutParams(BaseChronographe.getScreenWidth(), ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams1.gravity= Gravity.CENTER;
+
+        relativeLayout.setLayoutParams(layoutParams1);
 
         Units.setResources(getResources());
 
+        LinearLayout ll = (LinearLayout)findViewById(R.id.fond);
+        int h= ll.getLayoutParams().height;
+        System.out.println(h);
     }
 
     @Override
@@ -60,6 +88,20 @@ public class ChronometerActivity extends Activity  {
 
     @Override
     protected void onDestroy() {
+
+        clockWorker.finalStop();
         super.onDestroy();
+
+    }
+
+
+    public void onClick(View view) {
+        if (view.getId() == R.id.img_btn_plus) {
+            chronographe.addNewStopwatch();
+        } else if (view.getId() == R.id.img_btn_moins) {
+            chronographe.removeLastStopwatch();
+        }
+
+
     }
 }

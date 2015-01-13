@@ -6,6 +6,8 @@
 package tm.android.chronos.core;
 
 import tm.android.chronos.BuildConfig;
+import tm.android.chronos.core.Units.DIGIT_FORMAT;
+import static tm.android.chronos.core.Units.DIGIT_FORMAT.*;
 
 /**
  * This class handle a living version of a time in the format<br>
@@ -19,31 +21,41 @@ import tm.android.chronos.BuildConfig;
  */
 public class Digit {
 
-    private final static String ZERO="       00:00:000";
     private long days;
     private long hours;
     private long minutes;
     private long seconds;
     private long milliSeconds;
-
+    private DIGIT_FORMAT initilaDigitFormat;
 
     private boolean sflag;// flags to now if seconds, minutes, hours or days have changed.
     private boolean mflag;
     private boolean hflag;
     private boolean dflag;
 
+    private boolean sepsmsFlag=false;
+    private boolean sepmsFlag=false;
+    private boolean sepmhFlag=false;
+    private boolean sephdFlag=false;
+
     private long innerMilliseconds;// time in ms from 1J1970 as in System.currentTimeMillis()
     private StringBuilder stringRep; // string representation
 
-    public Digit(long milliSeconds){
-        stringRep = new  StringBuilder(ZERO);
+    private Digit(long milliSeconds){
+        if (initilaDigitFormat ==null)
+            initilaDigitFormat = EXTRA_SHORT;
+        stringRep = new StringBuilder(initilaDigitFormat.getFormat());
         addMillisSeconds(milliSeconds);
 
     }
 
 
-    private void resetFlags(){
+    private void resetDigitFlags(){
         sflag=mflag=hflag=dflag=false;
+    }
+
+    private void resetSepFlags(){
+        sephdFlag=sepmhFlag=sepmsFlag=sepsmsFlag=false;
     }
 
     public void subMilliseconds(long ms){
@@ -95,19 +107,19 @@ public class Digit {
         days+=dd; // dd < 0 !
     }
 
-    public void addMillisSeconds(long ms){
-        resetFlags();
+    public Digit addMillisSeconds(long ms){
+        resetDigitFlags();
        // assert (ms>=0);
         innerMilliseconds +=ms;
         milliSeconds+=ms;
         if (milliSeconds<1000)
-            return;
+            return this;
 
 
         addSeconds(milliSeconds / 1000);
         sflag=true;
         milliSeconds=milliSeconds%1000;
-
+        return this;
     }
 
     private void addSeconds(long ss){
@@ -160,6 +172,7 @@ public class Digit {
     public long getInternal(){
         return innerMilliseconds;
     }
+
     public void reset(){
         innerMilliseconds=0;
         days=0;
@@ -167,24 +180,47 @@ public class Digit {
         minutes=0;
         seconds=0;
         milliSeconds=0;
-        stringRep.replace(0,16,ZERO);
+        stringRep.replace(0, stringRep.length(), initilaDigitFormat.getFormat());
+        resetDigitFlags();
+        resetSepFlags();
     }
+
 
 
     @Override
     public String toString() {
         stringRep.replace(13,16,(milliSeconds<10?"00"+milliSeconds:(milliSeconds<100?"0"+milliSeconds:""+milliSeconds)));
-        if (sflag)
-            stringRep.replace(10,12,(seconds<10?"0"+seconds:""+seconds));
+        if (sflag) {
+            if (!sepsmsFlag){
+                stringRep.replace(12,13,":");
+                sepsmsFlag=true;
+            }
+            stringRep.replace(10, 12, (seconds < 10 ? "0" + seconds : "" + seconds));
+        }
 
-        if (mflag)
-            stringRep.replace(7,9,(minutes<10?"0"+minutes:""+minutes));
+        if (mflag) {
+            if (!sepmsFlag){
+                stringRep.replace(9,10,":");
+                sepmsFlag=true;
+            }
+            stringRep.replace(7, 9, (minutes < 10 ? "0" + minutes : "" + minutes));
+        }
 
-        if (hflag)
-            stringRep.replace(4,7,(hours==0?(days==0?"   ":"00:"):(hours<10?"0"+hours:""+hours)+":"));
+        if (hflag) {
+            if (!sepmhFlag){
+                stringRep.replace(6,7,":");
+                sepmhFlag=true;
+            }
+            stringRep.replace(4, 6, (hours < 10 ? "0" + hours : "" + hours));
+        }
 
-        if (dflag)
-            stringRep.replace(0,3,(days==0?"    ":(days<10?"  "+days:(days<100?" "+days:""+days))+":"));
+        if (dflag) {
+            if (!sephdFlag){
+                stringRep.replace(3,4,":");
+                sephdFlag=true;
+            }
+            stringRep.replace(0, 3,(days < 10 ? "00" + days : (days < 100 ? "0" + days : "" + days)));
+        }
 
         return stringRep.toString();
 

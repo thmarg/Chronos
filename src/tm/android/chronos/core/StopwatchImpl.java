@@ -49,7 +49,7 @@ public class StopwatchImpl implements Stopwatch {
     @Override
     public void stopTime(long stopTime) {
         status = STOPPED;
-        currentTime.reset();
+        currentTime.reset();// reset to rebuild the real time between stat and stop
         currentTime.addMillisSeconds(stopTime - startTime);
         stopwatchData.setChronoTime(currentTime.getInternal());
         lapTime(stopTime);

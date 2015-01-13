@@ -149,15 +149,21 @@ public class Units {
 
     public static enum ZONE_ACTION{LAP_TIME, START_STOP_RESET,PARAM,SHOW_HIDE}
 
-    public static enum DIGIT_FORMAT{SHORT("       00:00:000"),EXTENDED("    00:00:00:000"),FULL("000:00:00:00:000");
+    public static enum DIGIT_FORMAT{EXTRA_SHORT("             000","ext_short"), VERY_SHORT("          00:000","very_short"), SHORT("       00:00:000","short"),EXTENDED("    00:00:00:000","extend"),FULL("000:00:00:00:000","full");
         private String format;
-        DIGIT_FORMAT(String format){
+        private String key;
+        DIGIT_FORMAT(String format, String key){
+            this.key = key;
             this.format = format;
+        }
+
+        public String getFormat() {
+            return format;
         }
 
         @Override
         public String toString() {
-            return format;
+            return getLocalizedText(key,null);
         }
     }
 

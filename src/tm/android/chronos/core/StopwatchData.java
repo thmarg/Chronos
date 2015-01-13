@@ -1,8 +1,8 @@
 /*
  *  StopwatchData
  *
- *    Copyright (c) 2014 Thierry Margenstern under MIT license
- *    http://opensource.org/licenses/MIT
+ *  Copyright (c) 2014 Thierry Margenstern under MIT license
+ *  http://opensource.org/licenses/MIT
  *
  */
 
@@ -16,15 +16,33 @@ import java.util.Vector;
 
 
 /**
- *
+ * This class represent the data of a stopwatch.<br>
+ * Type
+ * <ul>
+ * <li>DEFAULT = default : start, intermediate time, stop, reset, that all</li>
+ * <li>LAPS = by lap :  a distance is eventually given for one lap.
+ * when intermediate time action is done, if a distance is defined, it is considered that a lap has been done.
+ * Then  for this lap, time and speed are calculated; a lap count is updated and so the global distance.
+ * Finally when stopped, the global average speed on the global distance is calculated.</li>
+ * <li>INSIDE_LAP =segments : distances are defined, each one represent a segment of a global distance.
+ * when intermediate time action is done, it is considered that the current segment has been traveled.
+ * Then  for this segment, time and speed are calculated;
+ * Finally when stopped, the global average speed on the global distance is calculated.
+ * </li>
+ * <li>PREDEFINED_TIMES : durations are defined and translate into times from a start at zero.
+ * Once started, each time a time is reached by the stopwatch, a notification is raised.</li>
+ * </ul>
+ * Name<br>
+ * Creation date<br>
+ * Length unit<br>
+ * Speed units<br>
+ * Distance<br>
+ * Global Distance<br>
+ * Lap count<br>
+ * Final time<br>
  */
 public class StopwatchData {
 
-    /**
-     * LAPS is default mode :  intermediates times, plus speed calculation if a length is provided<br>
-     * INSIDE_LAP : predefine partial lengths, measure time for each part.<br>
-     * PREDEFINED_TIMES : predefine times, be notified each time a predefined time is reach.<br>
-     */
 
     private CHRONO_TYPE chronoType;
     private String name;
@@ -58,9 +76,9 @@ public class StopwatchData {
 
 
     /**
-     * Call this method when an intermediate time action is done.
+     * Call this method when an lap time action is done.
      *
-     * @param time
+     * @param time time when the action has been done.
      */
     public void add(long time) {
         StopwatchDataRow stopwatchDataRow = new StopwatchDataRow(time);
@@ -94,18 +112,6 @@ public class StopwatchData {
         return name;
     }
 
-    public Vector<StopwatchDataRow> getTimeList() {
-        return timeList;
-    }
-
-    public int getCount() {
-        return timeList.size();
-    }
-
-    public StopwatchDataRow getStopwatchDataRow(int i) {
-        return timeList.get(i);
-    }
-
     public CHRONO_TYPE getChronoType() {
         return chronoType;
     }
@@ -122,13 +128,10 @@ public class StopwatchData {
         this.speedUnit = speedUnit;
     }
 
-    public long getChronoTime() {
-        return chronoTime;
-    }
 
     /**
      * Call this method when a stopwatch is stopped.
-     * Update the final time and eventually the distance, deponds on chronoType.
+     * Update the final time and eventually the distance, depends on chronoType.
      *
      * @param chronoTime final time.
      */
@@ -152,9 +155,6 @@ public class StopwatchData {
         timeList.removeAllElements();
         chronoTime = 0;
     }
-
-
-
 
 
     public String getInfo() {

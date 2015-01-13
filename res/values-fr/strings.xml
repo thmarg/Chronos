@@ -24,4 +24,7 @@
     <string name="img_btn_moins">Enlève le dernier chronomètre de la liste.</string>
     <string name="laps">Par tours</string>
     <string name="times">Temps</string>
+    <string name="msg_max_stopwatch_count">" chronomètres !!!!! On ne peut plus ajouter de chronomètre"</string>
+    <string name="msg_first_stopwatch_no_delete">Vous ne pouvez pas supprimer le premier chronomètre.</string>
+    <string name="msg_only_delete_last">Vous ne pouvez supprimer que le dernier chronomètre. Mais il tourne ! Arrêtez le, puis supprimez le.</string>
 </resources>

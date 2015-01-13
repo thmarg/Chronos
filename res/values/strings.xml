@@ -43,5 +43,8 @@
     <string name="laps">By laps</string>
     <string name="segments">Segments</string>
     <string name="times">Times</string>
+    <string name="msg_max_stopwatch_count">" stopwatches !!!!! Can\'t add any more stopwatches"</string>
+    <string name="msg_first_stopwatch_no_delete">The first stopwatch can\'t be deleted.</string>
+    <string name="msg_only_delete_last">You can delete only the last stopwatch. But it is running. Stop it, then delete.</string>
 
 </resources>

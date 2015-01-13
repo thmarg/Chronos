@@ -135,7 +135,7 @@ public class Units {
     }
 
 
-    public static enum CHRONO_TYPE {DEFAULT("default"),LAPS("laps"),INSIDE_LAP("legs"),PREDEFINED_TIMES("times");
+    public static enum CHRONO_TYPE {DEFAULT("basic"),LAPS("laps"),INSIDE_LAP("segments"),PREDEFINED_TIMES("times");
         private String key;
         CHRONO_TYPE(String key){
             this.key=key;

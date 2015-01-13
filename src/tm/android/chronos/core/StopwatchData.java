@@ -56,7 +56,7 @@ public class StopwatchData {
 
 
     public StopwatchData(String name) {
-        chronoType = CHRONO_TYPE.LAPS;
+        chronoType = CHRONO_TYPE.DEFAULT;
         lengthUnit = LENGTH_UNIT.KILOMETER;
         speedUnit = SPEED_UNIT.KILOMETER_PER_HOUR;
         creationDate = System.currentTimeMillis();
@@ -158,15 +158,15 @@ public class StopwatchData {
 
 
     public String getInfo() {
-        StringBuilder builder = new StringBuilder("Type: ");
-        if (chronoType == CHRONO_TYPE.LAPS)
-            builder.append("laps ");
-        if (gLength > 0)
-            builder.append("D : ").append(gLength).append(" ").append(lengthUnit.getShortName());
-        if (gLength > 0 && chronoTime > 0) {
-            builder.append("V : ");
-            builder.append(String.format("%1$.2f", Units.getSpeed(gLength, lengthUnit, chronoTime, speedUnit)));
-            builder.append(" ").append(speedUnit.toString());
+        StringBuilder builder = new StringBuilder("");
+        if (chronoType == CHRONO_TYPE.LAPS || chronoType == CHRONO_TYPE.INSIDE_LAP) {
+            if (gLength > 0)
+                builder.append("D : ").append(gLength).append(" ").append(lengthUnit.getShortName());
+            if (gLength > 0 && chronoTime > 0) {
+                builder.append(" V : ");
+                builder.append(String.format("%1$.2f", Units.getSpeed(gLength, lengthUnit, chronoTime, speedUnit)));
+                builder.append(" ").append(speedUnit.toString());
+            }
         }
         return builder.toString();
     }

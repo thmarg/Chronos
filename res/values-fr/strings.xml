@@ -21,4 +21,7 @@
     <string name="btn_timerActivity">Minuteur</string>
     <string name="btn_alarmActivity">Alarmes</string>
     <string name="btn_metronome">Métronome</string>
+    <string name="img_btn_moins">Enlève le dernier chronomètre de la liste.</string>
+    <string name="laps">Par tours</string>
+    <string name="times">Temps</string>
 </resources>

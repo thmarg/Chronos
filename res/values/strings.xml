@@ -38,5 +38,10 @@
     <string name="btn_timerActivity">Timer</string>
     <string name="btn_alarmActivity">Alarms</string>
     <string name="btn_metronome">Metronome</string>
+    <string name="img_btn_moins">Remove last stopwatch from the list</string>
+    <string name="basic">Simple</string>
+    <string name="laps">By laps</string>
+    <string name="segments">Segments</string>
+    <string name="times">Times</string>
 
 </resources>

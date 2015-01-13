@@ -7,6 +7,7 @@
 
 package tm.android.chronos.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -19,58 +20,75 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import tm.android.chronos.R;
+import tm.android.chronos.core.Stopwatch;
+import tm.android.chronos.core.Units.*;
 import tm.android.chronos.core.Units;
 
 /**
  *
  */
-public class ChronographeDialog extends DialogFragment {
-    private OnDialogClickListener onDialogClickListener;
-    private String initialChronoName;
-    private Units.CHRONO_TYPE chronoType;
-    private Units.LENGTH_UNIT lengthUnit;
-    private Units.SPEED_UNIT speedUnit;
+public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
+    private T stopwatch;
+    private OnDialogClickListener dialogClickListener;
+    private String name;
+    private CHRONO_TYPE type;
+    private LENGTH_UNIT lengthUnit;
+    private SPEED_UNIT speedUnit;
     private double distance;
-    //private long chronoTime;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_FRAME,0);
+
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        // Stopwatch name
+        @SuppressLint("null")
         View view =inflater.inflate(R.layout.dialogstopwatchparam, null);
-        ((TextView)view.findViewById(R.id.edt_txt_name)).setText(initialChronoName);
 
         // spinner for distance unit
         Spinner unitDistance = (Spinner) view.findViewById(R.id.spin_units_distance);
-        ArrayAdapter<Units.LENGTH_UNIT> arrayAdapter = new ArrayAdapter<Units.LENGTH_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getUnitLenghtList());
+        ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getUnitLenghtList());
         unitDistance.setAdapter(arrayAdapter);
-        // init value
-        if (lengthUnit != null)
-            unitDistance.setSelection(arrayAdapter.getPosition(lengthUnit));
 
         // spinner for speed units
         Spinner unitSpeed = (Spinner)view.findViewById(R.id.spin_speed);
-        ArrayAdapter<Units.SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<Units.SPEED_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getSpeedUnitList());
+        ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getSpeedUnitList());
         unitSpeed.setAdapter(arrayAdapter1);
-        // init value
-        if (speedUnit != null)
-            unitSpeed.setSelection(arrayAdapter1.getPosition(speedUnit));
 
         // spinner for chrono type
         Spinner chronoType = (Spinner)view.findViewById(R.id.spin_type);
-        ArrayAdapter<Units.CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<Units.CHRONO_TYPE>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getModeList());
+        ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<CHRONO_TYPE>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getModeList());
         chronoType.setAdapter(arrayAdapter2);
-        // init value
-        if (this.chronoType != null)
-            chronoType.setSelection(arrayAdapter2.getPosition(this.chronoType));
 
 
-        if (distance >=0)
-            ((EditText)view.findViewById(R.id.edt_txt_distance)).setText(String.valueOf(distance));
+        if (stopwatch !=null) {
+            if (stopwatch.getStopwatchData().getgLength() >= 0)
+                ((EditText) view.findViewById(R.id.edt_txt_distance)).setText(String.valueOf(stopwatch.getStopwatchData().getgLength()));
 
 
+            // init value
+            if (stopwatch.getStopwatchData().getLengthUnit() != null)
+                unitDistance.setSelection(arrayAdapter.getPosition(stopwatch.getStopwatchData().getLengthUnit()));
+            // init value
+            if (stopwatch.getStopwatchData().getSpeedUnit() != null)
+                unitSpeed.setSelection(arrayAdapter1.getPosition(stopwatch.getStopwatchData().getSpeedUnit()));
+            // init value
+            if (this.stopwatch.getStopwatchData().getChronoType() != null)
+                chronoType.setSelection(arrayAdapter2.getPosition(stopwatch.getStopwatchData().getChronoType()));
 
+
+            // Stopwatch name
+
+            ((TextView) view.findViewById(R.id.edt_txt_name)).setText(stopwatch.getName());
+
+        }
 
         builder.setView(view);
 
@@ -79,16 +97,30 @@ public class ChronographeDialog extends DialogFragment {
         builder.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (onDialogClickListener!=null)
-                    onDialogClickListener.onDialogPositiveClick(ChronographeDialog.this);
+                name = ((TextView) getDialog().findViewById(R.id.edt_txt_name)).getText().toString().trim();
+
+                type = (CHRONO_TYPE)((Spinner)getDialog().findViewById(R.id.spin_type)).getSelectedItem();
+
+
+                lengthUnit = (LENGTH_UNIT)((Spinner)getDialog().findViewById(R.id.spin_units_distance)).getSelectedItem();
+
+                speedUnit = (SPEED_UNIT)((Spinner)getDialog().findViewById(R.id.spin_speed)).getSelectedItem();
+
+
+                distance = Double.valueOf(((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString());
+
+                if (dialogClickListener !=null)
+                    dialogClickListener.onDialogPositiveClick(ChronographeDialog.this);
+
             }
         });
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (onDialogClickListener!=null)
-                    onDialogClickListener.onDialogNegativeClick(ChronographeDialog.this);
+                if (dialogClickListener !=null)
+                    dialogClickListener.onDialogNegativeClick(ChronographeDialog.this);
+
             }
         });
 
@@ -98,57 +130,36 @@ public class ChronographeDialog extends DialogFragment {
     }
 
 
-    public void setChronoName(String name){
-        initialChronoName=name;
+    public T getStopwatch() {
+        return stopwatch;
     }
 
-    public String getChronoName(){
-        return ((TextView)getDialog().findViewById(R.id.edt_txt_name)).getText().toString();
+    public void setStopwatch(T stopwatch) {
+        this.stopwatch = stopwatch;
+
     }
 
-
-
-
-    public void setOnDialogClickListener(OnDialogClickListener onDialogClickListener) {
-        this.onDialogClickListener = onDialogClickListener;
-    }
-
-    public Units.CHRONO_TYPE getChronoType() {
-        chronoType = (Units.CHRONO_TYPE) ((Spinner)getDialog().findViewById(R.id.spin_type)).getSelectedItem() ;
-        return chronoType;
-    }
-
-    public void setChronoType(Units.CHRONO_TYPE chronoType) {
-        this.chronoType = chronoType;
-    }
-
-    public Units.LENGTH_UNIT getLengthUnit() {
-        lengthUnit = (Units.LENGTH_UNIT)((Spinner)getDialog().findViewById(R.id.spin_units_distance)).getSelectedItem();
-        return lengthUnit;
-    }
-
-    public void setLengthUnit(Units.LENGTH_UNIT lengthUnit) {
-        this.lengthUnit = lengthUnit;
-    }
-
-    public Units.SPEED_UNIT getSpeedUnit() {
-        speedUnit = (Units.SPEED_UNIT)((Spinner)getDialog().findViewById(R.id.spin_speed)).getSelectedItem();
-        return speedUnit;
-    }
-
-    public void setSpeedUnit(Units.SPEED_UNIT speedUnit) {
-        this.speedUnit = speedUnit;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
+    public void setDialogClickListener(OnDialogClickListener dialogClickListener) {
+        this.dialogClickListener = dialogClickListener;
     }
 
     public double getDistance() {
-        return  Double.parseDouble(((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString());
+        return distance;
     }
 
-//    public void setChronoTime(long chronoTime) {
-//        this.chronoTime = chronoTime;
-//    }
+    public LENGTH_UNIT getLengthUnit() {
+        return lengthUnit;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SPEED_UNIT getSpeedUnit() {
+        return speedUnit;
+    }
+
+    public CHRONO_TYPE getType() {
+        return type;
+    }
 }

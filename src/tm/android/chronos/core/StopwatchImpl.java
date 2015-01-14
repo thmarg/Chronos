@@ -7,34 +7,34 @@
 
 package tm.android.chronos.core;
 
-import static tm.android.chronos.core.StopwatchImpl.STATUS.*;
+import tm.android.chronos.uicomponent.StopwatchUIImpl;
+
+import static tm.android.chronos.core.Units.STATUS.*;
+import tm.android.chronos.core.Units.STATUS;
+import static tm.android.chronos.core.Units.UPDATE_TYPE.*;
+import static tm.android.chronos.core.Units.CHRONO_TYPE.*;
 
 /**
  * Implementation of interface Stopwatch
  */
 public class StopwatchImpl implements Stopwatch {
-    static enum STATUS {RUNNING, STOPPED, WAIT_TO_START, KILLED, PAUSED}
-
 
     private STATUS status;
 
-
     private long startTime;// start time
-
 
     private Digit currentTime;
     private long lastTime;
 
     private StopwatchData stopwatchData;
+    private StopwatchUIImpl stopwatchUI;
 
-    private boolean mustUpdateUI;
-    private boolean mustDelete=false;
 
     public StopwatchImpl() {
         status = WAIT_TO_START;
         currentTime = Digit.split(0);
         stopwatchData = new StopwatchData("Chrono");
-        mustUpdateUI=true;
+        stopwatchUI = new StopwatchUIImpl();
     }
 
 
@@ -53,7 +53,18 @@ public class StopwatchImpl implements Stopwatch {
         currentTime.addMillisSeconds(stopTime - startTime);
         stopwatchData.setChronoTime(currentTime.getInternal());
         lapTime(stopTime);
-        mustUpdateUI=true;
+        defineCommonUpdates();
+
+
+    }
+
+
+    private void defineCommonUpdates(){
+        if (stopwatchData.getChronoType()== LAPS || stopwatchData.getChronoType()== INSIDE_LAP) {
+            stopwatchUI.addUpdateType(UPDATE_HEAD_LINE2);
+        }
+        stopwatchUI.addUpdateType(UPDATE_HEAD_DIGIT);
+
     }
 
     @Override
@@ -63,7 +74,9 @@ public class StopwatchImpl implements Stopwatch {
         currentTime.reset();
         status = WAIT_TO_START;
         stopwatchData.reset();
-        mustUpdateUI=true;
+       defineCommonUpdates();
+        stopwatchUI.addUpdateType(REMOVE_DETAILS);
+
     }
 
 //    @Override
@@ -101,7 +114,7 @@ public class StopwatchImpl implements Stopwatch {
     public Digit getTime() {
         if (isRunning()) {
             long l = System.currentTimeMillis() - lastTime;
-            lastTime+=l;
+            lastTime += l;
             return currentTime.addMillisSeconds(l);
         } else {
             return currentTime;
@@ -113,9 +126,15 @@ public class StopwatchImpl implements Stopwatch {
         return stopwatchData;
     }
 
+
+    @Override
+    public StopwatchUIImpl getStopwatchUi() {
+        return stopwatchUI;
+    }
+
     @Override
     public void lapTime(long now) {
-        stopwatchData.add(now);
+        stopwatchData.add(now - startTime);
     }
 
 
@@ -130,26 +149,5 @@ public class StopwatchImpl implements Stopwatch {
     }
 
 
-    @Override
-    public boolean mustUpdateUI() {
-        return mustUpdateUI;
-    }
 
-    @Override
-    public void setMustUpdateUI(boolean must){
-        mustUpdateUI = must;
-
-    }
-
-    @Override
-    public boolean mustDelete() {
-        return mustDelete;
-    }
-
-    @Override
-    public void setMustDelete() {
-        mustDelete = true;
-        mustUpdateUI=true;
-        status=STOPPED;
-    }
 }

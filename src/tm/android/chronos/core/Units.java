@@ -167,8 +167,9 @@ public class Units {
         }
     }
 
+    public static enum UPDATE_TYPE {ADD_NEW, UPDATE_HEAD_LINE1, UPDATE_HEAD_LINE2,UPDATE_HEAD_DIGIT, CHANGE_TYPE, DELETE, COLLAPSE_DETAILS,EXPAND_DETAILS, REMOVE_DETAILS}
 
-
+    public static enum STATUS {RUNNING, STOPPED, WAIT_TO_START, KILLED, PAUSED}
     /**
      * Length conversion.
      * @param length to convert

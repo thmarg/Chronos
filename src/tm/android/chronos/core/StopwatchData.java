@@ -143,6 +143,10 @@ public class StopwatchData {
 
     }
 
+    public long getChronoTime() {
+        return chronoTime;
+    }
+
     public double getgLength() {
         return gLength;
     }

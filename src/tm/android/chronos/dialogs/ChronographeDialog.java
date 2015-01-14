@@ -15,10 +15,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import tm.android.chronos.R;
 import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units.*;
@@ -35,6 +32,9 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
     private LENGTH_UNIT lengthUnit;
     private SPEED_UNIT speedUnit;
     private double distance;
+    private Spinner unitDistance;
+    private Spinner unitSpeed;
+    private EditText editTextDistance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,34 +52,42 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
         @SuppressLint("null")
         View view =inflater.inflate(R.layout.dialogstopwatchparam, null);
 
-        // spinner for distance unit
-        Spinner unitDistance = (Spinner) view.findViewById(R.id.spin_units_distance);
-        ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getUnitLenghtList());
-        unitDistance.setAdapter(arrayAdapter);
 
-        // spinner for speed units
-        Spinner unitSpeed = (Spinner)view.findViewById(R.id.spin_speed);
-        ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getSpeedUnitList());
-        unitSpeed.setAdapter(arrayAdapter1);
+            // spinner for distance unit
+            unitDistance = (Spinner) view.findViewById(R.id.spin_units_distance);
+            ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getUnitLenghtList());
+            unitDistance.setAdapter(arrayAdapter);
+
+            // spinner for speed units
+            unitSpeed = (Spinner) view.findViewById(R.id.spin_speed);
+            ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getSpeedUnitList());
+            unitSpeed.setAdapter(arrayAdapter1);
 
         // spinner for chrono type
         Spinner chronoType = (Spinner)view.findViewById(R.id.spin_type);
         ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<CHRONO_TYPE>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getModeList());
         chronoType.setAdapter(arrayAdapter2);
+        chronoType.setOnItemSelectedListener(new OnTypeChanged());
 
+        editTextDistance  = (EditText) view.findViewById(R.id.edt_txt_distance);
 
         if (stopwatch !=null) {
-            if (stopwatch.getStopwatchData().getgLength() >= 0)
-                ((EditText) view.findViewById(R.id.edt_txt_distance)).setText(String.valueOf(stopwatch.getStopwatchData().getgLength()));
+            if (stopwatch.getStopwatchData().getChronoType()==CHRONO_TYPE.LAPS || stopwatch.getStopwatchData().getChronoType()==CHRONO_TYPE.INSIDE_LAP) {
+                if (stopwatch.getStopwatchData().getgLength() > 0)
+                    editTextDistance.setText(String.valueOf(stopwatch.getStopwatchData().getgLength()));
 
+                // init value
+                if (stopwatch.getStopwatchData().getLengthUnit() != null)
+                    unitDistance.setSelection(arrayAdapter.getPosition(stopwatch.getStopwatchData().getLengthUnit()));
+                // init value
+                if (stopwatch.getStopwatchData().getSpeedUnit() != null)
+                    unitSpeed.setSelection(arrayAdapter1.getPosition(stopwatch.getStopwatchData().getSpeedUnit()));
+            } else {
+                unitSpeed.setEnabled(false);
+                unitDistance.setEnabled(false);
+                view.findViewById(R.id.edt_txt_distance).setEnabled(false);
+            }
 
-            // init value
-            if (stopwatch.getStopwatchData().getLengthUnit() != null)
-                unitDistance.setSelection(arrayAdapter.getPosition(stopwatch.getStopwatchData().getLengthUnit()));
-            // init value
-            if (stopwatch.getStopwatchData().getSpeedUnit() != null)
-                unitSpeed.setSelection(arrayAdapter1.getPosition(stopwatch.getStopwatchData().getSpeedUnit()));
-            // init value
             if (this.stopwatch.getStopwatchData().getChronoType() != null)
                 chronoType.setSelection(arrayAdapter2.getPosition(stopwatch.getStopwatchData().getChronoType()));
 
@@ -106,8 +114,9 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
 
                 speedUnit = (SPEED_UNIT)((Spinner)getDialog().findViewById(R.id.spin_speed)).getSelectedItem();
 
-
-                distance = Double.valueOf(((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString());
+                String text = ((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString();
+                if (!text.equals(""))
+                    distance = Double.valueOf(text);
 
                 if (dialogClickListener !=null)
                     dialogClickListener.onDialogPositiveClick(ChronographeDialog.this);
@@ -161,5 +170,23 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
 
     public CHRONO_TYPE getType() {
         return type;
+    }
+
+
+    private class OnTypeChanged implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            CHRONO_TYPE selected = (CHRONO_TYPE)adapterView.getSelectedItem();
+            boolean enable = (selected==CHRONO_TYPE.DEFAULT | selected == CHRONO_TYPE.PREDEFINED_TIMES);
+                unitDistance.setEnabled(!enable);
+                unitSpeed.setEnabled(!enable);
+                editTextDistance.setEnabled(!enable);
+
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            //
+        }
     }
 }

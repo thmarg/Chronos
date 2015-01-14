@@ -47,29 +47,32 @@ import static tm.android.chronos.core.Units.ZONE_ACTION.*;
  */
 public class BaseChronographe extends SurfaceView {
 
-    protected  final static int CHRONO_TEXT_SIZE_IN_DP = 30;// dp , good base size for the chrono digits
-    protected  final static int OTHER_TEXT_SIZE_IN_DP =20;
+    protected  final static int CHRONO_TEXT_SIZE_IN_DP = 30;//  good base size for the chrono digits
+    protected  final static int TEXT_NORMAL_SIZE_IN_DP =20; //  other texte normal
+    protected  final static int TEXT_SMALL_SIZE_IN_DP =15; // other text small
     protected  static int SPACING = (int)(4*Resources.getSystem().getDisplayMetrics().density);// extra space around blocs of letters.
 
     protected static Paint paintWhiteRight;// to paint digit right align
-    protected static Paint paintWhiteLeft;// to paint digit left align
     protected static Paint paintWhileRunning; // background while running
-    protected static Paint paintWileWaitToStart;// to erase before writing digit
+    protected static Paint paintBackgroundBlack;// to erase
     protected static Paint paintWhilePaused;
     protected static Paint paintWhileStoppedAndWaitReset;
 
-    protected static Paint paintOtherTextWhiteRigth;
-    protected static Paint paintOtherTextWhiteLeft;
+    protected static Paint paintNormalTextWhiteRigth;
+    protected static Paint paintNormalTextWhiteLeft;
+    protected static Paint paintSmallTextWhiteRigth;
+    protected static Paint paintSmallTextWhiteLeft;
     protected static Paint paintLine;
 
     protected static int screenWidth;// pixel
 
     protected static int chronoDigitHeight; // pixel chronoDigitHeight plus spacing top and bottom
-    protected static int otherTextCharHeight;// pixel
+    protected static int normalTextCharHeight;// pixel
+    protected static int normalTextCharWidht;// pixel
 
-    protected static int allDigitWidth;
+    protected static int digitMaxLength;
     protected static int fullHeight;
-
+    protected static int childrenLineHeight;
 
     // vertical position for drawText (top=0, bottom=fullHeight)
     protected  static int bottomLineVerticalPosition;
@@ -80,6 +83,33 @@ public class BaseChronographe extends SurfaceView {
     private static int lapTimeHorizontalLimit;
     private static int ssrHorizontalLimit; // start stop reset
     private static int paramHorizontalLimit;
+
+
+    /* Explain
+     * ********************************** top
+     *
+     * ********************************** baseLine
+     * ********************************** bottom
+     * below BlocHeight is bottom -top // bloc to reset back ground with drawRect on canvas
+     * baseLineVerticalOffset est baseline -top // where to write with drawText on canvas
+     *
+     * digit reference the font properties to render the digits of the stopwatch.
+     * normal reference the font properties to render info in the head bloc of the stopwatch.
+     * small reference the font properties to render details of the stopwatch (lap time ...)
+     */
+
+
+    protected static int normalTextBlocHeight;
+    protected static int smallTextBlocHeight;
+    protected static int digitTextBlocHeight;
+
+    protected static int normalTextBaseLineVerticalOffset;
+    protected static int smallTextBaseLineVerticalOffset;
+    protected static int digitTextBaseLineVerticalOffset;
+
+    /* max digits length of a stopwatch ie when "000:00:00:00:000"  plus h spacing included   */
+
+
 
 
 
@@ -102,8 +132,8 @@ public class BaseChronographe extends SurfaceView {
     protected static void staticInit(){
         float density =  Resources.getSystem().getDisplayMetrics().density;
         float chronotextSize = density * CHRONO_TEXT_SIZE_IN_DP;// used by painter
-        float otherTextSize = density* OTHER_TEXT_SIZE_IN_DP;
-
+        float normalTextSize = density* TEXT_NORMAL_SIZE_IN_DP;
+        float smallTextSize = density*TEXT_SMALL_SIZE_IN_DP;
         //
         Rect r = new Rect();
         //
@@ -111,15 +141,26 @@ public class BaseChronographe extends SurfaceView {
         paintLine.setColor(Color.BLUE);
         //
 
-        paintOtherTextWhiteRigth = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintOtherTextWhiteRigth.setTextSize(otherTextSize);
-        paintOtherTextWhiteRigth.setTextAlign(Paint.Align.RIGHT);
-        paintOtherTextWhiteRigth.setColor(Color.WHITE);
+        paintNormalTextWhiteRigth = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintNormalTextWhiteRigth.setTextSize(normalTextSize);
+        paintNormalTextWhiteRigth.setTextAlign(Paint.Align.RIGHT);
+        paintNormalTextWhiteRigth.setColor(Color.WHITE);
         //
-        paintOtherTextWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintOtherTextWhiteLeft.setTextSize(otherTextSize);
-        paintOtherTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
-        paintOtherTextWhiteLeft.setColor(Color.WHITE);
+        paintNormalTextWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintNormalTextWhiteLeft.setTextSize(normalTextSize);
+        paintNormalTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
+        paintNormalTextWhiteLeft.setColor(Color.WHITE);
+        //
+
+        paintSmallTextWhiteRigth = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintSmallTextWhiteRigth.setTextSize(smallTextSize);
+        paintSmallTextWhiteRigth.setTextAlign(Paint.Align.RIGHT);
+        paintSmallTextWhiteRigth.setColor(Color.WHITE);
+
+        paintSmallTextWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintSmallTextWhiteLeft.setTextSize(smallTextSize);
+        paintSmallTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
+        paintSmallTextWhiteLeft.setColor(Color.WHITE);
 
         paintWhiteRight = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintWhiteRight.setTextSize(chronotextSize);
@@ -127,16 +168,11 @@ public class BaseChronographe extends SurfaceView {
         paintWhiteRight.setColor(Color.WHITE);
 
 
-        paintWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWhiteLeft.setTextSize(chronotextSize);
-        paintWhiteLeft.setTextAlign(Paint.Align.LEFT);
-        paintWhiteLeft.setColor(Color.WHITE);
-
         paintWhileRunning = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintWhileRunning.setColor(Color.parseColor("#f3950f"));
 
-        paintWileWaitToStart = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWileWaitToStart.setColor(Color.BLACK);
+        paintBackgroundBlack = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintBackgroundBlack.setColor(Color.BLACK);
         //
         paintWhilePaused = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintWhilePaused.setColor(Color.MAGENTA);
@@ -147,18 +183,32 @@ public class BaseChronographe extends SurfaceView {
 
         paintWhiteRight.getTextBounds("0", 0, 1, r);
         Paint.FontMetricsInt fm = paintWhiteRight.getFontMetricsInt();
+
+        digitTextBlocHeight = fm.bottom-fm.top;
+        digitTextBaseLineVerticalOffset = -fm.top;
+
         int chronoDigitBaseLine = fm.bottom;
         chronoDigitHeight = fm.bottom-fm.top;
         paintWhiteRight.getTextBounds("000:00:00:00:000", 0, 16, r);
-        allDigitWidth = r.right-r.left+2*SPACING;
 
+        digitMaxLength = r.width()+3*SPACING;
 
+        normalTextCharHeight =  paintNormalTextWhiteLeft.getFontMetricsInt().bottom- paintNormalTextWhiteLeft.getFontMetricsInt().top;
+        paintNormalTextWhiteLeft.getTextBounds("A",0,1,r);
 
-        paintOtherTextWhiteLeft.getTextBounds("A", 0, 1, r);
-        otherTextCharHeight =  paintOtherTextWhiteLeft.getFontMetricsInt().bottom-paintOtherTextWhiteLeft.getFontMetricsInt().top;
-        int otherTextBaseLine =  paintOtherTextWhiteLeft.getFontMetricsInt().bottom;
+        normalTextBlocHeight = paintNormalTextWhiteLeft.getFontMetricsInt().bottom- paintNormalTextWhiteLeft.getFontMetricsInt().top;
+        normalTextBaseLineVerticalOffset=-paintSmallTextWhiteLeft.getFontMetricsInt().top;
 
-        fullHeight = chronoDigitHeight+2*otherTextCharHeight+4*SPACING;// used to full erase  a stopwatch area.
+        normalTextCharWidht = r.width();
+        int normalTextBaseLine =  paintNormalTextWhiteLeft.getFontMetricsInt().bottom;
+
+        childrenLineHeight = paintSmallTextWhiteRigth.getFontMetricsInt().bottom-paintSmallTextWhiteRigth.getFontMetricsInt().top;
+        smallTextBlocHeight = paintSmallTextWhiteRigth.getFontMetricsInt().bottom-paintSmallTextWhiteRigth.getFontMetricsInt().top;
+        smallTextBaseLineVerticalOffset = -paintSmallTextWhiteRigth.getFontMetricsInt().top;
+
+        childrenLineHeight = childrenLineHeight+SPACING;
+
+        fullHeight = chronoDigitHeight+2* normalTextCharHeight +4*SPACING;// used to full erase  a stopwatch area.
 
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -168,13 +218,13 @@ public class BaseChronographe extends SurfaceView {
 
 
         bottomLineVerticalPosition = fullHeight -chronoDigitBaseLine-SPACING;
-        middleLineVerticalPosition = fullHeight -chronoDigitHeight-otherTextBaseLine-SPACING;
-        topLineVerticalPosition = fullHeight-chronoDigitHeight-otherTextCharHeight -otherTextBaseLine-SPACING;
+        middleLineVerticalPosition = fullHeight -chronoDigitHeight-normalTextBaseLine-SPACING;
+        topLineVerticalPosition = fullHeight-chronoDigitHeight- normalTextCharHeight -normalTextBaseLine-SPACING;
 
 
         //
-        lapTimeHorizontalLimit = screenWidth-allDigitWidth/3;
-        ssrHorizontalLimit = screenWidth-allDigitWidth*3/4;
+        lapTimeHorizontalLimit = screenWidth- digitMaxLength /3;
+        ssrHorizontalLimit = screenWidth- digitMaxLength *3/4;
         paramHorizontalLimit = (screenWidth-ssrHorizontalLimit)/2;
 
     }

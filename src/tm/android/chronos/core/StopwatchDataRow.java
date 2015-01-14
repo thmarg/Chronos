@@ -5,15 +5,17 @@
  */
 
 package tm.android.chronos.core;
-import tm.android.chronos.core.Units.*;
+
+import tm.android.chronos.core.Units.CHRONO_TYPE;
+import tm.android.chronos.core.Units.LENGTH_UNIT;
 
 /**
  * This class is a data holder for a stopwatch. It has two goal<br>
- *     <ul>
- *         <li>retain intermediate clickTime lap, has backend for the UI</li>
- *         <li>provide data structure to store the final state of a Stopwatch onto db or file system.</li>
- *     </ul>
- *<p>Static methods are provided fom data conversion, either length or speed.
+ * <ul>
+ * <li>retain intermediate clickTime lap, has backend for the UI</li>
+ * <li>provide data structure to store the final state of a Stopwatch onto db or file system.</li>
+ * </ul>
+ * <p>Static methods are provided fom data conversion, either length or speed.
  * The data are typed by the unit of length.
  * In case of storage this type must be store somewhere.
  * This type once set must never been change.
@@ -28,34 +30,14 @@ public class StopwatchDataRow {
     private long diffTime; // the "real" intermediate time -> clickTime - previous dataRow clickTime if any.
     private double length;
     private CHRONO_TYPE chronoType;// must be known to show or hide some ui elements.
+    private StopwatchData head; // the container of the list of stopwatchDataRow. Needed by common property own by head.
 
 
-    public StopwatchDataRow() {
-        storedLengthUnit = LENGTH_UNIT.METER;
-
-    }
-
-    public StopwatchDataRow(LENGTH_UNIT length_unit) {
-        storedLengthUnit = length_unit;
+    public StopwatchDataRow(StopwatchData head) {
+        this.head = head;
 
     }
 
-    public StopwatchDataRow(LENGTH_UNIT length_unit, long clickTime, double length) {
-        storedLengthUnit = length_unit;
-        this.clickTime = clickTime;
-        this.length = length;
-    }
-
-    public StopwatchDataRow(LENGTH_UNIT length_unit, long clickTime) {
-        storedLengthUnit = length_unit;
-        this.clickTime = clickTime;
-
-    }
-
-    public StopwatchDataRow(long clickTime, double length) {
-        this.clickTime = clickTime;
-        this.length = length;
-    }
 
     public StopwatchDataRow(long clickTime) {
         this.clickTime = clickTime;
@@ -83,5 +65,21 @@ public class StopwatchDataRow {
         return length;
     }
 
+    public String getLine() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (length > 0 && (chronoType == CHRONO_TYPE.LAPS || chronoType == CHRONO_TYPE.PREDEFINED_TIMES)) {
+            if (chronoType == CHRONO_TYPE.LAPS && length > 0) {
+                stringBuilder.append("V : ").append(Units.getSpeed(length, head.getLengthUnit(), diffTime, head.getSpeedUnit()));
+                stringBuilder.append(" ").append(head.getSpeedUnit().toString());
+            }
 
+            stringBuilder.append(" D : ").append(length).append(" ").append(head.getLengthUnit().getShortName());
+            stringBuilder.append(Digit.split(diffTime)).append("  ");
+        }
+        // TODO : display something to distinguish between traveled times, and others.
+        stringBuilder.append(Digit.split(clickTime));
+
+        return stringBuilder.toString();
+
+    }
 }

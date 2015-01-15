@@ -48,7 +48,7 @@ public class ClockWorker<T extends Clock> extends Thread {
         while (run) {
             if (stopDisplay || noneChronoIsRunning()){
                 try {
-                    sleep(400);
+                    sleep(200);
                     continue;
                 }catch (InterruptedException e){
                     //
@@ -59,7 +59,7 @@ public class ClockWorker<T extends Clock> extends Thread {
                     surfaceViewRenderer.renderOnCache(clockList);
                     canvas = surfaceViewRenderer.getHolder().lockCanvas();
                     surfaceViewRenderer.renderOnScreen(canvas);
-                    sleep(40);
+                    sleep(20);
                 } catch (InterruptedException e) {
                     //
                 } finally {
@@ -94,11 +94,14 @@ public class ClockWorker<T extends Clock> extends Thread {
         this.stopDisplay = stopDisplay;
     }
 
+
     public boolean noneChronoIsRunning(){
-        for (T t:clockList)
-            if (t.isRunning())
-                return false;
-        return true;
+        synchronized (clockList) { // synchronize to support delete at high speed by a user who push the "moins" button at high frequency like a fool ! lol
+            for (T t : clockList)
+                if (t.isRunning())
+                    return false;
+            return true;
+        }
 
     }
 

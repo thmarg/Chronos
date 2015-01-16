@@ -116,4 +116,9 @@ public class Pwrapper<T extends Number> {
 		return s.substring(0,sep+1)+dec;
 
 	}
+
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 }

@@ -153,7 +153,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 					renderOnCacheDelete(stopwatch, offSet);
 					break;
 				case ADD_NEW:
-					renderOnCacheAddNew(stopwatch, offSet, NONE);
+					renderOnCacheAddNew(stopwatch, new Pwrapper<Integer>(offSet), NONE);
 					break;
 				case UPDATE_HEAD_DIGIT:
 					if (stopwatch.getStopwatchData().getLapDistance()>0 && (stopwatch.getStopwatchData().getChronoType()==LAPS || stopwatch.getStopwatchData().getChronoType()==SEGMENTS))
@@ -214,8 +214,9 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		lastY -= stopwatch.getStopwatchUi().getHeadHeight() + stopwatch.getStopwatchUi().getDetailsHeight();
 	}
 
-	private void renderOnCacheAddNew(T stopwatch, int offSet, UPDATE_TYPE updateType) {
-		Pwrapper<Integer> blBottomVPos = new Pwrapper<Integer>(offSet + SPACING);
+	private void renderOnCacheAddNew(T stopwatch, Pwrapper<Integer> blBottomVPos, UPDATE_TYPE updateType) {
+		int offSet=blBottomVPos.value();
+		blBottomVPos.add(SPACING);
 		renderOnCacheHeadLine1(stopwatch, blBottomVPos, false);
 
 		if (stopwatch.getStopwatchData().getChronoType() != Units.CHRONO_TYPE.SIMPLE) {
@@ -258,7 +259,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		rect.set(0, blBottomVPos.value(), screenWidth, blBottomVPos.value() + digitTextBlocHeight);
 		cachedCanvas.drawRect(rect, paintBackgroundBlack);
 		cachedCanvas.drawText(stopwatch.getTime().toString(), screenWidth - SPACING, blBottomVPos.value() + digitTextBaseLineVerticalOffset, paintDigit);
-		blBottomVPos = blBottomVPos.add(digitTextBlocHeight);
+		blBottomVPos.add(digitTextBlocHeight);
 	}
 
 	private void renderOnCacheHeadLine1(T stopwatch, Pwrapper<Integer> blBottomVPos, boolean replace) {
@@ -271,7 +272,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		}
 		cachedCanvas.drawText(stopwatch.getName(), SPACING, blBottomVPos.value() + normalTextBaseLineVerticalOffset, paintNormalTextWhiteLeft);
 		cachedCanvas.drawText(stopwatch.getStopwatchData().getChronoType().toString(), screenWidth - SPACING, blBottomVPos.value() + normalTextBaseLineVerticalOffset, paintNormalTextWhiteRigth);
-		blBottomVPos = blBottomVPos.add(normalTextBlocHeight);
+		blBottomVPos.add(normalTextBlocHeight);
 	}
 
 	private void renderOnCacheHeadLine2(T stopwatch, Pwrapper<Integer> blBottomVPos, boolean replace) {
@@ -281,7 +282,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				cachedCanvas.drawRect(rect, paintBackgroundBlack);
 			}
 			cachedCanvas.drawText(stopwatch.getStopwatchData().getInfoL2(), SPACING, blBottomVPos.value() + normalTextBaseLineVerticalOffset, paintNormalTextWhiteLeft);
-			blBottomVPos = blBottomVPos.add(normalTextBlocHeight);
+			blBottomVPos.add(normalTextBlocHeight);
 		}
 	}
 
@@ -292,7 +293,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				cachedCanvas.drawRect(rect, paintBackgroundBlack);
 			}
 			cachedCanvas.drawText(stopwatch.getStopwatchData().getInfoL3(), SPACING, blBottomVPos.value() + normalTextBaseLineVerticalOffset, paintNormalTextWhiteLeft);
-			blBottomVPos = blBottomVPos.add(normalTextBlocHeight);
+			blBottomVPos.add(normalTextBlocHeight);
 		}
 	}
 
@@ -300,10 +301,22 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 	// offset the start position in the cachedCanvas
 	private void renderOnCacheRebuildFromPosition(int startPosition, int index, UPDATE_TYPE updateType) {
 		renderOnCacheDeleteToTheEnd(startPosition);
-
+		Pwrapper<Integer> pos = new Pwrapper<Integer>(startPosition);
 		for (int i = index; i < clockWorker.getClockList().size(); i++) {
-			renderOnCacheAddNew(clockWorker.get(i), startPosition, (i == index ? updateType : NONE));
-			startPosition += clockWorker.get(i).getStopwatchUi().getHeadHeight() + clockWorker.get(i).getStopwatchUi().getDetailsHeight();
+			T stopwatch = clockWorker.get(i);
+			// ensure that bufferBitmap is long enough//
+			int height = stopwatch.getStopwatchUi().getHeadHeight();
+			if (i==index && updateType==EXPAND_DETAILS)
+				height+=stopwatch.getStopwatchData().getTimeList().size()*normalTextBlocHeight+groupBottomLineHeight;
+			else if (stopwatch.getStopwatchData().hasDataRow() && stopwatch.getStopwatchUi().isExpanded())
+				height+=stopwatch.getStopwatchUi().getDetailsHeight();
+			if ((pos.value()+ height)>bufferBitmap.getHeight()){
+				if (!changeBufferBitmapHeight(pos.value()+height))
+					return;
+			}
+			renderOnCacheAddNew(stopwatch, pos, (i == index ? updateType : NONE));
+
+
 		}
 	}
 
@@ -312,8 +325,9 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		paintLine.setColor(color);
 		rect.set(0, blBottomVPos.value(), screenWidth, blBottomVPos.value() + height);
 		cachedCanvas.drawRect(rect, paintLine);
-		blBottomVPos = blBottomVPos.add(height);
+		blBottomVPos.add(height);
 	}
+
 
 	private void renderOnCacheAddDetail(T stopwatch, Pwrapper<Integer> pos, UPDATE_TYPE updateType) {
 		// a sep line
@@ -323,8 +337,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			cachedCanvas.drawText("+", 8 * SPACING, pos.value() - digitTextBlocHeight + digitTextBaseLineVerticalOffset-groupBottomLineHeight, paintWhiteRigthDigitSize);
 			stopwatch.getStopwatchUi().setExpanded(false);
 			stopwatch.getStopwatchUi().setDetailsHeight(0);
-		}
-		else if (updateType == EXPAND_DETAILS || (updateType == NONE && stopwatch.getStopwatchUi().isExpanded())) {
+		} else  { // all the other case are "must" expand true.
 			//display a sign - (inside the digit bloc but to the right
 			cachedCanvas.drawText("-", 8 * SPACING, pos.value() - digitTextBlocHeight + digitTextBaseLineVerticalOffset-groupBottomLineHeight, paintWhiteRigthDigitSize);
 			// at the bottom of the bottom line.
@@ -345,7 +358,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			}
 			pos.add(SPACING);
 			renderOnCacheHorizontalLine(pos, groupBottomLineHeight, colorBottomGroup);
-			stopwatch.getStopwatchUi().setDetailsHeight(pos.sub(localStart).value());
+			stopwatch.getStopwatchUi().setDetailsHeight(pos.value()-localStart);
 			stopwatch.getStopwatchUi().setExpanded(true);
 		}
 	}

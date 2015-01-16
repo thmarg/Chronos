@@ -1,8 +1,8 @@
 /*
- * ChronographeDialog
+ * ${NAME}
  *
- *   Copyright (c) 2014 Thierry Margenstern under MIT license
- *   http://opensource.org/licenses/MIT
+ * Copyright (c) 2014 Thierry Margenstern under MIT license
+ * http://opensource.org/licenses/MIT
  */
 
 package tm.android.chronos.dialogs;
@@ -18,8 +18,10 @@ import android.view.View;
 import android.widget.*;
 import tm.android.chronos.R;
 import tm.android.chronos.core.Stopwatch;
-import tm.android.chronos.core.Units.*;
 import tm.android.chronos.core.Units;
+import tm.android.chronos.core.Units.CHRONO_TYPE;
+import tm.android.chronos.core.Units.LENGTH_UNIT;
+import tm.android.chronos.core.Units.SPEED_UNIT;
 
 /**
  *
@@ -35,11 +37,13 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
     private Spinner unitDistance;
     private Spinner unitSpeed;
     private EditText editTextDistance;
+    private View view_distance_speed;
+    private LinearLayout backgroundLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_FRAME,0);
+        setStyle(STYLE_NO_FRAME, 0);
 
     }
 
@@ -49,95 +53,109 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+        // inflate the views
         @SuppressLint("null")
-        View view =inflater.inflate(R.layout.dialogstopwatchparam, null);
+        View view_name_type = inflater.inflate(R.layout.param_name_type, null);
+        view_distance_speed = inflater.inflate(R.layout.param_distances_speed, null);
 
+        // view_name_type is always présent.
 
-            // spinner for distance unit
-            unitDistance = (Spinner) view.findViewById(R.id.spin_units_distance);
-            ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getUnitLenghtList());
-            unitDistance.setAdapter(arrayAdapter);
+        // view_distance_speed is optionnel only for types LAPS and SEGMENT
+        // but we construct the two views anyway to add or remove the optional one, when notably the chrono_type spinner selection change.
 
-            // spinner for speed units
-            unitSpeed = (Spinner) view.findViewById(R.id.spin_speed);
-            ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getSpeedUnitList());
-            unitSpeed.setAdapter(arrayAdapter1);
+        // spinner for distance unit
+        unitDistance = (Spinner) view_distance_speed.findViewById(R.id.spin_units_distance);
+        ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getUnitLenghtList());
+        unitDistance.setAdapter(arrayAdapter);
+
+        // spinner for speed units
+        unitSpeed = (Spinner) view_distance_speed.findViewById(R.id.spin_speed);
+        ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getSpeedUnitList());
+        unitSpeed.setAdapter(arrayAdapter1);
 
         // spinner for chrono type
-        Spinner chronoType = (Spinner)view.findViewById(R.id.spin_type);
-        ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<CHRONO_TYPE>(getActivity(),R.layout.layoutforspinner,R.id.txt_view_item,Units.getModeList());
+        Spinner chronoType = (Spinner) view_name_type.findViewById(R.id.spin_type);
+        ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<CHRONO_TYPE>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getModeList());
         chronoType.setAdapter(arrayAdapter2);
         chronoType.setOnItemSelectedListener(new OnTypeChanged());
 
-        editTextDistance  = (EditText) view.findViewById(R.id.edt_txt_distance);
+        editTextDistance = (EditText) view_distance_speed.findViewById(R.id.edt_txt_distance);
 
-        if (stopwatch !=null) {
-            if (stopwatch.getStopwatchData().getChronoType()==CHRONO_TYPE.LAPS || stopwatch.getStopwatchData().getChronoType()==CHRONO_TYPE.INSIDE_LAP) {
-                if (stopwatch.getStopwatchData().getgLength() > 0)
-                    editTextDistance.setText(String.valueOf(stopwatch.getStopwatchData().getgLength()));
-
-                // init value
-                if (stopwatch.getStopwatchData().getLengthUnit() != null)
-                    unitDistance.setSelection(arrayAdapter.getPosition(stopwatch.getStopwatchData().getLengthUnit()));
-                // init value
-                if (stopwatch.getStopwatchData().getSpeedUnit() != null)
-                    unitSpeed.setSelection(arrayAdapter1.getPosition(stopwatch.getStopwatchData().getSpeedUnit()));
-            } else {
-                unitSpeed.setEnabled(false);
-                unitDistance.setEnabled(false);
-                view.findViewById(R.id.edt_txt_distance).setEnabled(false);
-            }
-
+        if (stopwatch != null) {
+            // Stopwatch name
+            ((TextView) view_name_type.findViewById(R.id.edt_txt_name)).setText(stopwatch.getName());
+            // Type
             if (this.stopwatch.getStopwatchData().getChronoType() != null)
                 chronoType.setSelection(arrayAdapter2.getPosition(stopwatch.getStopwatchData().getChronoType()));
-
-
-            // Stopwatch name
-
-            ((TextView) view.findViewById(R.id.edt_txt_name)).setText(stopwatch.getName());
+            //
+            if (stopwatch.getStopwatchData().getChronoType() == CHRONO_TYPE.LAPS || stopwatch.getStopwatchData().getChronoType() == CHRONO_TYPE.SEGMENTS)
+                updateLapInfoFromStopwatch();
 
         }
+        // build the layout that supports the views
+        backgroundLayout = new LinearLayout(getActivity());
+        backgroundLayout.setOrientation(LinearLayout.VERTICAL);
+        backgroundLayout.addView(view_name_type);
+        if (stopwatch.getStopwatchData().getChronoType() == CHRONO_TYPE.LAPS || stopwatch.getStopwatchData().getChronoType() == CHRONO_TYPE.SEGMENTS)
+            backgroundLayout.addView(view_distance_speed);
+        // add it to the builder
+        builder.setView(backgroundLayout);
 
-        builder.setView(view);
+        builder.setTitle(Units.getLocalizedText("title_stopwatch_params", null));
 
-        builder.setTitle("Paramètres du Chronomètre");
-
-        builder.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(Units.getLocalizedText("validate", null), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 name = ((TextView) getDialog().findViewById(R.id.edt_txt_name)).getText().toString().trim();
 
-                type = (CHRONO_TYPE)((Spinner)getDialog().findViewById(R.id.spin_type)).getSelectedItem();
+                type = (CHRONO_TYPE) ((Spinner) getDialog().findViewById(R.id.spin_type)).getSelectedItem();
 
+                if (type == CHRONO_TYPE.LAPS || type == CHRONO_TYPE.SEGMENTS) {
+                    lengthUnit = (LENGTH_UNIT) ((Spinner) getDialog().findViewById(R.id.spin_units_distance)).getSelectedItem();
 
-                lengthUnit = (LENGTH_UNIT)((Spinner)getDialog().findViewById(R.id.spin_units_distance)).getSelectedItem();
+                    speedUnit = (SPEED_UNIT) ((Spinner) getDialog().findViewById(R.id.spin_speed)).getSelectedItem();
 
-                speedUnit = (SPEED_UNIT)((Spinner)getDialog().findViewById(R.id.spin_speed)).getSelectedItem();
+                    String text = ((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString();
+                    if (!text.equals(""))
+                        distance = Double.valueOf(text);
+                }
 
-                String text = ((EditText) getDialog().findViewById(R.id.edt_txt_distance)).getText().toString();
-                if (!text.equals(""))
-                    distance = Double.valueOf(text);
-
-                if (dialogClickListener !=null)
+                if (dialogClickListener != null)
                     dialogClickListener.onDialogPositiveClick(ChronographeDialog.this);
 
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(Units.getLocalizedText("cancel", null), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (dialogClickListener !=null)
+                if (dialogClickListener != null)
                     dialogClickListener.onDialogNegativeClick(ChronographeDialog.this);
 
             }
         });
 
 
-
         return builder.create();
     }
 
+    @SuppressWarnings("unckecked")
+    private void updateLapInfoFromStopwatch() {
+        if (stopwatch.getStopwatchData().getLapDistance() > 0)
+            editTextDistance.setText(String.valueOf(stopwatch.getStopwatchData().getLapDistance()));
+
+        // init value
+        if (stopwatch.getStopwatchData().getLengthUnit() != null) {
+            ArrayAdapter<LENGTH_UNIT> arrayAdapter = (ArrayAdapter<LENGTH_UNIT>) unitDistance.getAdapter();
+            unitDistance.setSelection(arrayAdapter.getPosition(stopwatch.getStopwatchData().getLengthUnit()));
+        }
+        // init value
+        if (stopwatch.getStopwatchData().getSpeedUnit() != null) {
+            ArrayAdapter<SPEED_UNIT> arrayAdapter1 = (ArrayAdapter<SPEED_UNIT>) unitSpeed.getAdapter();
+            unitSpeed.setSelection(arrayAdapter1.getPosition(stopwatch.getStopwatchData().getSpeedUnit()));
+        }
+
+    }
 
     public T getStopwatch() {
         return stopwatch;
@@ -176,11 +194,16 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
     private class OnTypeChanged implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            CHRONO_TYPE selected = (CHRONO_TYPE)adapterView.getSelectedItem();
-            boolean enable = (selected==CHRONO_TYPE.DEFAULT | selected == CHRONO_TYPE.PREDEFINED_TIMES);
-                unitDistance.setEnabled(!enable);
-                unitSpeed.setEnabled(!enable);
-                editTextDistance.setEnabled(!enable);
+            CHRONO_TYPE selected = (CHRONO_TYPE) adapterView.getSelectedItem();
+            if (selected == CHRONO_TYPE.LAPS || selected == CHRONO_TYPE.SEGMENTS) {
+                backgroundLayout.removeView(view_distance_speed);
+                backgroundLayout.addView(view_distance_speed);
+                if (stopwatch != null)
+                    updateLapInfoFromStopwatch();
+            } else {
+                backgroundLayout.removeView(view_distance_speed);
+            }
+
 
         }
 

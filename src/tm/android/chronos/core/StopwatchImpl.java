@@ -8,11 +8,9 @@
 package tm.android.chronos.core;
 
 import tm.android.chronos.uicomponent.StopwatchUIImpl;
-
 import static tm.android.chronos.core.Units.STATUS.*;
 import tm.android.chronos.core.Units.STATUS;
 import static tm.android.chronos.core.Units.UPDATE_TYPE.*;
-import static tm.android.chronos.core.Units.CHRONO_TYPE.*;
 
 /**
  * Implementation of interface Stopwatch
@@ -51,21 +49,15 @@ public class StopwatchImpl implements Stopwatch {
         status = STOPPED;
         currentTime.reset();// reset to rebuild the real time between stat and stop
         currentTime.addMillisSeconds(stopTime - startTime);
-        stopwatchData.setChronoTime(currentTime.getInternal());
-        lapTime(stopTime);
-        defineCommonUpdates();
-
-
-    }
-
-
-    private void defineCommonUpdates(){
-        if (stopwatchData.getChronoType()== LAPS || stopwatchData.getChronoType()== INSIDE_LAP) {
-            stopwatchUI.addUpdateType(UPDATE_HEAD_LINE2);
+        stopwatchData.setGlobalTime(currentTime.getInternal());
+        if (getStopwatchData().hasDataRow()) {
+            lapTime(stopTime);// no need to define an update type it is done by lapTime method.
+        } else {
+            stopwatchUI.addUpdateType(UPDATE_HEAD_DIGIT);
         }
-        stopwatchUI.addUpdateType(UPDATE_HEAD_DIGIT);
 
     }
+
 
     @Override
     public void reset() {
@@ -74,7 +66,7 @@ public class StopwatchImpl implements Stopwatch {
         currentTime.reset();
         status = WAIT_TO_START;
         stopwatchData.reset();
-       defineCommonUpdates();
+       // REMOVE_DETAILS, all will be updated
         stopwatchUI.addUpdateType(REMOVE_DETAILS);
 
     }
@@ -135,6 +127,7 @@ public class StopwatchImpl implements Stopwatch {
     @Override
     public void lapTime(long now) {
         stopwatchData.add(now - startTime);
+        stopwatchUI.addUpdateType(EXPAND_DETAILS);
     }
 
 

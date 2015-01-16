@@ -135,7 +135,8 @@ public class Units {
     }
 
 
-    public static enum CHRONO_TYPE {DEFAULT("basic"),LAPS("laps"),INSIDE_LAP("segments"),PREDEFINED_TIMES("times");
+    public static enum CHRONO_TYPE {
+        SIMPLE("basic"),LAPS("laps"), SEGMENTS("segments"),PREDEFINED_TIMES("times");
         private String key;
         CHRONO_TYPE(String key){
             this.key=key;
@@ -167,7 +168,8 @@ public class Units {
         }
     }
 
-    public static enum UPDATE_TYPE {ADD_NEW, UPDATE_HEAD_LINE1, UPDATE_HEAD_LINE2,UPDATE_HEAD_DIGIT, CHANGE_TYPE, DELETE, COLLAPSE_DETAILS,EXPAND_DETAILS, REMOVE_DETAILS}
+    public static enum UPDATE_TYPE {ADD_NEW, UPDATE_HEAD_LINE1, UPDATE_HEAD_LINE2,UPDATE_HEAD_LINE3,UPDATE_HEAD_DIGIT, DELETE,
+        COLLAPSE_DETAILS,EXPAND_DETAILS, REMOVE_DETAILS,HEAD_CHANGE_SIZE,NONE}
 
     public static enum STATUS {RUNNING, STOPPED, WAIT_TO_START, KILLED, PAUSED}
     /**

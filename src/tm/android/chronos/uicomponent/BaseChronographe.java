@@ -49,14 +49,13 @@ public class BaseChronographe extends SurfaceView {
 
     protected  final static int CHRONO_TEXT_SIZE_IN_DP = 30;//  good base size for the chrono digits
     protected  final static int TEXT_NORMAL_SIZE_IN_DP =20; //  other texte normal
-    protected  final static int TEXT_SMALL_SIZE_IN_DP =15; // other text small
-    protected  static int SPACING = (int)(4*Resources.getSystem().getDisplayMetrics().density);// extra space around blocs of letters.
+    protected  final static int TEXT_SMALL_SIZE_IN_DP =16; // other text small
+    protected  final static int SPACING = (int)(4*Resources.getSystem().getDisplayMetrics().density);// extra space around blocs of letters.
 
-    protected static Paint paintWhiteRight;// to paint digit right align
-    protected static Paint paintWhileRunning; // background while running
+    protected static Paint paintWhiteRigthDigitSize;// to paint digit right align
+    protected static Paint paintDigit;
+    protected static Paint paintDigitsWhileRunning; // digit while running
     protected static Paint paintBackgroundBlack;// to erase
-    protected static Paint paintWhilePaused;
-    protected static Paint paintWhileStoppedAndWaitReset;
 
     protected static Paint paintNormalTextWhiteRigth;
     protected static Paint paintNormalTextWhiteLeft;
@@ -66,24 +65,18 @@ public class BaseChronographe extends SurfaceView {
 
     protected static int screenWidth;// pixel
 
-    protected static int chronoDigitHeight; // pixel chronoDigitHeight plus spacing top and bottom
-    protected static int normalTextCharHeight;// pixel
-    protected static int normalTextCharWidht;// pixel
-
+    /* max digits length of a stopwatch ie when "000:00:00:00:000"  plus h spacing included   */
     protected static int digitMaxLength;
+    /* max height of a bloc head*/
     protected static int fullHeight;
-    protected static int childrenLineHeight;
 
-    // vertical position for drawText (top=0, bottom=fullHeight)
-    protected  static int bottomLineVerticalPosition;
-    protected  static int topLineVerticalPosition;
-    protected  static int middleLineVerticalPosition;
+    /* Line spe between two stopwatches */
+    protected static int groupBottomLineHeight = 3*SPACING;
 
     // horizontal user touch zone limit
     private static int lapTimeHorizontalLimit;
     private static int ssrHorizontalLimit; // start stop reset
     private static int paramHorizontalLimit;
-
 
     /* Explain
      * ********************************** top
@@ -98,7 +91,6 @@ public class BaseChronographe extends SurfaceView {
      * small reference the font properties to render details of the stopwatch (lap time ...)
      */
 
-
     protected static int normalTextBlocHeight;
     protected static int smallTextBlocHeight;
     protected static int digitTextBlocHeight;
@@ -107,10 +99,13 @@ public class BaseChronographe extends SurfaceView {
     protected static int smallTextBaseLineVerticalOffset;
     protected static int digitTextBaseLineVerticalOffset;
 
-    /* max digits length of a stopwatch ie when "000:00:00:00:000"  plus h spacing included   */
 
 
-
+    protected static int colorStopped = Color.parseColor("#f16b36");
+    protected static int colorReseted = Color.WHITE;
+    protected static int colorBottomGroup=Color.parseColor("#2982cd");
+    protected static int colorSepHeadDetail=Color.parseColor("#8e9da0");
+    protected static int colorRunning = Color.parseColor("#049d2b");
 
 
 
@@ -162,65 +157,47 @@ public class BaseChronographe extends SurfaceView {
         paintSmallTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
         paintSmallTextWhiteLeft.setColor(Color.WHITE);
 
-        paintWhiteRight = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWhiteRight.setTextSize(chronotextSize);
-        paintWhiteRight.setTextAlign(Paint.Align.RIGHT);
-        paintWhiteRight.setColor(Color.WHITE);
+        paintDigit = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintDigit.setTextSize(chronotextSize);
+        paintDigit.setTextAlign(Paint.Align.RIGHT);
+        paintDigit.setColor(Color.WHITE);
+
+        paintWhiteRigthDigitSize = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintWhiteRigthDigitSize.setTextSize(chronotextSize);
+        paintWhiteRigthDigitSize.setTextAlign(Paint.Align.RIGHT);
+        paintWhiteRigthDigitSize.setColor(Color.WHITE);
 
 
-        paintWhileRunning = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWhileRunning.setColor(Color.parseColor("#f3950f"));
+        paintDigitsWhileRunning = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintDigitsWhileRunning.setTextSize(chronotextSize);
+        paintDigitsWhileRunning.setTextAlign(Paint.Align.RIGHT);
+        paintDigitsWhileRunning.setColor(colorRunning);
 
         paintBackgroundBlack = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintBackgroundBlack.setColor(Color.BLACK);
         //
-        paintWhilePaused = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWhilePaused.setColor(Color.MAGENTA);
         //
-        paintWhileStoppedAndWaitReset = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintWhileStoppedAndWaitReset.setColor(Color.parseColor("#008200"));
+        digitTextBlocHeight = paintDigit.getFontMetricsInt().bottom- paintDigit.getFontMetricsInt().top;
+        digitTextBaseLineVerticalOffset = -paintDigit.getFontMetricsInt().top;
 
 
-        paintWhiteRight.getTextBounds("0", 0, 1, r);
-        Paint.FontMetricsInt fm = paintWhiteRight.getFontMetricsInt();
-
-        digitTextBlocHeight = fm.bottom-fm.top;
-        digitTextBaseLineVerticalOffset = -fm.top;
-
-        int chronoDigitBaseLine = fm.bottom;
-        chronoDigitHeight = fm.bottom-fm.top;
-        paintWhiteRight.getTextBounds("000:00:00:00:000", 0, 16, r);
-
+        paintDigit.getTextBounds("000:00:00:00:000", 0, 16, r);
         digitMaxLength = r.width()+3*SPACING;
-
-        normalTextCharHeight =  paintNormalTextWhiteLeft.getFontMetricsInt().bottom- paintNormalTextWhiteLeft.getFontMetricsInt().top;
-        paintNormalTextWhiteLeft.getTextBounds("A",0,1,r);
 
         normalTextBlocHeight = paintNormalTextWhiteLeft.getFontMetricsInt().bottom- paintNormalTextWhiteLeft.getFontMetricsInt().top;
         normalTextBaseLineVerticalOffset=-paintSmallTextWhiteLeft.getFontMetricsInt().top;
 
-        normalTextCharWidht = r.width();
-        int normalTextBaseLine =  paintNormalTextWhiteLeft.getFontMetricsInt().bottom;
-
-        childrenLineHeight = paintSmallTextWhiteRigth.getFontMetricsInt().bottom-paintSmallTextWhiteRigth.getFontMetricsInt().top;
         smallTextBlocHeight = paintSmallTextWhiteRigth.getFontMetricsInt().bottom-paintSmallTextWhiteRigth.getFontMetricsInt().top;
         smallTextBaseLineVerticalOffset = -paintSmallTextWhiteRigth.getFontMetricsInt().top;
 
-        childrenLineHeight = childrenLineHeight+SPACING;
 
-        fullHeight = chronoDigitHeight+2* normalTextCharHeight +4*SPACING;// used to full erase  a stopwatch area.
+        fullHeight = digitTextBlocHeight+3* normalTextBlocHeight;// used as max head height to extend the bufferBitmap..
 
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 
         // limit screen width to 1024 which is enough.
         if (screenWidth>1024)
             screenWidth=1024;
-
-
-        bottomLineVerticalPosition = fullHeight -chronoDigitBaseLine-SPACING;
-        middleLineVerticalPosition = fullHeight -chronoDigitHeight-normalTextBaseLine-SPACING;
-        topLineVerticalPosition = fullHeight-chronoDigitHeight- normalTextCharHeight -normalTextBaseLine-SPACING;
-
 
         //
         lapTimeHorizontalLimit = screenWidth- digitMaxLength /3;

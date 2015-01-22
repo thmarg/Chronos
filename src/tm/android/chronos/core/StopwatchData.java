@@ -11,6 +11,7 @@ package tm.android.chronos.core;
 import tm.android.chronos.core.Units.CHRONO_TYPE;
 import tm.android.chronos.core.Units.LENGTH_UNIT;
 import tm.android.chronos.core.Units.SPEED_UNIT;
+import tm.android.chronos.util.Pwrapper;
 
 import java.util.Vector;
 
@@ -195,17 +196,4 @@ public class StopwatchData {
 
 
     }
-
-//    public String getInfoL2(LENGTH_UNIT requestedLengthUnit, SPEED_UNIT speedUnit) {
-//        StringBuilder builder = new StringBuilder("Type: ");
-//        if (chronoType == CHRONO_TYPE.LAPS)
-//            builder.append("laps ");
-//        if (globalDistance > 0)
-//            builder.append("D: " + globalDistance + " " + lengthUnit.getShortName());
-//        if (globalTime > 0)
-//            builder.append("V : " + String.format("%1$.2f",Units.getSpeed(globalDistance, lengthUnit, globalTime, speedUnit)) + " " + speedUnit.toString());
-//        return builder.toString();
-//    }
-
-
 }

@@ -17,15 +17,16 @@ import java.util.Vector;
  */
 public class StopwatchUIImpl implements StopwatchUI {
 
-	private boolean expanded ;
+	private boolean expanded;
 	private int detailsHeight;
 	private int headHeight;
+	private boolean selected;
 	private Vector<UPDATE_TYPE> updateTypeList;
 
 	public StopwatchUIImpl() {
 		headHeight = BaseChronographe.fullHeight;
 		updateTypeList = new Vector<UPDATE_TYPE>(5);
-		expanded=false;
+		expanded = false;
 	}
 
 	@Override
@@ -79,5 +80,15 @@ public class StopwatchUIImpl implements StopwatchUI {
 	@Override
 	public void clearUpdateType() {
 		updateTypeList.removeAllElements();
+	}
+
+	@Override
+	public boolean isSelected() {
+		return selected;
+	}
+
+	@Override
+	public void setSelected(boolean select) {
+		selected = select;
 	}
 }

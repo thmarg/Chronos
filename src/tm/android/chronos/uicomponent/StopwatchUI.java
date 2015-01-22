@@ -44,4 +44,10 @@ public interface StopwatchUI {
 
     void clearUpdateType();
 
+    void setSelected(boolean select);
+
+    boolean isSelected();
+
+
+
 }

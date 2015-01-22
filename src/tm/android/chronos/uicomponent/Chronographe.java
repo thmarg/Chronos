@@ -27,18 +27,19 @@ import tm.android.chronos.core.*;
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 import tm.android.chronos.dialogs.ChronographeDialog;
 import tm.android.chronos.dialogs.OnDialogClickListener;
+import tm.android.chronos.util.Pwrapper;
 
-import java.util.Vector;
 
 import static tm.android.chronos.core.Units.CHRONO_TYPE.*;
 import static tm.android.chronos.core.Units.UPDATE_TYPE.*;
 
 
-public class Chronographe<T extends Stopwatch> extends BaseChronographe implements SurfaceHolder.Callback, SurfaceViewRenderer<T> {
+public class Chronographe<T extends Stopwatch> extends BaseChronographe implements SurfaceHolder.Callback, SurfaceViewRenderer {
 
 	private Canvas cachedCanvas = null;
 	private Rect rect;
-	private T touchedStopwatch;
+	private T touchedStopwatch;// this reference as it's name say the stopwatch touch by touch event on screen.
+	private T selectedStopwatch;// this reference the selected (if any) stopwatch. Used to make action with the bottom button and or the physical button.
 	private Bitmap bufferBitmap;
 	private ClockWorker<T> clockWorker;
 	private Rect viewPort;
@@ -68,6 +69,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		cachedCanvas = new Canvas(bufferBitmap);
 		viewPort = new Rect(0, 0, screenWidth, 0);
 		scrollView = new Rect(0, 0, screenWidth, 0);
+		selectedStopwatch=null;
 	}
 
 	public Chronographe(Context context, AttributeSet attributeSet) {
@@ -84,7 +86,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		}
 		else if (clockWorker.isDisplayStopped()) {
 			clockWorker.setStopDisplay(false);
-			// force rendering if all are waiting to start
+			// force rendering if all are waiting to startSelectedStopwatch
 			if (clockWorker.noneChronoIsRunning()) updateUI();
 		}
 	}
@@ -106,12 +108,12 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 
 	public void updateUI() {
-		renderOnCache(clockWorker.getClockList());
+		renderOnCache();
 		copyCacheToScreen();
 	}
 
 	@Override
-	public void renderOnCache(Vector<T> clockList) {
+	public void renderOnCache() {
 		/*
 		  synchronize the access on clockList because it is used from the thread (ClockWorker) and some other time
           directly from here especially when adding and removing stopwatches while there is at least
@@ -121,8 +123,8 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
           inside run() of ClockWorker synchronize(clockList){renderOnCache(clockList)} ) doesn't work.
         */
 		int i = 0;
-		synchronized (clockList) {
-			for (T stopwatch : clockList) {
+		synchronized (clockWorker.getClockList()) {
+			for (T stopwatch : clockWorker.getClockList()) {
 				if (stopwatch.getStopwatchUi().mustUpdateUI()) {
 					renderOnCacheAll(stopwatch, i);
 				}
@@ -147,7 +149,9 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 	private void renderOnCacheAll(T stopwatch, int i) {
 		int offSet = getOffset(i);
-		for (UPDATE_TYPE updateType : stopwatch.getStopwatchUi().getUpdateTypes())
+		Pwrapper<Integer> startPosition =new Pwrapper<Integer>(0);
+		for (UPDATE_TYPE updateType : stopwatch.getStopwatchUi().getUpdateTypes()) {
+			startPosition.setValue(offSet + SPACING);
 			switch (updateType) {
 				case DELETE:
 					renderOnCacheDelete(stopwatch, offSet);
@@ -156,10 +160,10 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 					renderOnCacheAddNew(stopwatch, new Pwrapper<Integer>(offSet), NONE);
 					break;
 				case UPDATE_HEAD_DIGIT:
-					if (stopwatch.getStopwatchData().getLapDistance()>0 && (stopwatch.getStopwatchData().getChronoType()==LAPS || stopwatch.getStopwatchData().getChronoType()==SEGMENTS))
-						renderOnCacheHeadLineDigit(stopwatch, new Pwrapper<Integer>(offSet +SPACING+3*normalTextBlocHeight));
+					if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
+						renderOnCacheHeadLineDigit(stopwatch, new Pwrapper<Integer>(offSet + SPACING + 3 * normalTextBlocHeight));
 					else
-						renderOnCacheHeadLineDigit(stopwatch, new Pwrapper<Integer>(offSet +SPACING+normalTextBlocHeight));
+						renderOnCacheHeadLineDigit(stopwatch, new Pwrapper<Integer>(offSet + SPACING + normalTextBlocHeight));
 					break;
 				case UPDATE_HEAD_LINE1:
 					renderOnCacheHeadLine1(stopwatch, new Pwrapper<Integer>(offSet + SPACING), true);
@@ -173,6 +177,22 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				case HEAD_CHANGE_SIZE:
 					renderOnCacheRebuildFromPosition(offSet, i, NONE);
 					break;
+				case SELECT:
+					startPosition.add(digitTextBlocHeight);
+					if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
+						startPosition.add(3 * normalTextBlocHeight);
+					else startPosition.add(normalTextBlocHeight);
+					renderOnCacheSelect(startPosition, groupBottomLineHeight);
+					stopwatch.getStopwatchUi().setSelected(true);
+					break;
+				case DESELECT:
+					startPosition.add(digitTextBlocHeight);
+					if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
+						startPosition.add(3 * normalTextBlocHeight);
+					else startPosition.add(normalTextBlocHeight);
+					renderOnCacheHorizontalLine(startPosition, groupBottomLineHeight, colorBottomGroup);
+					stopwatch.getStopwatchUi().setSelected(false);
+					break;
 				case REMOVE_DETAILS:
 					renderOnCacheRebuildFromPosition(offSet, i, REMOVE_DETAILS);
 				case COLLAPSE_DETAILS:
@@ -184,6 +204,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				default:
 					break;
 			}
+		}
 		stopwatch.getStopwatchUi().clearUpdateType();
 	}
 
@@ -219,16 +240,17 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		blBottomVPos.add(SPACING);
 		renderOnCacheHeadLine1(stopwatch, blBottomVPos, false);
 
-		if (stopwatch.getStopwatchData().getChronoType() != Units.CHRONO_TYPE.SIMPLE) {
-			renderOnCacheHeadLine2(stopwatch, blBottomVPos, false);
-		}
 
 		if (stopwatch.getStopwatchData().getChronoType() == Units.CHRONO_TYPE.LAPS || stopwatch.getStopwatchData().getChronoType() == Units.CHRONO_TYPE.SEGMENTS) {
+			renderOnCacheHeadLine2(stopwatch, blBottomVPos, false);
 			renderOnCacheHeadLine3(stopwatch, blBottomVPos, false);
 		}
 
 		renderOnCacheHeadLineDigit(stopwatch, blBottomVPos);
 
+		if (stopwatch.getStopwatchUi().isSelected())
+			renderOnCacheSelect(blBottomVPos, groupBottomLineHeight);
+		else
 		renderOnCacheHorizontalLine(blBottomVPos, groupBottomLineHeight, colorBottomGroup);
 
 		// update head height
@@ -298,7 +320,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 	}
 
 	// index = index of the stopwatch to rebuild from
-	// offset the start position in the cachedCanvas
+	// offset the startSelectedStopwatch position in the cachedCanvas
 	private void renderOnCacheRebuildFromPosition(int startPosition, int index, UPDATE_TYPE updateType) {
 		renderOnCacheDeleteToTheEnd(startPosition);
 		Pwrapper<Integer> pos = new Pwrapper<Integer>(startPosition);
@@ -320,8 +342,14 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		}
 	}
 
+	private void renderOnCacheSelect(Pwrapper<Integer> blBottomVPos, int height) {
+		renderOnCacheHorizontalLine(blBottomVPos,height,colorSelected);
+		cachedCanvas.drawText(Units.getLocalizedText("selected",null),SPACING,blBottomVPos.value()-SPACING, paintVerySmallTextWhiteLeft);
+	}
+
+
 	private void renderOnCacheHorizontalLine(Pwrapper<Integer> blBottomVPos, int height, int color) {
-		// sep line
+		// sep line blBottomVpos is the top of the line.
 		paintLine.setColor(color);
 		rect.set(0, blBottomVPos.value(), screenWidth, blBottomVPos.value() + height);
 		cachedCanvas.drawRect(rect, paintLine);
@@ -357,7 +385,10 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				pos.add(smallTextBlocHeight);
 			}
 			pos.add(SPACING);
-			renderOnCacheHorizontalLine(pos, groupBottomLineHeight, colorBottomGroup);
+			if (stopwatch.getStopwatchUi().isSelected())
+				renderOnCacheSelect(pos,groupBottomLineHeight);
+			else
+				renderOnCacheHorizontalLine(pos, groupBottomLineHeight, colorBottomGroup);
 			stopwatch.getStopwatchUi().setDetailsHeight(pos.value()-localStart);
 			stopwatch.getStopwatchUi().setExpanded(true);
 		}
@@ -453,7 +484,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		int computedY = 0;
 		for (T stopwatch : clockWorker.getClockList()) { // sum of height from the top, at each iteration computedY is at the end of a bloc (head+detail)
 			computedY += stopwatch.getStopwatchUi().getHeadHeight() + stopwatch.getStopwatchUi().getDetailsHeight();
-			if (yCached < computedY) return stopwatch; // ycached was not in the previous bloc, if in this on, good, return
+			if (yCached < computedY) return stopwatch; // ycached was not in the previous bloc, if in this one, good, return
 		}
 		return null;
 	}
@@ -464,9 +495,16 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 	public ClockWorker<T> getClockWorker() {
 		return clockWorker;
 	}
-	/*
-	   All event on the main screen (not the dialogs windows)
-	 */
+
+
+	public T getSelectedStopwatch() {
+		return selectedStopwatch;
+	}
+
+	/**********************************************************************************************************************************************************************
+*   			 BELOW IS USER INPUT EVENT MANAGEMENT
+***********************************************************************************************************************************************************************
+	   All event on the main screen (not the dialogs windows)*/
 	private class OnTouch implements OnTouchListener {
 
 		private final int WAIT = -1;
@@ -475,6 +513,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		private int status = WAIT;
 		private long now;
 		private float lastFingerY = 0;
+		private long touchDownTime;
 
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
@@ -482,13 +521,15 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 			long now = System.currentTimeMillis();
 
-
+			System.out.println("[EVENT] ONTOUCH");
 			System.out.println("[EVENT] History size " + event.getHistorySize());
 			System.out.println("[EVENT] pointer size " + event.getPointerCount());
 			if (status == WAIT && event.getAction() == MotionEvent.ACTION_DOWN) {
+				touchDownTime = now;
 				this.now = now;
 				lastFingerY = event.getRawY();
 				System.out.println("[EVENT] wait+down");
+
 				status = DOWN_DONE;
 				return true;
 			}
@@ -528,13 +569,39 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				return true;
 			}
 			if (status == DOWN_DONE && event.getAction() == MotionEvent.ACTION_UP) {
-				// like a click
-				System.out.println("[EVENT] down_done+up");
-				status = WAIT;
-
-				touchedStopwatch = getStopwatch(event.getY());
+				status = WAIT;// what the click is next status is wait input
+				touchedStopwatch = getStopwatch(event.getY()); //whatever the click is, if no stopwatch here, return.
 				if (touchedStopwatch == null) return true;
 
+				// like a click or long click, say long the user hold down his finger on the screen more that 1 second.
+				if ((System.currentTimeMillis()-touchDownTime)>=1000){
+					if (selectedStopwatch ==null) {
+						selectedStopwatch= touchedStopwatch;
+						touchedStopwatch=null;
+						selectedStopwatch.getStopwatchUi().addUpdateType(SELECT);
+						if (clockWorker.noneChronoIsRunning())
+							updateUI();
+					} else {
+						if (selectedStopwatch==touchedStopwatch){
+							selectedStopwatch.getStopwatchUi().addUpdateType(DESELECT);
+							if (clockWorker.noneChronoIsRunning())
+								updateUI();
+							selectedStopwatch=null;
+						} else {
+							selectedStopwatch.getStopwatchUi().addUpdateType(DESELECT);
+							touchedStopwatch.getStopwatchUi().addUpdateType(SELECT);
+							if (clockWorker.noneChronoIsRunning()) updateUI();
+
+							selectedStopwatch = touchedStopwatch;
+						}
+						touchedStopwatch=null;
+					}
+
+					return true;
+				}
+
+				// normal click ....
+				System.out.println("[EVENT] down_done+up, CLICK");
 				switch (getUserAction(event.getX())) {
 					case START_STOP_RESET:
 						if (touchedStopwatch.isWaitingStart()) {
@@ -641,7 +708,48 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 		@Override
 		public void onDialogNegativeClick(DialogFragment dialog) {
-
+			// nothing to do
 		}
 	}
+
+	public void startSelectedStopwatch(long now) {
+		if (selectedStopwatch!=null && selectedStopwatch.isWaitingStart()) {
+			selectedStopwatch.start(now);
+
+		} else {
+			if (clockWorker.noneChronoIsRunning()){
+				clockWorker.startAllStopwatches(now);
+				if (clockWorker.getClockList().size()==1) {
+					selectedStopwatch = clockWorker.get(0);
+					selectedStopwatch.getStopwatchUi().addUpdateType(SELECT);
+					updateUI();
+				}
+			}
+		}
+		updateUI();
+	}
+
+	public void stopSelectedStopwatch(long now){
+		if (selectedStopwatch!=null &&selectedStopwatch.isRunning()) {
+			selectedStopwatch.stopTime(now);
+			updateUI();
+		}
+	}
+	public void pauseSelectedStopwatch(){
+
+	}
+	public void lapTimeSelectedStopwatch(long now){
+		if (selectedStopwatch!=null && selectedStopwatch.isRunning()) {
+			selectedStopwatch.lapTime(now);
+			updateUI();
+		}
+
+	}
+	public void resetSelectedStopwatch(){
+		if (selectedStopwatch!=null && selectedStopwatch.isStopped()) {
+			selectedStopwatch.reset();
+			updateUI();
+		}
+	}
+
 }

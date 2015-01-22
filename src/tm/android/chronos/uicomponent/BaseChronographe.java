@@ -50,17 +50,19 @@ public class BaseChronographe extends SurfaceView {
     protected  final static int CHRONO_TEXT_SIZE_IN_DP = 30;//  good base size for the chrono digits
     protected  final static int TEXT_NORMAL_SIZE_IN_DP =20; //  other texte normal
     protected  final static int TEXT_SMALL_SIZE_IN_DP =16; // other text small
+    protected  final static int TEXT_VERY_SMALL_SIZE_IN_DP =12; // other text very small
     protected  final static int SPACING = (int)(4*Resources.getSystem().getDisplayMetrics().density);// extra space around blocs of letters.
 
-    protected static Paint paintWhiteRigthDigitSize;// to paint digit right align
-    protected static Paint paintDigit;
-    protected static Paint paintDigitsWhileRunning; // digit while running
+    protected static Paint paintWhiteRigthDigitSize;// to paint something with the same size as digit, and right align
+    protected static Paint paintDigit; // paint for digits when not running status
+    protected static Paint paintDigitsWhileRunning; // paint for digits while running
     protected static Paint paintBackgroundBlack;// to erase
 
     protected static Paint paintNormalTextWhiteRigth;
     protected static Paint paintNormalTextWhiteLeft;
     protected static Paint paintSmallTextWhiteRigth;
     protected static Paint paintSmallTextWhiteLeft;
+    protected static Paint paintVerySmallTextWhiteLeft;
     protected static Paint paintLine;
 
     protected static int screenWidth;// pixel
@@ -71,11 +73,11 @@ public class BaseChronographe extends SurfaceView {
     protected static int fullHeight;
 
     /* Line spe between two stopwatches */
-    protected static int groupBottomLineHeight = 3*SPACING;
+    protected static int groupBottomLineHeight = 4*SPACING;
 
     // horizontal user touch zone limit
     private static int lapTimeHorizontalLimit;
-    private static int ssrHorizontalLimit; // start stop reset
+    private static int ssrHorizontalLimit; // startSelectedStopwatch stopSelectedStopwatch resetSelectedStopwatch
     private static int paramHorizontalLimit;
 
     /* Explain
@@ -83,7 +85,7 @@ public class BaseChronographe extends SurfaceView {
      *
      * ********************************** baseLine
      * ********************************** bottom
-     * below BlocHeight is bottom -top // bloc to reset back ground with drawRect on canvas
+     * below BlocHeight is bottom -top // bloc to resetSelectedStopwatch back ground with drawRect on canvas
      * baseLineVerticalOffset est baseline -top // where to write with drawText on canvas
      *
      * digit reference the font properties to render the digits of the stopwatch.
@@ -106,7 +108,7 @@ public class BaseChronographe extends SurfaceView {
     protected static int colorBottomGroup=Color.parseColor("#2982cd");
     protected static int colorSepHeadDetail=Color.parseColor("#8e9da0");
     protected static int colorRunning = Color.parseColor("#049d2b");
-
+    protected static int colorSelected= Color.parseColor("#ec4316");
 
 
     public BaseChronographe(Context context) {
@@ -129,6 +131,7 @@ public class BaseChronographe extends SurfaceView {
         float chronotextSize = density * CHRONO_TEXT_SIZE_IN_DP;// used by painter
         float normalTextSize = density* TEXT_NORMAL_SIZE_IN_DP;
         float smallTextSize = density*TEXT_SMALL_SIZE_IN_DP;
+        float verySmallTextSize = density*TEXT_VERY_SMALL_SIZE_IN_DP;
         //
         Rect r = new Rect();
         //
@@ -156,6 +159,14 @@ public class BaseChronographe extends SurfaceView {
         paintSmallTextWhiteLeft.setTextSize(smallTextSize);
         paintSmallTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
         paintSmallTextWhiteLeft.setColor(Color.WHITE);
+
+        paintVerySmallTextWhiteLeft = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintVerySmallTextWhiteLeft.setTextSize(verySmallTextSize);
+        paintVerySmallTextWhiteLeft.setTextAlign(Paint.Align.LEFT);
+        paintVerySmallTextWhiteLeft.setColor(Color.BLACK);
+        paintVerySmallTextWhiteLeft.setFakeBoldText(true);
+        paintVerySmallTextWhiteLeft.setUnderlineText(true);
+
 
         paintDigit = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintDigit.setTextSize(chronotextSize);
@@ -221,4 +232,7 @@ public class BaseChronographe extends SurfaceView {
         return screenWidth;
     }
 
+    public static Paint getPaintWhiteRigthDigitSize() {
+        return paintWhiteRigthDigitSize;
+    }
 }

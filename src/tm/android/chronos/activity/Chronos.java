@@ -33,14 +33,17 @@ public class Chronos extends Activity{
 
     @SuppressWarnings("unchecked")
     public void onClick(View view) {
-        if (view.getId()==R.id.btn_StopwatchAcitvity){
+        if (view.getId()==R.id.btn_StopwatchAcitvity) {
             try {
-                Class<ChronometerActivity<Stopwatch>> cl = (Class<ChronometerActivity<Stopwatch>>)Class.forName("tm.android.chronos.activity.ChronometerActivity");
-                Intent intent = new Intent(getBaseContext(),cl);
+                Class<ChronometerActivity<Stopwatch>> cl = (Class<ChronometerActivity<Stopwatch>>) Class.forName("tm.android.chronos.activity.ChronometerActivity");
+                Intent intent = new Intent(getBaseContext(), cl);
                 startActivity(intent);
-            } catch (ClassNotFoundException e){
-                Toast.makeText(this,"Unable to instantiate ChronometerActivity",Toast.LENGTH_LONG).show();
+            } catch (ClassNotFoundException e) {
+                Toast.makeText(this, "Unable to instantiate ChronometerActivity", Toast.LENGTH_LONG).show();
             }
+        } else if (view.getId()==R.id.btn_timerActivity){
+            Intent intent = new Intent(getBaseContext(),ActivityTimer.class);
+            startActivity(intent);
         } else {
             Dialog dialog = new Dialog(this);
             TextView textView = new TextView(this);

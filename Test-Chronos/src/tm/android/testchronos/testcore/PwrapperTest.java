@@ -8,7 +8,7 @@
 package tm.android.testchronos.testcore;
 
 import org.testng.annotations.Test;
-import tm.android.chronos.core.Pwrapper;
+import tm.android.chronos.util.Pwrapper;
 
 import java.util.Random;
 

@@ -16,7 +16,7 @@ public class DigitTest {
 
     @Test
     public void testAdd_Sub_MillisSecondes() throws Exception {
-        Digit digit = new Digit(1);
+        Digit digit =  Digit.split(1);
         assertEquals(new long[]{0, 0, 0, 0, 1}, digit.toArray());
         digit.addMillisSeconds(999);
         assertEquals(new long[]{0, 0, 0, 1, 0}, digit.toArray());
@@ -47,7 +47,7 @@ public class DigitTest {
     public void randomTest(){
 
         long start = System.currentTimeMillis();
-        Digit digit = new Digit(start);
+        Digit digit = Digit.split(start);
         Random random = new Random(start);
         int rdMax = 864056;
         start= random.nextInt(rdMax);

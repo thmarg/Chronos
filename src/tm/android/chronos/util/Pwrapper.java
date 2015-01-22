@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package tm.android.chronos.core;
+package tm.android.chronos.util;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

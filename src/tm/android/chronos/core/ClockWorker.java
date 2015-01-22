@@ -17,9 +17,10 @@ public class ClockWorker<T extends Clock> extends Thread {
     private final Vector<T> clockList;
     private boolean run = true;
     private boolean stopDisplay=false;
-    private SurfaceViewRenderer<T> surfaceViewRenderer;
+    private SurfaceViewRenderer surfaceViewRenderer;
+    private int innerSleepTime=20;// this will be the delay between each rendering of the UI on screen.
 
-    public ClockWorker(SurfaceViewRenderer<T> surfaceViewRenderer) {
+    public ClockWorker(SurfaceViewRenderer surfaceViewRenderer) {
         this.surfaceViewRenderer = surfaceViewRenderer;
         clockList = new Vector<T>(5);
     }
@@ -56,10 +57,10 @@ public class ClockWorker<T extends Clock> extends Thread {
             }
             synchronized (surfaceViewRenderer.getHolder()) {
                 try {
-                    surfaceViewRenderer.renderOnCache(clockList);
+                    surfaceViewRenderer.renderOnCache();
                     canvas = surfaceViewRenderer.getHolder().lockCanvas();
                     surfaceViewRenderer.renderOnScreen(canvas);
-                    sleep(20);
+                    sleep(innerSleepTime);
                 } catch (InterruptedException e) {
                     //
                 } finally {
@@ -84,6 +85,9 @@ public class ClockWorker<T extends Clock> extends Thread {
 
     }
 
+    public void setInnerSleepTime(int innerSleepTime) {
+        this.innerSleepTime = innerSleepTime;
+    }
 
     public boolean isDisplayStopped(){
         return  stopDisplay;
@@ -113,4 +117,27 @@ public class ClockWorker<T extends Clock> extends Thread {
         return clockList.size();
     }
 
+    public void startAllStopwatches(long now) {
+        synchronized (clockList) {
+            for (T stopwatch : clockList)
+                if (stopwatch.isWaitingStart())
+                    stopwatch.start(now);
+        }
+    }
+
+    public  void stopAllStopwatches(long now){
+        synchronized (clockList){
+            for (T stopwatch : clockList)
+                if (stopwatch.isRunning())
+                    stopwatch.stopTime(now);
+        }
+    }
+
+    public void resetAllStopwatches(){
+        synchronized (clockList){
+            for (T stopwatch : clockList)
+                stopwatch.reset();
+        }
+
+    }
 }

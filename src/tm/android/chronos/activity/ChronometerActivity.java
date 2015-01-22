@@ -134,13 +134,10 @@ public class ChronometerActivity<T extends Stopwatch> extends Activity {
 					return true;
 				case R.id.btn_stop:
 					clockWorker.stopAllStopwatches(now);
-					chronographe.updateUI();
 					return true;
 				case R.id.btn_reset:
-					if (clockWorker.noneChronoIsRunning()) {
+					if (clockWorker.noneChronoIsRunningNorNeedToUpdateUI())
 						clockWorker.resetAllStopwatches();
-						chronographe.updateUI();
-					}
 			}
 			return false;
 		}

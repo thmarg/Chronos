@@ -10,9 +10,6 @@ package tm.android.chronos.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -46,19 +43,19 @@ public class ActivityTimer extends Activity {
             watch.getLayoutParams().width = screenWidth;
             watch.getLayoutParams().height = screenWidth;
         }
-        watch.setActivity(this);
+        //watch.setActivity(this);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==1 && data != null){
-
-            if (data.getExtras()!=null && data.getExtras().size()>0){
-                Uri uri =  (Uri) data.getExtras().get(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                Ringtone rt = RingtoneManager.getRingtone(getBaseContext(),uri);
-                rt.play();
-            }
+//        if (requestCode==1 && data != null){
+//
+//            if (data.getExtras()!=null && data.getExtras().size()>0){
+//                Uri uri =  (Uri) data.getExtras().get(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+//                Ringtone rt = RingtoneManager.getRingtone(getBaseContext(),uri);
+//                rt.play();
+//            }
             //RingtoneManager.getRingtone(getBaseContext(), data.getData()).play();
 
 //            MediaPlayer player = MediaPlayer.create(getBaseContext(),data.getData());
@@ -66,7 +63,7 @@ public class ActivityTimer extends Activity {
 //            player.start();
 
 
-        }
+        //}
     }
 
     public void onClick(View  view){

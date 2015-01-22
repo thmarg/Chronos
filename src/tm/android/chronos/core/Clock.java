@@ -15,7 +15,7 @@ package tm.android.chronos.core;
  * A clock can measure a duration from a start, or down to an end, and has a name.</p>
  *
  */
-public interface Clock {
+public interface Clock extends UpdatableUI {
     /**
      * Start
      * @param startTime the time a user make the start action on the user interface.

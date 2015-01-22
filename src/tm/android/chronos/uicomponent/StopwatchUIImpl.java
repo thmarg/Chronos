@@ -7,6 +7,7 @@
  */
 package tm.android.chronos.uicomponent;
 
+import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 
 import java.util.Vector;
@@ -29,7 +30,7 @@ public class StopwatchUIImpl implements StopwatchUI {
 		expanded = false;
 	}
 
-	@Override
+
 	public boolean mustUpdateUI() {
 		return updateTypeList.size() > 0;
 	}
@@ -90,5 +91,13 @@ public class StopwatchUIImpl implements StopwatchUI {
 	@Override
 	public void setSelected(boolean select) {
 		selected = select;
+	}
+
+	@Override
+	public void onDelayedAction(Object... obj) {
+		StopwatchUI stopwatchUI = (StopwatchUI)obj[0];
+		if (stopwatchUI!=null)
+			stopwatchUI.addUpdateType(UPDATE_TYPE.DESELECT);
+		addUpdateType(selected?UPDATE_TYPE.DESELECT:UPDATE_TYPE.SELECT);
 	}
 }

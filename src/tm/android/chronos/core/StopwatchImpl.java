@@ -141,6 +141,9 @@ public class StopwatchImpl implements Stopwatch {
         stopwatchData.setName(name);
     }
 
+    @Override
+    public boolean mustUpdateUI() {
+       return  stopwatchUI.mustUpdateUI();
 
-
+    }
 }

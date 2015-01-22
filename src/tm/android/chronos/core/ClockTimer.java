@@ -85,4 +85,9 @@ public class ClockTimer implements Clock {
 	public String getName() {
 		return "";// not used here
 	}
+
+	@Override
+	public boolean mustUpdateUI() {
+		return false;
+	}
 }

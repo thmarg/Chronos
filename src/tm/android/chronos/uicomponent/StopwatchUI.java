@@ -6,19 +6,13 @@
  */
 package tm.android.chronos.uicomponent;
 
+import tm.android.chronos.core.DelayedActionListener;
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 /**
  * This interface define methods needed to by the UI. It is essentially flags to
  * represent some action.
  */
-public interface StopwatchUI {
-    /**
-     * *
-     * @return true if some info other than time have changed
-     */
-    boolean mustUpdateUI();
-
-
+public interface StopwatchUI extends DelayedActionListener {
 
     void setExpanded(boolean expanded);
 

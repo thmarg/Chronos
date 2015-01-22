@@ -47,9 +47,9 @@ public class ClockWorker<T extends Clock> extends Thread {
         }
         Canvas canvas = null;
         while (run) {
-            if (stopDisplay || noneChronoIsRunning()){
+            if (stopDisplay || noneChronoIsRunningNorNeedToUpdateUI()){
                 try {
-                    sleep(200);
+                    sleep(100);
                     continue;
                 }catch (InterruptedException e){
                     //
@@ -99,10 +99,10 @@ public class ClockWorker<T extends Clock> extends Thread {
     }
 
 
-    public boolean noneChronoIsRunning(){
+    public boolean noneChronoIsRunningNorNeedToUpdateUI(){
         synchronized (clockList) { // synchronize to support delete at high speed by a user who push the "moins" button at high frequency like a fool ! lol
             for (T t : clockList)
-                if (t.isRunning())
+                if (t.isRunning() || t.mustUpdateUI())
                     return false;
             return true;
         }

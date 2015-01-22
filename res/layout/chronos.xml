@@ -21,28 +21,28 @@
                 android:text="@string/btn_stopwatchActivity"
                 android:id="@+id/btn_StopwatchAcitvity" android:layout_gravity="center" android:layout_marginBottom="@dimen/ChronosButtonVSpacing"
                 android:background="@drawable/roundedbutton" android:onClick="onClick" android:clickable="true"
-                android:paddingLeft="@dimen/pading5dp" android:paddingRight="@dimen/pading5dp"/>
+                android:paddingLeft="@dimen/button_marginLeft" android:paddingRight="@dimen/button_marginLeft"/>
         <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_timerActivity"
                 android:id="@+id/btn_timerActivity" android:layout_gravity="center_horizontal" android:layout_marginBottom="@dimen/ChronosButtonVSpacing"
                 android:background="@drawable/roundedbutton" android:clickable="true" android:onClick="onClick"
-                android:paddingRight="@dimen/pading5dp" android:paddingLeft="@dimen/pading5dp"/>
+                android:paddingRight="@dimen/button_marginLeft" android:paddingLeft="@dimen/button_marginLeft"/>
         <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_alarmActivity"
                 android:id="@+id/btn_alarmActivity" android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/ChronosButtonVSpacing" android:background="@drawable/roundedbutton"
-                android:clickable="true" android:onClick="onClick" android:paddingLeft="@dimen/pading5dp"
-                android:paddingRight="@dimen/pading5dp"/>
+                android:clickable="true" android:onClick="onClick" android:paddingLeft="@dimen/button_marginLeft"
+                android:paddingRight="@dimen/button_marginLeft"/>
         <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_metronome"
                 android:id="@+id/btn_metronomeActivity" android:layout_gravity="center_horizontal"
                 android:background="@drawable/roundedbutton" android:onClick="onClick" android:clickable="true"
-                android:paddingRight="@dimen/pading5dp" android:paddingLeft="@dimen/pading5dp"/>
+                android:paddingRight="@dimen/button_marginLeft" android:paddingLeft="@dimen/button_marginLeft"/>
     </LinearLayout>
 </LinearLayout>

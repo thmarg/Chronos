@@ -10,5 +10,6 @@
 <resources>
     <dimen name="dividerHeight">15dp</dimen>
   <dimen name="ChronosButtonVSpacing">50dp</dimen>
-  <dimen name="pading5dp">5dp</dimen>
+  <dimen name="button_marginLeft">8dp</dimen>
+  <dimen name="button_size">42dp</dimen>
 </resources>

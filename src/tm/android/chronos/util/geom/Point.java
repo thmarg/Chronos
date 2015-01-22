@@ -156,9 +156,11 @@ public class Point {
 	 * @param angleRadiant angle of the rotation. Warning positive angle are anti clockwise.
 	 */
 	public void rotate(Point center,double angleRadiant){
-		getChangedCoordinates(center);
-		setAngle((angle+angleRadiant)%(2*Math.PI));
-		getChangedCoordinates(center.getSymmetrical(SYMMETRY_TYPE.CENTRAL, ZERO));
+		Point p  = getChangedCoordinates(center);
+		p.setAngle((p.getAngle()+angleRadiant)%(2*Math.PI));
+		p=p.getChangedCoordinates(center.getSymmetrical(SYMMETRY_TYPE.CENTRAL, ZERO));
+		X=p.getX();
+		Y=p.getY();
 		XYtoPolar();
 	}
 

@@ -150,7 +150,9 @@ public class Units {
 
     public static enum ZONE_ACTION{LAP_TIME, START_STOP_RESET,PARAM,SHOW_HIDE}
 
-    public static enum DIGIT_FORMAT{EXTRA_SHORT("             000","ext_short"), VERY_SHORT("          00:000","very_short"), SHORT("       00:00:000","short"),EXTENDED("    00:00:00:000","extend"),FULL("000:00:00:00:000","full");
+    public static enum DIGIT_FORMAT{
+        EXTRA_SHORT("             000","ext_short"), VERY_SHORT("          00:000","very_short"), SHORT("       00:00:000","short"),
+        EXTENDED("    00:00:00:000","extend"),FULL("000:00:00:00:000","full"),NO_MS("00","no_ms");
         private String format;
         private String key;
         DIGIT_FORMAT(String format, String key){
@@ -169,7 +171,7 @@ public class Units {
     }
 
     public static enum UPDATE_TYPE {ADD_NEW, UPDATE_HEAD_LINE1, UPDATE_HEAD_LINE2,UPDATE_HEAD_LINE3,UPDATE_HEAD_DIGIT, DELETE,
-        COLLAPSE_DETAILS,EXPAND_DETAILS, REMOVE_DETAILS,HEAD_CHANGE_SIZE,NONE}
+        COLLAPSE_DETAILS,EXPAND_DETAILS, REMOVE_DETAILS,HEAD_CHANGE_SIZE,NONE, SELECT, DESELECT}
 
     public static enum STATUS {RUNNING, STOPPED, WAIT_TO_START, KILLED, PAUSED}
     /**

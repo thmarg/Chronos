@@ -12,7 +12,7 @@ import static tm.android.chronos.core.Units.DIGIT_FORMAT.*;
 /**
  * This class handle a living version of a time in the format<br>
  *     <ul>
- *         <li>dd number of days from start</li>
+ *         <li>dd number of days from startSelectedStopwatch</li>
  *         <li>hh hours</li>
  *         <li>mm minutes</li>
  *         <li>ss seconds</li>
@@ -26,7 +26,7 @@ public class Digit {
     private long minutes;
     private long seconds;
     private long milliSeconds;
-    private DIGIT_FORMAT initilaDigitFormat;
+    private static DIGIT_FORMAT initilaDigitFormat;
 
     private boolean sflag;// flags to now if seconds, minutes, hours or days have changed.
     private boolean mflag;
@@ -158,7 +158,9 @@ public class Digit {
         days +=dd;
     }
 
-
+    public static void setInitilaDigitFormat(DIGIT_FORMAT initilaDigitFormat) {
+        Digit.initilaDigitFormat = initilaDigitFormat;
+    }
 
     public long[] toArray(){
         return new long[]{days, hours,minutes,seconds,milliSeconds};
@@ -189,13 +191,21 @@ public class Digit {
 
     @Override
     public String toString() {
-        stringRep.replace(13,16,(milliSeconds<10?"00"+milliSeconds:(milliSeconds<100?"0"+milliSeconds:""+milliSeconds)));
+        if (initilaDigitFormat != NO_MS)
+            stringRep.replace(13,16,(milliSeconds<10?"00"+milliSeconds:(milliSeconds<100?"0"+milliSeconds:""+milliSeconds)));
         if (sflag) {
-            if (!sepsmsFlag){
-                stringRep.replace(12,13,":");
-                sepsmsFlag=true;
+            if (initilaDigitFormat == NO_MS){
+                stringRep.replace(0, 2, (seconds < 10?"0" + seconds:"" + seconds));
+                if (mflag)
+                    stringRep.replace(0,2,"60");
+                return stringRep.toString();
+            } else {
+                if (!sepsmsFlag) {
+                    stringRep.replace(12, 13, ":");
+                    sepsmsFlag = true;
+                }
+                stringRep.replace(10, 12, (seconds < 10?"0" + seconds:"" + seconds));
             }
-            stringRep.replace(10, 12, (seconds < 10 ? "0" + seconds : "" + seconds));
         }
 
         if (mflag) {

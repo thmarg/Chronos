@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ${NAME}
+  ~
+  ~ Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~ http://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:weightSum="1" android:gravity="top"
+              android:id="@+id/rlayout">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" android:id="@+id/linearLayout2">
+        <ImageButton
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:id="@+id/btn_start" android:layout_gravity="bottom" android:onClick="onClick"
+                android:background="@drawable/playall96x96" android:layout_marginLeft="@dimen/button_paddingLeft"/>
+        <ImageButton
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:id="@+id/btn_stop" android:layout_marginLeft="@dimen/button_paddingLeft"
+                android:background="@drawable/stop128x128" android:onClick="onClick"/>
+        <ImageButton
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"
+                android:id="@+id/btn_reset" android:background="@drawable/refresh128x128"
+                android:layout_marginLeft="@dimen/button_paddingLeft" android:onClick="onClick"/>
+    </LinearLayout>
+    <view android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          class="tm.android.chronos.uicomponent.WatchTimer" android:id="@+id/watch"
+          android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+          android:layout_above="@+id/linearLayout2"/>
+</RelativeLayout>

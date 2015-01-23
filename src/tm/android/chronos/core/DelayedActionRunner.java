@@ -18,6 +18,7 @@ public class DelayedActionRunner<T extends DelayedActionListener> extends  Threa
 	private int delay;
 	private int sleepStep;
 	private boolean run = true;
+	private boolean done=false;
 
 	public DelayedActionRunner(long startTime, int delay, int sleepStep, T data, Object... obj){
 		this.startTime = startTime;
@@ -37,12 +38,19 @@ public class DelayedActionRunner<T extends DelayedActionListener> extends  Threa
 				//
 			}
 		}
-		if (run)
+		if (run) {
 			data.onDelayedAction(obj);
-
+			done = true;
+			run =false;
+		}
 	}
 
 	public void setRunFalse() {
 		this.run = false;
 	}
+
+	public boolean isDone() {
+		return done;
+	}
+
 }

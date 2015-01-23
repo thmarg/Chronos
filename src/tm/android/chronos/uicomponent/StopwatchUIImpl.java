@@ -7,7 +7,6 @@
  */
 package tm.android.chronos.uicomponent;
 
-import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 
 import java.util.Vector;
@@ -68,13 +67,15 @@ public class StopwatchUIImpl implements StopwatchUI {
 
 	@Override
 	public UPDATE_TYPE[] getUpdateTypes() {
-		if (updateTypeList.size() == 0) return null;
+		if (updateTypeList.size() == 0)
+			return null;
 		return updateTypeList.toArray(new UPDATE_TYPE[]{null});
 	}
 
 	@Override
 	public void addUpdateType(UPDATE_TYPE updateType) {
-		if (updateTypeList.contains(updateType)) return;
+		if (updateTypeList.contains(updateType))
+			return;
 		updateTypeList.add(updateType);
 	}
 
@@ -95,9 +96,11 @@ public class StopwatchUIImpl implements StopwatchUI {
 
 	@Override
 	public void onDelayedAction(Object... obj) {
-		StopwatchUI stopwatchUI = (StopwatchUI)obj[0];
-		if (stopwatchUI!=null)
-			stopwatchUI.addUpdateType(UPDATE_TYPE.DESELECT);
-		addUpdateType(selected?UPDATE_TYPE.DESELECT:UPDATE_TYPE.SELECT);
+		synchronized (this) {
+			addUpdateType(selected?UPDATE_TYPE.DESELECT:UPDATE_TYPE.SELECT);
+			StopwatchUI stopwatchUI = (StopwatchUI) obj[0];
+			if (stopwatchUI != null && stopwatchUI != this)
+				stopwatchUI.addUpdateType(UPDATE_TYPE.DESELECT);
+		}
 	}
 }

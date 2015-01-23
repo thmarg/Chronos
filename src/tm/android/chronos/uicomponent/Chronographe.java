@@ -179,20 +179,35 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 					renderOnCacheRebuildFromPosition(offSet, i, NONE);
 					break;
 				case SELECT:
-					startPosition.add(digitTextBlocHeight);
-					if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
-						startPosition.add(3 * normalTextBlocHeight);
-					else startPosition.add(normalTextBlocHeight);
-					renderOnCacheSelect(startPosition, groupBottomLineHeight);
-					stopwatch.getStopwatchUi().setSelected(true);
+					if (stopwatch.getStopwatchUi().isExpanded()) {
+						stopwatch.getStopwatchUi().setSelected(true);
+						renderOnCacheRebuildFromPosition(offSet, i, EXPAND_DETAILS);
+					} else {
+						startPosition.add(digitTextBlocHeight);
+						if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
+							startPosition.add(3 * normalTextBlocHeight);
+						else
+							startPosition.add(normalTextBlocHeight);
+
+						renderOnCacheSelect(startPosition, groupBottomLineHeight);
+						stopwatch.getStopwatchUi().setSelected(true);
+					}
+
 					break;
 				case DESELECT:
-					startPosition.add(digitTextBlocHeight);
-					if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
-						startPosition.add(3 * normalTextBlocHeight);
-					else startPosition.add(normalTextBlocHeight);
-					renderOnCacheHorizontalLine(startPosition, groupBottomLineHeight, colorBottomGroup);
-					stopwatch.getStopwatchUi().setSelected(false);
+					if (stopwatch.getStopwatchUi().isExpanded()) {
+						stopwatch.getStopwatchUi().setSelected(false);
+						renderOnCacheRebuildFromPosition(offSet, i, EXPAND_DETAILS);
+					} else {
+						startPosition.add(digitTextBlocHeight);
+						if (stopwatch.getStopwatchData().getLapDistance() > 0 && (stopwatch.getStopwatchData().getChronoType() == LAPS || stopwatch.getStopwatchData().getChronoType() == SEGMENTS))
+							startPosition.add(3 * normalTextBlocHeight);
+						else
+							startPosition.add(normalTextBlocHeight);
+						renderOnCacheHorizontalLine(startPosition, groupBottomLineHeight, colorBottomGroup);
+						stopwatch.getStopwatchUi().setSelected(false);
+					}
+
 					break;
 				case REMOVE_DETAILS:
 					renderOnCacheRebuildFromPosition(offSet, i, REMOVE_DETAILS);
@@ -509,6 +524,7 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 		private long now;
 		private float lastFingerY = 0;
 		DelayedActionRunner<StopwatchUI> longDown ;
+		private Stopwatch stopwatchWaitLongDown;
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 
@@ -516,8 +532,8 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 			long now = System.currentTimeMillis();
 
 			System.out.println("[EVENT] ONTOUCH");
-			System.out.println("[EVENT] History size " + event.getHistorySize());
-			System.out.println("[EVENT] pointer size " + event.getPointerCount());
+			//System.out.println("[EVENT] History size " + event.getHistorySize());
+			//System.out.println("[EVENT] pointer size " + event.getPointerCount());
 			if (status == WAIT && event.getAction() == MotionEvent.ACTION_DOWN) {
 				this.now = now;
 				lastFingerY = event.getRawY();
@@ -526,24 +542,25 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 
 				touchedStopwatch = getStopwatch(event.getY()); //whatever the click is, if no stopwatch here, return.
 				if (touchedStopwatch == null) return true;
-
-				if (selectedStopwatch != null)
-					longDown = new DelayedActionRunner<StopwatchUI>(now,900,50,touchedStopwatch.getStopwatchUi(),selectedStopwatch.getStopwatchUi());
-				else
-					longDown = new DelayedActionRunner<StopwatchUI>(now,900,50,touchedStopwatch.getStopwatchUi(),new Object[]{null});
+				stopwatchWaitLongDown = touchedStopwatch;
+				if (selectedStopwatch != null) {
+					longDown = new DelayedActionRunner<StopwatchUI>(now, 900, 50, touchedStopwatch.getStopwatchUi(), selectedStopwatch.getStopwatchUi());
+				}	else {
+					longDown = new DelayedActionRunner<StopwatchUI>(now, 900, 50, touchedStopwatch.getStopwatchUi(), new Object[]{null});
+				}
 				longDown.start();
 				return true;
 			}
 			if (status == DOWN_DONE && event.getAction() == MotionEvent.ACTION_MOVE) {
 				status = MOVE;
 				System.out.println("[EVENT] down_done+move");
-				if (longDown!=null) // cancel longDown if any
-					longDown.setRunFalse();
+
 			}
 			if (status == MOVE && event.getAction() == MotionEvent.ACTION_MOVE) {
 				System.out.println("[EVENT] move+move");
-
-
+				if (stopwatchWaitLongDown!=null)
+					longDown.setRunFalse();
+				
 				if (event.getY() > lastFingerY) {
 					if (scrollView.top >= scrollMove) {
 						scrollView.top -= scrollMove;
@@ -566,32 +583,47 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 				return true;//
 			}
 			if (status == MOVE && event.getAction() == MotionEvent.ACTION_UP) {
-				//
 				System.out.println("[EVENT] move+up");
 				status = WAIT;
+				if (touchedStopwatch == stopwatchWaitLongDown){
+					longDown.setRunFalse();
+					if (longDown.isDone()){
+						// long click
+						if (touchedStopwatch.getStopwatchUi().isSelected()) {
+							selectedStopwatch = touchedStopwatch;
+							touchedStopwatch = null;
+						}
+						else {
+							selectedStopwatch = null;
+						}
+
+						return true;
+					} 
+					stopwatchWaitLongDown=null;
+				}
 				return true;
 			}
 			if (status == DOWN_DONE && event.getAction() == MotionEvent.ACTION_UP) {
+				System.out.println("[EVENT] down_done+up");
+				longDown.setRunFalse();
 				status = WAIT;// what the click is next status is wait input
 				touchedStopwatch = getStopwatch(event.getY()); //whatever the click is, if no stopwatch here, return.
 				if (touchedStopwatch == null) return true;
 
 				// check for long click
-				if (!longDown.isAlive()){
+				if (longDown.isDone()){
 					// long click
 					if (touchedStopwatch.getStopwatchUi().isSelected()) {
 						selectedStopwatch = touchedStopwatch;
 						touchedStopwatch = null;
 					}
-					else
+					else {
 						selectedStopwatch = null;
+					}
 
 					return true;
-				} else {
-					longDown.setRunFalse();
-				}
-
-
+				} 
+				
 				// normal click ....
 				System.out.println("[EVENT] down_done+up, CLICK");
 				switch (getUserAction(event.getX())) {

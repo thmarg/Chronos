@@ -47,7 +47,7 @@ import static tm.android.chronos.core.Units.ZONE_ACTION.*;
  */
 public class BaseChronographe extends SurfaceView {
 
-    protected  final static int CHRONO_TEXT_SIZE_IN_DP = 30;//  good base size for the chrono digits
+    private  final static int CHRONO_TEXT_SIZE_IN_DP = 30;//  good base size for the chrono digits
     protected  final static int TEXT_NORMAL_SIZE_IN_DP =20; //  other texte normal
     protected  final static int TEXT_SMALL_SIZE_IN_DP =16; // other text small
     protected  final static int TEXT_VERY_SMALL_SIZE_IN_DP =12; // other text very small
@@ -232,7 +232,5 @@ public class BaseChronographe extends SurfaceView {
         return screenWidth;
     }
 
-    public static Paint getPaintWhiteRigthDigitSize() {
-        return paintWhiteRigthDigitSize;
-    }
+
 }

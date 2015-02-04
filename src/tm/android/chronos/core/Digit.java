@@ -38,6 +38,8 @@ public class Digit {
     private boolean sepmhFlag=false;
     private boolean sephdFlag=false;
 
+    private static  boolean noMs = false;
+
     private long innerMilliseconds;// time in ms from 1J1970 as in System.currentTimeMillis()
     private StringBuilder stringRep; // string representation
 
@@ -160,6 +162,7 @@ public class Digit {
 
     public static void setInitilaDigitFormat(DIGIT_FORMAT initilaDigitFormat) {
         Digit.initilaDigitFormat = initilaDigitFormat;
+        noMs = initilaDigitFormat.getKey().startsWith("no_ms");
     }
 
     public long[] toArray(){
@@ -189,23 +192,16 @@ public class Digit {
 
 
 
+
     @Override
     public String toString() {
-        if (initilaDigitFormat != NO_MS)
             stringRep.replace(13,16,(milliSeconds<10?"00"+milliSeconds:(milliSeconds<100?"0"+milliSeconds:""+milliSeconds)));
         if (sflag) {
-            if (initilaDigitFormat == NO_MS){
-                stringRep.replace(0, 2, (seconds < 10?"0" + seconds:"" + seconds));
-                if (mflag)
-                    stringRep.replace(0,2,"60");
-                return stringRep.toString();
-            } else {
                 if (!sepsmsFlag) {
                     stringRep.replace(12, 13, ":");
                     sepsmsFlag = true;
                 }
                 stringRep.replace(10, 12, (seconds < 10?"0" + seconds:"" + seconds));
-            }
         }
 
         if (mflag) {
@@ -232,7 +228,7 @@ public class Digit {
             stringRep.replace(0, 3,(days < 10 ? "00" + days : (days < 100 ? "0" + days : "" + days)));
         }
 
-        return stringRep.toString();
+        return noMs?stringRep.substring(0,12):stringRep.toString();
 
     }
 }

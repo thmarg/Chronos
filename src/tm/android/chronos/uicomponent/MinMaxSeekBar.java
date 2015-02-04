@@ -38,7 +38,7 @@ import static tm.android.chronos.uicomponent.MinMaxSeekBar.SEEKBAR_MODE.MIN_MAX;
 public class MinMaxSeekBar extends View {
 
 	public static enum SEEKBAR_MODE {MAX, MIN_MAX}
-
+	private final static double NOT_SET=-1.0;
 	private Rect rect;
 	private Paint paintDeft;
 	private double lvariationForMaxValue; // length variation from finger on screen for max value.
@@ -51,7 +51,7 @@ public class MinMaxSeekBar extends View {
 	private List<OnSeekBarChangeListener> onSeekBarChangeListenerList;
 	private SeekBarEvent minEvent;
 	private SeekBarEvent maxEvent;
-	private double initialMaxRatio = -1.0;
+	private double initialMaxRatio = NOT_SET;
 	private double initialMinRatio = 0;
 
 	public MinMaxSeekBar(Context context, AttributeSet attrs) {
@@ -72,7 +72,7 @@ public class MinMaxSeekBar extends View {
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
 		barMaxLenght = w;
-		if (initialMaxRatio == -1.0)
+		if (initialMaxRatio == NOT_SET)
 			lineEnd = barMaxLenght;
 		else
 			lineEnd = (int) (initialMaxRatio * barMaxLenght);
@@ -92,14 +92,14 @@ public class MinMaxSeekBar extends View {
 			firstPass = false;
 		}
 
-		if (lvariationForMaxValue!=-1) {
+		if (lvariationForMaxValue!=NOT_SET) {
 			lineEnd += lvariationForMaxValue;
-			maxEvent.setValue((double) lineEnd / barMaxLenght);
+			maxEvent.setValue((double)lineEnd / (double)barMaxLenght);
 			fireEvent(maxEvent);
 		}
-		if (lvariationForMinValue!=-1) {
+		if (lvariationForMinValue!=NOT_SET) {
 			lineStart += lvariationForMinValue;
-			minEvent.setValue((double)lineStart/barMaxLenght);
+			minEvent.setValue((double)lineStart/(double)barMaxLenght);
 			fireEvent(minEvent);
 		}
 
@@ -146,14 +146,14 @@ public class MinMaxSeekBar extends View {
 						double lvariation ;
 						if (mode == MIN_MAX) { // Volume Varying
 							if (initialFinger.getX() < barMaxLenght / 2 && currentFinger.getX() < barMaxLenght / 2) {
-								lvariationForMaxValue=-1;
+								lvariationForMaxValue=NOT_SET;
 								lvariation = getVariationForMin(currentFinger.getX(),initialFinger.getX());
 								if (lvariation==-1)
 									break;
 								lvariationForMinValue = lvariation;
 
 							} else if (initialFinger.getX() > barMaxLenght / 2 && currentFinger.getX() > barMaxLenght / 2) {
-								lvariationForMinValue=-1;
+								lvariationForMinValue=NOT_SET;
 								lvariation = getVariationForMax(currentFinger.getX(),initialFinger.getX());
 								if (lvariation==-1)
 									break;

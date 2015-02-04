@@ -75,6 +75,7 @@ public class ActivityTimer extends Activity {
         Intent intent = new Intent(getBaseContext(),PreferenceActivity.class);
         intent.putExtra(PreferenceCst.PREFIX_BUNDLE_KEY, PreferenceCst.PREFIX_TIMER);
         intent.putExtra(PreferenceCst.PREF_FRAGMENT_CLASS_NAME, TimerPreferenceFragment.class.getName());
+        intent.putExtra(PreferenceCst.PREF_TITLE,"audio_pref_title");
         startActivity(intent);
         return true;
     }

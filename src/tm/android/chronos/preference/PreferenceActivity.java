@@ -33,6 +33,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 			finish();
 		}
 
+
 		// pref keys are prefixed, the prefix is passed to the intent into the extra properties.
 		// this is retrieve from the intent bundle
 		String prefix = getIntent().getStringExtra(PreferenceCst.PREFIX_BUNDLE_KEY);
@@ -40,6 +41,10 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 			Toast.makeText(this,Units.getLocalizedTexts("pref_access_failed_prefix", "error_report"), Toast.LENGTH_LONG).show();
 			finish();
 		}
+
+		// finally title must also be updated en retrieve from the intent bundle.
+		String title_key= getIntent().getExtras().getString(PreferenceCst.PREF_TITLE);
+		setTitle(Units.getLocalizedText(title_key));
 	}
 
 }

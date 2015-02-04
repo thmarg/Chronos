@@ -18,6 +18,7 @@ public class PreferenceCst {
 	public static String PREFIX_STOPWATCHES="ST_";// Some preference are conceptually identical from one activity to another, but values can be different
 	public static String PREFIX_TIMER="TM_";//		So we need a prefix to distinguish key, as we choose to have one single pref file.
 	public static String PREFIX_BUNDLE_KEY="PREFIX";
+	public static String PREF_TITLE="PREF_TITLE";
 	public static String PREF_FRAGMENT_CLASS_NAME="PFC_NAME";
 
 

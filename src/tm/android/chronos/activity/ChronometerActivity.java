@@ -59,8 +59,6 @@ public class ChronometerActivity<T extends Stopwatch> extends Activity {
 
 		relativeLayout.setLayoutParams(layoutParams1);
 
-		// don't forget this for i18n support from some component (>50%).
-		Units.setResources(getResources());
 		Digit.setInitilaDigitFormat(Units.DIGIT_FORMAT.VERY_SHORT);
 		LongClick longClick = new LongClick();
 		// add to pauseSelectedStopwatch a stopwatch on long press otherwise the pauseSelectedStopwatch button take a lap time.

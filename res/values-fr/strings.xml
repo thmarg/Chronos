@@ -32,4 +32,17 @@
     <string name="title_stopwatch_params">Paramètres du Chronomètre</string>
     <string name="validate">Valider</string>
     <string name="cancel">Annuler</string>
+    <string name="snd_file_notif_pref_title">"Selectionnez une musique pour la notification audio"</string>
+    <string name="snd_ringtone_notif_pref_title">"Selectionnez une sonnerie pour la notification audio"</string>
+    <string name="error_report">Envoyez ce message à tmargenstern@gmail.com.</string>
+    <string name="pref_access_failed_prefix">Impossible d\'acceder aux preferences, un prefix est manquant.</string>
+    <string name="app_name_timer">Chonos - Minuteur</string>
+    <string name="app_name_audionotificationpref">Preferences de notification audio</string>
+    <string name="pref_access_failed_fragment">Impossible d\'acceder aux preferences, un fragment est manquant</string>
+    <string name="timeout">depuis arrêt de la minuterie.</string>
+    <string name="lab_volFixe_text">Volume fixe</string>
+    <string name="lab_volVariable_text">Volume Progressif</string>
+    <string name="timer_pref_not_set">Définissez les préférences audio avant de démarrer le minuteur.</string>
+    <string name="audio_pref_stored">Preferences enregistrées</string>
+    <string name="audio_pref_stored_but">Preferences enregistrées, mais aucun fichier audio n\'est défini.</string>
 </resources>

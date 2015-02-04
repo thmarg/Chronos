@@ -1,5 +1,5 @@
 /*
- * ${NAME}
+ * ChronographeDialog
  *
  * Copyright (c) 2014 Thierry Margenstern under MIT license
  * http://opensource.org/licenses/MIT
@@ -65,17 +65,17 @@ public class ChronographeDialog<T extends Stopwatch> extends DialogFragment {
 
         // spinner for distance unit
         unitDistance = (Spinner) view_distance_speed.findViewById(R.id.spin_units_distance);
-        ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<LENGTH_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getUnitLenghtList());
+        ArrayAdapter<LENGTH_UNIT> arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getUnitLenghtList());
         unitDistance.setAdapter(arrayAdapter);
 
         // spinner for speed units
         unitSpeed = (Spinner) view_distance_speed.findViewById(R.id.spin_speed);
-        ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<SPEED_UNIT>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getSpeedUnitList());
+        ArrayAdapter<SPEED_UNIT> arrayAdapter1 = new ArrayAdapter<>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getSpeedUnitList());
         unitSpeed.setAdapter(arrayAdapter1);
 
         // spinner for chrono type
         Spinner chronoType = (Spinner) view_name_type.findViewById(R.id.spin_type);
-        ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<CHRONO_TYPE>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getModeList());
+        ArrayAdapter<CHRONO_TYPE> arrayAdapter2 = new ArrayAdapter<>(getActivity(), R.layout.layoutforspinner, R.id.txt_view_item, Units.getModeList());
         chronoType.setAdapter(arrayAdapter2);
         chronoType.setOnItemSelectedListener(new OnTypeChanged());
 

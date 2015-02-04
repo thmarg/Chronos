@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import tm.android.chronos.R;
 import tm.android.chronos.core.Stopwatch;
+import tm.android.chronos.core.Units;
 
 
 /**
@@ -26,8 +27,8 @@ public class Chronos extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chronos);
-
-
+        // don't forget this for i18n support from some component (>50%).
+        Units.setResources(getResources());
     }
 
 
@@ -54,8 +55,6 @@ public class Chronos extends Activity{
             dialog.show();
         }
     }
-
-
 
 }
 

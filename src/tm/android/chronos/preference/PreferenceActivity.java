@@ -42,9 +42,10 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 			finish();
 		}
 
-		// finally title must also be updated en retrieve from the intent bundle.
+		// finally title must also be updated and retrieved from the intent bundle.
 		String title_key= getIntent().getExtras().getString(PreferenceCst.PREF_TITLE);
 		setTitle(Units.getLocalizedText(title_key));
+		getActionBar().setIcon(android.R.drawable.ic_menu_manage);
 	}
 
 }

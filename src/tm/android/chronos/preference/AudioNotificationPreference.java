@@ -357,8 +357,9 @@ public class AudioNotificationPreference extends Preference implements Preferenc
 				String artist = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
 				String title = mediaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
 				mediaRetriever.release();
-				txt_view_selectedMusicFile.setText(artist + " " + title);
-				preferencesEditor.putString(prefix + MUSIC_NAME.toString(), artist + " " + title);
+				String name = (artist==null ? Units.getLocalizedText("unknown_artist"):artist)+" "+(title==null?Units.getLocalizedText("unknown_title"):title);
+				txt_view_selectedMusicFile.setText(name);
+				preferencesEditor.putString(prefix + MUSIC_NAME.toString(), name);
 				preferencesEditor.putString(prefix + MUSIC_PATH.toString(), data.getDataString());
 				break;
 			case SELECT_FROM_RINGTONE:

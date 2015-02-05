@@ -56,7 +56,7 @@
     <string name="error_report">Report this message at tmargenstern@gmail.com.</string>
     <string name="pref_access_failed_prefix">Unable to access preferences due to a missing prefix.</string>
     <string name="app_name_timer">Chonos - Timer</string>
-    <string name="app_name_audionotificationpref">Audio Notification Preferences</string>
+    <string name="audio_pref_title">Audio Notification Preferences</string>
     <string name="pref_access_failed_fragment">Unable to access preferences du to a missing fragment</string>
     <string name="timeout">since timer finished.</string>
     <string name="lab_volFixe_text">Fixed Volume Level</string>
@@ -64,4 +64,8 @@
     <string name="timer_pref_not_set">Set audio preferences before starting the timer !</string>
     <string name="audio_pref_stored">Preferences stored</string>
     <string name="audio_pref_stored_but">Preferences stored, but no audio file set</string>
+    <string name="label_soundFile">Sound from audio file</string>
+    <string name="label_ringtone">Sound from device ringtone</string>
+    <string name="unknown_artist">unknown artist</string>
+    <string name="unknown_title">unknown title</string>
 </resources>

@@ -81,5 +81,9 @@ public interface Clock extends UpdatableUI {
     String getName();
     void setName(String name);
 
-
+    /**
+     * *
+     * @return the time this clock has been started.
+     */
+    long getStartTime();
 }

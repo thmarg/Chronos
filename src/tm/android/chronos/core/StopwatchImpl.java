@@ -146,4 +146,9 @@ public class StopwatchImpl implements Stopwatch {
        return  stopwatchUI.mustUpdateUI();
 
     }
+
+    @Override
+    public long getStartTime() {
+        return startTime;
+    }
 }

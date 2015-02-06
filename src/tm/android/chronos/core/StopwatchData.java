@@ -161,7 +161,9 @@ public class StopwatchData {
         return globalTime;
     }
 
-
+    public int getLapCount() {
+        return lapCount;
+    }
 
     public void reset() {
         timeList.removeAllElements();

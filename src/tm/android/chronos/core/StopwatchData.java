@@ -13,6 +13,7 @@ import tm.android.chronos.core.Units.LENGTH_UNIT;
 import tm.android.chronos.core.Units.SPEED_UNIT;
 import tm.android.chronos.util.Pwrapper;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 
@@ -42,7 +43,7 @@ import java.util.Vector;
  * Lap count<br>
  * Final time<br>
  */
-public class StopwatchData {
+public class StopwatchData implements Serializable {
 
     private CHRONO_TYPE chronoType;
     private String name;
@@ -63,7 +64,7 @@ public class StopwatchData {
         lengthUnit = LENGTH_UNIT.KILOMETER;
         speedUnit = SPEED_UNIT.KILOMETER_PER_HOUR;
         creationDate = System.currentTimeMillis();
-        timeList = new Vector<StopwatchDataRow>(5);
+        timeList = new Vector<>(5);
         this.name = name;
 
     }
@@ -72,7 +73,7 @@ public class StopwatchData {
         this.chronoType = chronoType;
         lengthUnit = LENGTH_UNIT.KILOMETER;
         speedUnit = SPEED_UNIT.KILOMETER_PER_HOUR;
-        timeList = new Vector<StopwatchDataRow>(5);
+        timeList = new Vector<>(5);
         this.name = name;
         this.creationDate = date;
     }
@@ -89,9 +90,9 @@ public class StopwatchData {
         timeList.add(stopwatchDataRow);
         int id = timeList.indexOf(stopwatchDataRow);
         if (id > 0)
-            stopwatchDataRow.setDiffTime(time - timeList.get(id - 1).getClickTime());
+            stopwatchDataRow.setLapTime(time - timeList.get(id - 1).getClickTime());
          else
-            stopwatchDataRow.setDiffTime(time);
+            stopwatchDataRow.setLapTime(time);
         globalDistance+=lapDistance;
         lapCount++;
     }
@@ -165,6 +166,14 @@ public class StopwatchData {
         return lapCount;
     }
 
+    public void setLapCount(int lapCount) {
+        this.lapCount = lapCount;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     public void reset() {
         timeList.removeAllElements();
         globalTime = 0;
@@ -177,7 +186,7 @@ public class StopwatchData {
         StringBuilder builder = new StringBuilder();
 
             if (globalDistance > 0)
-                builder.append("D : ").append(new Pwrapper<Double>(globalDistance).format(3,true)).append(" ").append(lengthUnit.getShortName());
+                builder.append("D : ").append(new Pwrapper<>(globalDistance).format(3,true)).append(" ").append(lengthUnit.getShortName());
             if (globalDistance > 0 && globalTime > 0) {
                 builder.append(" --> ");
                 builder.append(String.format("%1$.2f", Units.getSpeed(globalDistance, lengthUnit, globalTime, speedUnit)));
@@ -190,7 +199,7 @@ public class StopwatchData {
     public String getInfoL3(){
         StringBuilder builder = new StringBuilder();
         if (lapDistance>0)
-        builder.append("d : ").append(new Pwrapper<Double>(lapDistance).format(3,true)).append(" ").append(lengthUnit.getShortName());
+        builder.append("d : ").append(new Pwrapper<>(lapDistance).format(3,true)).append(" ").append(lengthUnit.getShortName());
         if (lapCount>0)
             builder.append("  ").append(lapCount).append(" ").append(lapCount == 1 ? Units.getLocalizedText("klap", null) : Units.getLocalizedText("klaps",null));
         return builder.toString();

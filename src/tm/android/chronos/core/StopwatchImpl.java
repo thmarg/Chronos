@@ -10,12 +10,15 @@ package tm.android.chronos.core;
 import tm.android.chronos.uicomponent.StopwatchUIImpl;
 import static tm.android.chronos.core.Units.STATUS.*;
 import tm.android.chronos.core.Units.STATUS;
+
+import java.io.Serializable;
+
 import static tm.android.chronos.core.Units.UPDATE_TYPE.*;
 
 /**
  * Implementation of interface Stopwatch
  */
-public class StopwatchImpl implements Stopwatch {
+public class StopwatchImpl implements Stopwatch, Serializable {
 
     private STATUS status;
 
@@ -23,7 +26,7 @@ public class StopwatchImpl implements Stopwatch {
 
     private Digit currentTime;
     private long lastTime;
-
+    private long id;
     private StopwatchData stopwatchData;
     private StopwatchUIImpl stopwatchUI;
 
@@ -150,5 +153,25 @@ public class StopwatchImpl implements Stopwatch {
     @Override
     public long getStartTime() {
         return startTime;
+    }
+
+    @Override
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    @Override
+    public void setRunning() {
+        status = RUNNING;
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 }

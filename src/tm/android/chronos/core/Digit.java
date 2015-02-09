@@ -7,6 +7,9 @@ package tm.android.chronos.core;
 
 import tm.android.chronos.BuildConfig;
 import tm.android.chronos.core.Units.DIGIT_FORMAT;
+
+import java.io.Serializable;
+
 import static tm.android.chronos.core.Units.DIGIT_FORMAT.*;
 
 /**
@@ -19,7 +22,7 @@ import static tm.android.chronos.core.Units.DIGIT_FORMAT.*;
  *         <li>milli seconds</li>
  *     </ul>
  */
-public class Digit {
+public class Digit implements Serializable {
 
     private long days;
     private long hours;
@@ -227,7 +230,6 @@ public class Digit {
             }
             stringRep.replace(0, 3,(days < 10 ? "00" + days : (days < 100 ? "0" + days : "" + days)));
         }
-
         return noMs?stringRep.substring(0,12):stringRep.toString();
 
     }

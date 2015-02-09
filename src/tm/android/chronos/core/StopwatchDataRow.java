@@ -8,6 +8,8 @@ package tm.android.chronos.core;
 
 import tm.android.chronos.core.Units.CHRONO_TYPE;
 
+import java.io.Serializable;
+
 
 /**
  * This class is a data holder for a stopwatch. It has two goal<br>
@@ -23,13 +25,13 @@ import tm.android.chronos.core.Units.CHRONO_TYPE;
  * The clickTime is always stored in milliseconds.
  * </p>
  */
-public class StopwatchDataRow {
+public class StopwatchDataRow implements Serializable {
 
     //private LENGTH_UNIT storedLengthUnit;
     private long clickTime; // the time when the action intermediate time has been done from the stopwatch start.
-    private long diffTime; // the "real" intermediate time -> clickTime - previous dataRow clickTime if any.
+    private long lapTime; // the "real" intermediate time -> clickTime - previous dataRow clickTime if any.
     private double length;
-    private StopwatchData head; // the container of the list of stopwatchDataRow. Needed by common property own by head.
+    private transient StopwatchData head; // the container of the list of stopwatchDataRow. Needed by common property own by head.
 
 
 
@@ -48,12 +50,12 @@ public class StopwatchDataRow {
         return clickTime;
     }
 
-//    public long getDiffTime() {
-//        return diffTime;
-//    }
+    public long getLapTime() {
+        return lapTime;
+    }
 
-    public void setDiffTime(long diffTime) {
-        this.diffTime = diffTime;
+    public void setLapTime(long lapTime) {
+        this.lapTime = lapTime;
     }
 
 //    public double getLength() {
@@ -65,11 +67,11 @@ public class StopwatchDataRow {
     public String getLine() {
         StringBuilder stringBuilder = new StringBuilder();
         if (length > 0 && (head.getChronoType() == CHRONO_TYPE.LAPS || head.getChronoType() == CHRONO_TYPE.SEGMENTS)) {
-                stringBuilder.append(String.format("%1$.2f", Units.getSpeed(length, head.getLengthUnit(), diffTime, head.getSpeedUnit())));
+                stringBuilder.append(String.format("%1$.2f", Units.getSpeed(length, head.getLengthUnit(), lapTime, head.getSpeedUnit())));
                 stringBuilder.append(" ").append(head.getSpeedUnit().toString()).append("    ");
         }
 
-        stringBuilder.append(Digit.split(diffTime).toString().trim()).append("    ");
+        stringBuilder.append(Digit.split(lapTime).toString().trim()).append("    ");
         stringBuilder.append(Digit.split(clickTime).toString().trim());
 
         return stringBuilder.toString();

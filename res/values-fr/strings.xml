@@ -43,10 +43,13 @@
     <string name="lab_volFixe_text">Volume fixe</string>
     <string name="lab_volVariable_text">Volume Progressif</string>
     <string name="timer_pref_not_set">Définissez les préférences audio avant de démarrer le minuteur.</string>
-    <string name="audio_pref_stored">Preferences enregistrées</string>
-    <string name="audio_pref_stored_but">Preferences enregistrées, mais aucun fichier audio n\'est défini.</string>
+    <string name="audio_pref_stored">Préférences enregistrées</string>
+    <string name="audio_pref_stored_but">Préférences enregistrées, mais aucun fichier audio n\'est défini.</string>
     <string name="label_soundFile">Son depuis un fichier audio</string>
     <string name="label_ringtone">Son depuis une sonnerie intégrée</string>
     <string name="unknown_artist">artist inconnu</string>
     <string name="unknown_title">titre inconnu</string>
+    <string name="db_init_failed">Error d\'initialisation d\'accès à la base de donnée.</string>
+    <string name="store_run_stwtc">Il y a un chronomètre qui tourne ! Voulez-vous l\'enregistrer ?</string>
+    <string name="store_run_stwtces">Il y a des chronomètres qui tournent ! Voulez-vous les enregistrer ?</string>
 </resources>

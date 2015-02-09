@@ -68,4 +68,7 @@
     <string name="label_ringtone">Sound from device ringtone</string>
     <string name="unknown_artist">unknown artist</string>
     <string name="unknown_title">unknown title</string>
+    <string name="db_init_failed">Error on dataBase access initialization</string>
+    <string name="store_run_stwtc">There is a running stopwatch ! Do you want to save it ?</string>
+    <string name="store_run_stwtces">There are a running stopwatches ! Do you want to save them ?</string>
 </resources>

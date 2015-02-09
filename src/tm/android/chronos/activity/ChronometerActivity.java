@@ -8,6 +8,8 @@
 package tm.android.chronos.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,13 +20,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import tm.android.chronos.R;
 import tm.android.chronos.core.ClockWorker;
 import tm.android.chronos.core.Digit;
 import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units;
+import tm.android.chronos.sql.DbLiveObject;
+import tm.android.chronos.sql.DbStopwatches;
 import tm.android.chronos.uicomponent.BaseChronographe;
 import tm.android.chronos.uicomponent.Chronographe;
+
+import java.util.List;
 
 
 /**
@@ -41,7 +48,7 @@ public class ChronometerActivity<T extends Stopwatch> extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chronolayout);
 
-		chronographe = new Chronographe<T>(this);
+		chronographe = new Chronographe<>(this);
 		clockWorker = chronographe.getClockWorker();
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Chronographe.getScreenWidth(), ViewGroup.LayoutParams.MATCH_PARENT);
 		//layoutParams.rightMargin = Chronographe2.getLeftMargin();
@@ -65,6 +72,7 @@ public class ChronometerActivity<T extends Stopwatch> extends Activity {
 		findViewById(R.id.btn_pause).setOnLongClickListener(longClick);
 		findViewById(R.id.btn_stop).setOnLongClickListener(longClick);
 		findViewById(R.id.btn_reset).setOnLongClickListener(longClick);
+
 	}
 
 	@Override
@@ -172,5 +180,42 @@ public class ChronometerActivity<T extends Stopwatch> extends Activity {
 			return true;
 		}
 		return super.dispatchKeyEvent(event);
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		@SuppressWarnings("Unchecked")
+		final List<T> runners = clockWorker.getRunningClock();
+		if (runners.size()>0){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(runners.size()==1? Units.getLocalizedText("store_run_stwtc"):Units.getLocalizedText("store_run_stwtces"));
+			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i) {
+					DbLiveObject<T> dbLiveObject = new DbLiveObject<>();
+					dbLiveObject.storeLiveObjects(runners, DbStopwatches.RUNNING_STOPWATCHES_TABLE_NAME);
+					if (dbLiveObject.hasError()){
+						Toast.makeText(ChronometerActivity.this,dbLiveObject.getErrorMessage().localiszedMessage,Toast.LENGTH_LONG).show();
+						return;
+					}
+					finish();
+				}
+			});
+
+			builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i) {
+				 finish();
+				}
+			});
+
+
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		} else {
+			super.onBackPressed();
+		}
+
 	}
 }

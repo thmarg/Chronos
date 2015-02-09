@@ -27,7 +27,11 @@ import tm.android.chronos.core.*;
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 import tm.android.chronos.dialogs.ChronographeDialog;
 import tm.android.chronos.dialogs.OnDialogClickListener;
+import tm.android.chronos.sql.DbLiveObject;
+import tm.android.chronos.sql.DbStopwatches;
 import tm.android.chronos.util.Pwrapper;
+
+import java.util.List;
 
 import static tm.android.chronos.core.Units.CHRONO_TYPE.*;
 import static tm.android.chronos.core.Units.UPDATE_TYPE.*;
@@ -81,8 +85,20 @@ public class Chronographe<T extends Stopwatch> extends BaseChronographe implemen
 	public void surfaceCreated(SurfaceHolder surfaceHolder) {
 		if (clockWorker.getState() == Thread.State.NEW) {
 			clockWorker.start();
-			// add a first stopwatch
-			addNewStopwatch();
+			DbLiveObject<Stopwatch> dbLiveObject = new DbLiveObject<>();
+			List<Stopwatch> stopwatchList = dbLiveObject.getRunningLiveObjects(DbStopwatches.RUNNING_STOPWATCHES_TABLE_NAME);
+			if (stopwatchList != null && stopwatchList.size()>0) {
+				for (Stopwatch stopwatch : stopwatchList){
+					stopwatch.getStopwatchUi().addUpdateType(ADD_NEW);
+					clockWorker.register((T) stopwatch);
+				}
+				// delete from db
+				dbLiveObject.RemoveRunningStopwatches(DbStopwatches.RUNNING_STOPWATCHES_TABLE_NAME);
+			} else {
+				// add a first stopwatch
+				addNewStopwatch();
+			}
+
 		}
 		else if (clockWorker.isDisplayStopped()) {
 			clockWorker.setStopDisplay(false);

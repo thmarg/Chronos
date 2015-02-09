@@ -147,19 +147,23 @@ public class WatchTimer extends Watch implements SurfaceViewRenderer {
 	@Override
 	public void renderOnScreen(Canvas canvas) {
 		Clock runTimeClock = clockWorker.get(0);
-		if (runTimeClock.getTime().getInternal() != 0) {
+		if (runTimeClock.getTime().getInternal() != 0 && runTimeClock.isRunning()) {
 			currentTime = runTimeClock.getTime().toArray();
 			updateNeedlesPosition(currentTime[2], currentTime[3]);
 			drawAll(canvas);
 		}
-		else {
-			if (runTimeClock.isRunning()) {
+
+		if ((runTimeClock.getTime().getInternal() == 0 && runTimeClock.isRunning()) ||
+				(runTimeClock.getTime().getInternal()!=0 && runTimeClock.isWaitingStart())) {
 				stop();
 				runTimeClock.reset();
 				baseLineMinute = baselineZeroSegment.getTranslatedParallel(0).getRotated(localCenter, -EPSILON);
+			currentTime = runTimeClock.getTime().toArray();
+			updateNeedlesPosition(currentTime[2], currentTime[3]);
+			drawAll(canvas);
 				playSound();
-			}
 		}
+
 		//
 		if (stopwatch != null && (stopwatch.getStopwatchUi().mustUpdateUI() || stopwatch.isRunning())) {
 			paint.setColor(Color.BLACK);

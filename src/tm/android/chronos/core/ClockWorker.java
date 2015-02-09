@@ -7,6 +7,8 @@
 package tm.android.chronos.core;
 
 import android.graphics.Canvas;
+
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -22,7 +24,7 @@ public class ClockWorker<T extends Clock> extends Thread {
 
     public ClockWorker(SurfaceViewRenderer surfaceViewRenderer) {
         this.surfaceViewRenderer = surfaceViewRenderer;
-        clockList = new Vector<T>(5);
+        clockList = new Vector<>(5);
     }
 
 
@@ -137,6 +139,16 @@ public class ClockWorker<T extends Clock> extends Thread {
         synchronized (clockList){
             for (T stopwatch : clockList)
                 stopwatch.reset();
+        }
+
+    }
+    public List<T> getRunningClock(){
+        Vector<T> ret = new Vector<>(5);
+        synchronized (clockList) {
+            for (T t : clockList)
+                if (t.isRunning())
+                   ret.add(t);
+            return ret;
         }
 
     }

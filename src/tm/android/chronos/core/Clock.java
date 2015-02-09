@@ -34,17 +34,6 @@ public interface Clock extends UpdatableUI {
      */
     void reset();
 
-//    /**
-//     * Pause the clock, (this will stop ui update to render the running digits).<br>
-//     * Change state to paused only if current state is running.<br>
-//     * Useful state (if clock time is stored) to maintain a running clock across device shutdown.
-//     */
-//    void pause();
-//
-//    /**
-//     * Use this method to restart, state changed to running only if previous state is paused
-//     */
-//    void restart();
 
     /**
      *
@@ -64,12 +53,6 @@ public interface Clock extends UpdatableUI {
      */
     boolean isWaitingStart();
 
-//    /**
-//     *
-//     * @return <code>boolean</code> true if pause action has been done
-//     */
-//    boolean isPaused();
-
 
     /**
      * *
@@ -86,4 +69,27 @@ public interface Clock extends UpdatableUI {
      * @return the time this clock has been started.
      */
     long getStartTime();
+
+    /**
+     * Set the start time, used to restore a clock from database.
+     * @param startTime to set
+     */
+    void setStartTime(long startTime);
+
+    /**
+     * Used to restore from dataBase
+     */
+    void setRunning();
+
+    /**
+     * id from data base
+     */
+    void setId(long id);
+
+    /**
+     *
+     * @return id
+     */
+    long getId();
+
 }

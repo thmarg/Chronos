@@ -22,7 +22,7 @@ public class ClockTimer implements Clock {
 	private Digit currentTime;
 	private long startTime;
 	private long duration;
-	private boolean mustUpdateUI=false;
+	private long id;
 
 	public ClockTimer(){
 		status = WAIT_TO_START;
@@ -89,15 +89,32 @@ public class ClockTimer implements Clock {
 
 	@Override
 	public boolean mustUpdateUI() {
-		return mustUpdateUI;
+		return false;
 	}
 
-	public void setMustUpdateUI(boolean update)  {
-		mustUpdateUI=update;
-	}
 
 	@Override
 	public long getStartTime() {
 		return startTime;
+	}
+
+	@Override
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	@Override
+	public void setRunning() {
+		status = RUNNING;
+	}
+
+	@Override
+	public long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(long id) {
+		this.id = id;
 	}
 }

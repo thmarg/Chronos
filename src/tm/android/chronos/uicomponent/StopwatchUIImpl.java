@@ -9,23 +9,24 @@ package tm.android.chronos.uicomponent;
 
 import tm.android.chronos.core.Units.UPDATE_TYPE;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 
 /**
  * StopwatchUI implementation @see{StopwatchUI}
  */
-public class StopwatchUIImpl implements StopwatchUI {
+public class StopwatchUIImpl implements StopwatchUI, Serializable{
 
 	private boolean expanded;
 	private int detailsHeight;
 	private int headHeight;
 	private boolean selected;
-	private Vector<UPDATE_TYPE> updateTypeList;
+	private   Vector<UPDATE_TYPE> updateTypeList;
 
 	public StopwatchUIImpl() {
 		headHeight = BaseChronographe.fullHeight;
-		updateTypeList = new Vector<UPDATE_TYPE>(5);
+		updateTypeList = new Vector<>(5);
 		expanded = false;
 	}
 

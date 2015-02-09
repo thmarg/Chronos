@@ -17,7 +17,7 @@ import android.widget.Toast;
 import tm.android.chronos.R;
 import tm.android.chronos.core.Stopwatch;
 import tm.android.chronos.core.Units;
-
+import tm.android.chronos.sql.DbBase;
 
 /**
  * Entry point of the Application
@@ -56,6 +56,11 @@ public class Chronos extends Activity{
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DbBase.closeDb();
+    }
 }
 
 

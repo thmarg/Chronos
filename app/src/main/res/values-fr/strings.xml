@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ strings values FR
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="params">Paramètres</string>
+    <string name="about">A propos</string>
+    <string name="not_found">Non trouvé !</string>
+    <string name="chronos_version">Chronos version: </string>
+    <string name="app_name">Chronos</string>
+    <string name="app_name_stopwatches">Chronos - Chronomètres</string>
+    <string name="app_name_timer">Chronos - Minuteur</string>
+    <string name="app_name_alarms">Chronos - Alarmes</string>
+    <string name="app_name_alarm_result">Chronos - Alarme Terminée</string>
+    <string name="app_name_tracks">Chronos - Parcours</string>
+    <string name="bnt_moins_txt">_</string>
+    <string name="btn_plus_txt">+</string>
+    <string name="txt_view_name_text">Nom : </string>
+    <string name="txt_view_type_text">Type : </string>
+    <string name="txt_view_distance_text">Distance : </string>
+    <string name="txt_view_units">Units : </string>
+    <string name="txt_view_d_text">Distances :</string>
+    <string name="txt_view_speed_text">Vitesse : </string>
+    <string name="cm_long">Centimètre</string>
+    <string name="cm_short">cm</string>
+    <string name="cms">cm/s</string>
+    <string name="cmh">cm/h</string>
+    <string name="m_long">Mètre</string>
+    <string name="m_short">m</string>
+    <string name="ms">m/s</string>
+    <string name="mh">m/h</string>
+    <string name="km_long">Kilomètre</string>
+    <string name="km_short">km</string>
+    <string name="kms">km/s</string>
+    <string name="kmh">km/h</string>
+    <string name="ft_short">ft</string>
+    <string name="fts">ft/s</string>
+    <string name="fth">ft/h</string>
+    <string name="mi_long">Mile</string>
+    <string name="mi_short">mi</string>
+    <string name="mps">mi/s</string>
+    <string name="mph">mph</string>
+    <string name="ft_long">Pieds</string>
+    <string name="n.m_long">Mile Nautique</string>
+    <string name="n.m_short">n.m</string>
+    <string name="nms">n.m/s</string>
+    <string name="kt">kt</string>
+    <string name="btn_stopwatchActivity">Chronomètres</string>
+    <string name="btn_timerActivity">Minuteur</string>
+    <string name="btn_alarmActivity">Alarmes</string>
+    <string name="btn_metronome">Métronome</string>
+    <string name="img_btn_moins">Enlève le dernier chronomètre de la liste.</string>
+    <string name="basic">Simple</string>
+    <string name="laps">Par tours</string>
+    <string name="segments">Parcours</string>
+    <string name="seg">Segments</string>
+    <string name="times">Temps</string>
+    <string name="klap">tour</string>
+    <string name="klaps">tours</string>
+    <string name="title_stopwatch_params">Paramètres du Chronomètre</string>
+    <string name="validate">Valider</string>
+    <string name="cancel">Annuler</string>
+    <string name="snd_file_notif_pref_title">"Selectionnez une musique pour la notification audio"</string>
+    <string name="snd_ringtone_notif_pref_title">"Selectionnez une sonnerie pour la notification audio"</string>
+    <string name="error_report">Envoyez ce message à tmargenstern@gmail.com.</string>
+    <string name="pref_access_failed_prefix">Impossible d\'acceder aux preferences, un prefix est manquant.</string>
+    <string name="audio_pref_title">Preferences de notification audio</string>
+    <string name="audio_param_title" tools:keep="@string/audio_param_title">Parametres de notification audio</string>
+    <string name="pref_access_failed_fragment">Impossible d\'acceder aux preferences, un fragment est manquant</string>
+    <string name="timeout">depuis arrêt de la minuterie.</string>
+    <string name="lab_volFixe_text">Volume fixe</string>
+    <string name="lab_volVariable_text">Volume Progressif</string>
+    <string name="timer_pref_not_set">Définissez les préférences audio avant de démarrer le minuteur.</string>
+    <string name="audio_pref_stored">Préférences enregistrées</string>
+    <string name="audio_pref_stored_but">Préférences enregistrées, mais aucune option audio n\'est définie.</string>
+    <string name="label_soundFile">Son depuis un fichier audio</string>
+    <string name="label_ringtone">Son depuis une sonnerie intégrée</string>
+    <string name="unknown_artist">artist inconnu</string>
+    <string name="unknown_title">titre inconnu</string>
+    <string name="db_init_failed">Error d\'initialisation d\'accès à la base de donnée.</string>
+    <string name="store_run_stwtc">Il y a un chronomètre qui tourne ! Voulez-vous l\'enregistrer ?</string>
+    <string name="store_run_stwtces">Il y a des chronomètres qui tournent ! Voulez-vous les enregistrer ?</string>
+    <string name="app_name_metronome">Metronome</string>
+    <string name="timer_elapseTime_L1" tools:keep="@string/timer_elapseTime_L1">Minuteur démarré à: </string>
+    <string name="timer_elapseTime_L2" tools:keep="@string/timer_elapseTime_L2">Durée du minuteur: </string>
+    <string name="timer_elapseTime_L3" tools:keep="@string/timer_elapseTime_L3">Minuteur FINI depuis: </string>
+    <string name="pref_dsp_sttt">Afficher l\'heure de démarrage de chaque chronomètre</string>
+    <string name="pref_dsp_sttd">Afficher la date de démarrage de chaque chronomètre</string>
+    <string name="pref_allow_rm_run_clock">Autoriser la suppression de chronomètres qui tournent</string>
+    <string name="timer_settings">Minuteur Préférences</string>
+    <string name="stopwatch_settings">Chonomètres Préférences</string>
+    <string name="stopwatch_pref_stored" tools:keep="@string/stopwatch_pref_stored">Préférences des chronomètres enregistrées</string>
+    <string name="started_on" tools:keep="@string/started_on">Démarré le $1</string>
+    <string name="started_on_at" tools:keep="@string/started_on_at">Démarré le $1 à $2</string>
+    <string name="started_at" tools:keep="@string/started_at">Démarré à $1</string>
+    <string name="permission_title">Demande d\'autorisation</string>
+    <string name="permission_text">La permission de Lire/Ecrire sur stockage externe est necessaire pour utiliser le media player afin de notifier alarmes and minuteurs avec vos chansons préférées ou une sonnerie système."
+        "Vous pouvez aussi enregistrer, sur l\'emplacement de stockage de votre choix, les temps et les paramètre d\'un chronomètre terminé."
+        "C\'est tout, rien d\'autre ne nécessite ces permissions."
+        "Le source code de l\'application est libre et disponible sur GitHub."</string>
+    <string name="permission_storage_short">Impossible d\'accéder aux préferences audio sans les autorisations d\'accès au stockage</string>
+    <string name="timer_notification" tools:keep="@string/timer_notification">"Minuteur d\'une durée de $1 minute$2 est terminé"</string>
+    <string name="lab_duration">Durée</string>
+    <string name="lab_VolLevel">Niveau sonore"</string>
+    <string name="lab_playcount">Nombre de répétitions:</string>
+    <string name="vol_variable_time">Temps:</string>
+    <string name="vol_variable_step">Pas:</string>
+    <string name="timer_launch_ok">Minuteur lancé avec succès</string>
+    <string name="timer_launch_ko">Le minuteur n\'a pas pu être lancé ! Essayez à nouveau.</string>
+    <string name="timer_canceled">Minuteur annulé</string>
+    <string name="alarm_date">Date</string>
+    <string name="alarm_time">Heure</string>
+    <string name="timer_sound_stoped">Minuteur arrêté</string>
+    <string name="lab_vibrate">Vibrer</string>
+    <string name="alarm_name">Nom</string>
+    <string name="alarm_desc">Descripion</string>
+    <string name="alarm_type">Type</string>
+    <string name="btn_alarm_paramAudio">Paramètres Audio</string>
+    <string name="close">Terminer</string>
+    <string name="repeat">Répéter dans: </string>
+    <string name="launch">Lancer</string>
+    <string name="ONCE" tools:keep="@string/ONCE">Ponctuelle</string>
+    <string name="REPEATED_LOOP" tools:keep="@string/REPEATED_LOOP">Récurrente hebdomadaire</string>
+    <string name="REPEATED" tools:keep="@string/REPEATED">Récurrente à dates spécifiques</string>
+    <string name="REPEATED_LOOP_SPEC_TIME">Récurrente hebdomadaire à heures spécifiques</string>
+    <string name="alarm">Alarme</string>
+    <string name="alarm_title1" tools:keep="@string/alarm_title1">Alarme du $1 à $2 terminée.</string>
+    <string name="alarm_title2">Il est maintenant</string>
+    <string name="alarm_title_settings" tools:keep="@string/alarm_title_settings">Paramètres de l\'alarme</string>
+    <string name="alarm_repeat_count" tools:keep="@string/alarm_repeat_count">Alarme repétée $1 fois.</string>
+    <string name="alarm_not_in_past">Impossible de démarrer cette alarme dont la date est dans le passé</string>
+    <string name="alarm_dont_delete_running">"Une alarme en cours ne peut pas être supprimée. Arrêtez-la d\'abord"</string>
+    <string name="alarm_into_db_failed">L\'enregistrement de cette alarme en base de données à échoué</string>
+    <string name="alarm_setting_no_set">Vous devez définir les paramètres audio par défaut avant de créer des alarmes</string>
+    <string name="alarm_cant_edit_running">Une alarme plannifiée et en cours ne peut pas être editer</string>
+    <string name="audio">Audio</string>
+    <string name="monday">L</string>
+    <string name="tuesday">M</string>
+    <string name="wednesday">M</string>
+    <string name="thurday">J</string>
+    <string name="friday">V</string>
+    <string name="saturday">S</string>
+    <string name="sunday">D</string>
+    <string name="day2" tools:keep="@string/day2">Lun</string>
+    <string name="day3" tools:keep="@string/day3">Mar</string>
+    <string name="day4" tools:keep="@string/day4">Mer</string>
+    <string name="day5" tools:keep="@string/day5">Jeu</string>
+    <string name="day6" tools:keep="@string/day6">Ven</string>
+    <string name="day7" tools:keep="@string/day7">Sam</string>
+    <string name="day1" tools:keep="@string/day1">Dim</string>
+    <string name="day2_full">Lundi</string>
+    <string name="day3_full">Mardi</string>
+    <string name="day4_full">Mercredi</string>
+    <string name="day5_full">Jeudi</string>
+    <string name="day6_full">Vendredi</string>
+    <string name="day7_full">Samedi</string>
+    <string name="day1_full">Dimanche</string>
+    <string name="btn_repeat">Répéter</string>
+    <string name="bad_date_format">Le format de la date est incorrect, utiliser dd/MM/yyyy (jour/mois/année)</string>
+    <string name="bad_time_format">Le format de l\'heure est incorrect, utiliser hh:mm:ss</string>
+    <string name="bad_audio_file">Le fichier selectionné ne peut pas être lu</string>
+    <string name="btn_play_alarm">Demarrer une alarm</string>
+    <string name="btn_stop_alarm">Annuler un alame en cours</string>
+    <string name="lab_all_days">Appliquer à tous les jours activés</string>
+    <string name="le_a" tools:keep="@string/le_a">le $1 à $2</string>
+    <string name="title">Titre</string>
+    <string name="planned">Planifiée</string>
+    <string name="not_planned">Non planifiée</string>
+    <string name="remaining_time">Temps restant</string>
+    <string name="finished">Terminé</string>
+    <string name="elapsed_time">Temps écoulé</string>
+    <string name="stopped">Arrêtée</string>
+    <string name="selected">Selectionné</string>
+    <string name="bad_fragment">Reçu fragment incorrect. Au revoir</string>
+    <string name="is_mandatory">est obligatoire</string>
+    <string name="distance">Distance</string>
+    <string name="bad_distance">Format distance incorrect</string>
+    <string name="tracks">Parcours</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="track_parts">Portion</string>
+    <string name="first_create_point">Commencer par créer quelques points avant de créer un parcours</string>
+    <string name="track_confirm_delete">Confirmer la suppression du parcours selectionné</string>
+    <string name="point_forbiden_deletion">Vous ne pouvez pas supprimer un point utilisé dans un parcours !</string>
+    <string name="point_confirm_delete">Confirmer la suppression du point selectionné</string>
+    <string name="database_error">Un problème est survenu avec la base de données:</string>
+    <string name="details">Details</string>
+    <string name="tracks_select">Selectonner un parcours</string>
+    <string name="use_gps">Utiliser le GPS</string>
+    <string name="speed_type">Type de déplacement</string>
+    <string name="WALK">Marcher</string>
+    <string name="RUNNING">Courir</string>
+    <string name="BICYCLE">Vélo</string>
+    <string name="CAR">Voiture</string>
+    <string name="use_rdm_music">Musique aléatoire</string>
+    <string name="directory">Répertoire</string>
+</resources>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="params">Settings</string>
+    <string name="about">About</string>
+    <string name="not_found">Not Found !</string>
+    <string name="chronos_version">Chronos version: </string>
+    <string name="app_name">Chronos</string>
+    <string name="app_name_stopwatches">Chronos - Stopwatches</string>
+    <string name="app_name_timer">Chronos - Timer</string>
+    <string name="app_name_alarms">Chronos - Alarms</string>
+    <string name="app_name_alarm_result">Chronos - Alarm finished</string>
+    <string name="app_name_tracks">Chronos - Tracks</string>
+    <string name="bnt_moins_txt" tools:keep="@string/bnt_moins_txt">_</string>
+    <string name="btn_plus_txt" tools:keep="@string/btn_plus_txt">+</string>
+    <string name="txt_view_name_text">Name : </string>
+    <string name="txt_view_type_text">Type : </string>
+    <string name="txt_view_distance_text">Distance : </string>
+    <string name="txt_view_units">Units : </string>
+    <string name="txt_view_d_text">Distances :</string>
+    <string name="txt_view_speed_text">Speed : </string>
+    <string name="cm_long" tools:keep="@string/cm_long">Centimeter</string>
+    <string name="cm_short" tools:keep="@string/cm_short">cm</string>
+    <string name="cms" tools:keep="@string/cms">cm/s</string>
+    <string name="cmh" tools:keep="@string/cmh">cm/h</string>
+    <string name="m_long" tools:keep="@string/m_long">Meter</string>
+    <string name="m_short" tools:keep="@string/m_short">m</string>
+    <string name="ms" tools:keep="@string/ms">m/s</string>
+    <string name="mh" tools:keep="@string/mh">m/h</string>
+    <string name="km_long" tools:keep="@string/km_long">Kilometer</string>
+    <string name="km_short" tools:keep="@string/km_short">km</string>
+    <string name="kms" tools:keep="@string/kms">km/s</string>
+    <string name="kmh" tools:keep="@string/kmh">km/h</string>
+    <string name="ft_long" tools:keep="@string/ft_long">Foot</string>
+    <string name="ft_short" tools:keep="@string/ft_short">ft</string>
+    <string name="fts" tools:keep="@string/fts">ft/s</string>
+    <string name="fth" tools:keep="@string/fth">ft/h</string>
+    <string name="mi_long" tools:keep="@string/mi_long">Mile</string>
+    <string name="mi_short" tools:keep="@string/mi_short">mi</string>
+    <string name="mps" tools:keep="@string/mps">mi/s</string>
+    <string name="mph" tools:keep="@string/mph">mph</string>
+    <string name="n.m_long" tools:keep="@string/n_m_long">Nautical Mile</string>
+    <string name="n.m_short" tools:keep="@string/n_m_short">n.m</string>
+    <string name="nms" tools:keep="@string/nms">n.m/s</string>
+    <string name="kt" tools:keep="@string/kt">kt</string>
+    <string name="btn_stopwatchActivity">Stopwatches</string>
+    <string name="btn_timerActivity">Timer</string>
+    <string name="btn_alarmActivity">Alarms</string>
+    <string name="btn_metronome">Metronome</string>
+    <string name="img_btn_moins">Remove last stopwatch from the list</string>
+    <string name="basic" tools:keep="@string/basic">Simple</string>
+    <string name="laps" tools:keep="@string/laps">By laps</string>
+    <string name="segments" tools:keep="@string/segments">Route</string>
+    <string name="seg">Legs</string>
+    <string name="times" tools:keep="@string/times">Times</string>
+    <string name="klap" tools:keep="@string/klap">lap</string>
+    <string name="klaps" tools:keep="@string/klaps">laps</string>
+    <string name="title_stopwatch_params" tools:keep="@string/title_stopwatch_params">Stopwatches Parameters</string>
+    <string name="validate" tools:keep="@string/validate">Confirm</string>
+    <string name="cancel" tools:keep="@string/cancel">Cancel</string>
+    <string name="snd_file_notif_pref_title" tools:keep="@string/snd_file_notif_pref_title">"Select a music file for sound notification"</string>
+    <string name="snd_ringtone_notif_pref_title" tools:keep="@string/snd_ringtone_notif_pref_title">"Select a ringtone for sound notification"</string>
+    <string name="error_report" tools:keep="@string/error_report">Report this message at tmargenstern@gmail.com.</string>
+    <string name="pref_access_failed_prefix" tools:keep="@string/pref_access_failed_prefix">Unable to access preferences due to a missing prefix.</string>
+    <string name="audio_pref_title" tools:keep="@string/audio_pref_title">Audio Notification Preferences</string>
+    <string name="audio_param_title" tools:keep="@string/audio_param_title">Audio Notification Parameters</string>
+    <string name="pref_access_failed_fragment" tools:keep="@string/pref_access_failed_fragment">Unable to access preferences du to a missing fragment</string>
+    <string name="timeout" tools:keep="@string/timeout">since timer finished.</string>
+    <string name="lab_volFixe_text">Fixed Volume Level</string>
+    <string name="lab_volVariable_text">Progressive Volume Level</string>
+    <string name="timer_pref_not_set" tools:keep="@string/timer_pref_not_set">Set audio preferences before starting the timer !</string>
+    <string name="audio_pref_stored" tools:keep="@string/audio_pref_stored">Preferences stored</string>
+    <string name="audio_pref_stored_but" tools:keep="@string/audio_pref_stored_but">Preferences stored, but no audio option set</string>
+    <string name="label_soundFile">Sound from audio file</string>
+    <string name="label_ringtone">Sound from device ringtone</string>
+    <string name="unknown_artist" tools:keep="@string/unknown_artist">unknown artist</string>
+    <string name="unknown_title" tools:keep="@string/unknown_title">unknown title</string>
+    <string name="db_init_failed" tools:keep="@string/db_init_failed">Error on dataBase access initialization</string>
+    <string name="store_run_stwtc" tools:keep="@string/store_run_stwtc">There is a running stopwatch ! Do you want to save it ?</string>
+    <string name="store_run_stwtces" tools:keep="@string/store_run_stwtces">There are a running stopwatches ! Do you want to save them ?</string>
+    <string name="app_name_metronome">Metronome</string>
+    <string name="timer_elapseTime_L1" tools:keep="@string/timer_elapseTime_L1">Timer started at: </string>
+    <string name="timer_elapseTime_L2" tools:keep="@string/timer_elapseTime_L2">Timer soundDuration: </string>
+    <string name="timer_elapseTime_L3" tools:keep="@string/timer_elapseTime_L3">Timer FINISHED since </string>
+    <string name="pref_dsp_sttt">Display start time of each stopwatch</string>
+    <string name="pref_dsp_sttd">Display start date of each stopwatch</string>
+    <string name="pref_allow_rm_run_clock">Allow remove running stopwatch</string>
+    <string name="timer_settings">Timer Settings</string>
+    <string name="stopwatch_settings">Stopwatches Settings</string>
+    <string name="stopwatch_pref_stored" tools:keep="@string/stopwatch_pref_stored">Stopwatches settings stored</string>
+    <string name="started_on" tools:keep="@string/started_on">Started on $1</string>
+    <string name="started_on_at" tools:keep="@string/started_on_at">Started on $1 at $2</string>
+    <string name="started_at" tools:keep="@string/started_at">Started at $1</string>
+    <string name="permission_title">Request permission</string>
+    <string name="permission_text">Read/Write external storage permissions is mandatory to use the media player to notify alarm and timer with your preferred songs or system ringtone."
+                        "You can also register, onto the storage of your choice, stopwatch time and parameter when done. That is all, nothing else "
+                        "that require read/write external storage permissions. Source code of the app is free and available on GitHub."</string>
+    <string name="permission_storage_short">Can\'t acces audio settings without storage access permission</string>
+    <string name="timer_notification" tools:keep="@string/timer_notification">"Timer of $1 minute$2 is finished"</string>
+    <string name="lab_duration">Duration</string>
+    <string name="lab_VolLevel">Volume Level"</string>
+    <string name="lab_playcount">Repeat count</string>
+    <string name="vol_variable_time">Time:</string>
+    <string name="vol_variable_step">Step:</string>
+    <string name="timer_launch_ok">Timer launched successfully.</string>
+    <string name="timer_launch_ko">Can\'t launch this timer ! Retry.</string>
+    <string name="timer_canceled">Timer canceled</string>
+    <string name="alarm_date">Date</string>
+    <string name="alarm_time">Time</string>
+    <string name="timer_sound_stoped">Timer is stopped</string>
+    <string name="lab_vibrate">Vibrate</string>
+    <string name="alarm_name">Name</string>
+    <string name="alarm_desc">Overview</string>
+    <string name="alarm_type">Type</string>
+    <string name="btn_alarm_paramAudio">Audio Parameters</string>
+    <string name="close">Close</string>
+    <string name="repeat">Repeat in: </string>
+    <string name="launch">Launch</string>
+    <string name="ONCE" tools:keep="@string/ONCE">Punctual</string>
+    <string name="REPEATED_LOOP" tools:keep="@string/REPEATED_LOOP">Repeated weekly</string>
+    <string name="REPEATED_LOOP_SPEC_TIME">Repeated weekly on specifics times</string>
+    <string name="alarm">Alarm</string>
+    <string name="REPEATED" tools:keep="@string/REPEATED">Repeated on specific dates</string>
+    <string name="alarm_title1" tools:keep="@string/alarm_title1">Alarm on $1 at $2 finished.</string>
+    <string name="alarm_title2">Time is now</string>
+    <string name="alarm_title_settings" tools:keep="@string/alarm_title_settings">Alarm settings</string>
+    <string name="alarm_repeat_count" tools:keep="@string/alarm_repeat_count">Alarm repeated $1 time</string>
+    <string name="alarm_not_in_past">Can\'t start this alarm, it\'s date is in the past</string>
+    <string name="alarm_dont_delete_running">"Can\'t delete a running alarm, stop it before"</string>
+    <string name="alarm_into_db_failed">Store this alarm in database failed.</string>
+    <string name="alarm_setting_no_set">"You must set the audio default settings before creating alarms"</string>
+    <string name="alarm_cant_edit_running">Can\'t edit a planned alarm</string>
+    <string name="audio">Audio</string>
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thurday">T</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+    <string name="sunday">S</string>
+    <string name="day2" tools:keep="@string/day2">Mon</string>
+    <string name="day3" tools:keep="@string/day3">Tue</string>
+    <string name="day4" tools:keep="@string/day4">Wed</string>
+    <string name="day5" tools:keep5="@string/day5">Thu</string>
+    <string name="day6" tools:keep="@string/day6">Fri</string>
+    <string name="day7" tools:keep="@string/day7">Sat</string>
+    <string name="day1" tools:keep="@string/day1">Sun</string>
+    <string name="day2_full">Monday</string>
+    <string name="day3_full">Tuesday</string>
+    <string name="day4_full">Wednesday</string>
+    <string name="day5_full">Thursday</string>
+    <string name="day6_full">Friday</string>
+    <string name="day7_full">Saturday</string>
+    <string name="day1_full">Sunday</string>
+    <string name="btn_repeat">Repeat</string>
+    <string name="bad_date_format">Wrong date format, use dd/MM/yyyy (day/month/year)</string>
+    <string name="bad_time_format">Wrong time format, use hh:mm:ss</string>
+    <string name="bad_audio_file">The selected file can\'t be played</string>
+    <string name="btn_play_alarm">Start a stopped alarm</string>
+    <string name="btn_stop_alarm">Cancel a running alarm</string>
+    <string name="lab_all_days">Apply to all selected days</string>
+    <string name="le_a" tools:keep="@string/le_a">on $1 at $2</string>
+    <string name="title">Title</string>
+    <string name="planned">Planned</string>
+    <string name="not_planned">Not planned</string>
+    <string name="remaining_time">Remaining Time</string>
+    <string name="finished">Terminé</string>
+    <string name="elapsed_time">Elapsed time</string>
+    <string name="stopped">Stopped</string>
+    <string name="selected">Selected</string>
+    <string name="bad_fragment">Received bad fragment. Bye</string>
+    <string name="is_mandatory">is mandatory</string>
+    <string name="distance">Distance</string>
+    <string name="bad_distance">Wrong distance format</string>
+    <string name="tracks">Tracks</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="track_parts">Track parts</string>
+    <string name="first_create_point">Before creating a track, first create some points</string>
+    <string name="track_confirm_delete">Confirm deletion of the selected track</string>
+    <string name="point_forbiden_deletion">You can\'t delete a point used by a track</string>
+    <string name="point_confirm_delete">Confirm deletion of the selected point</string>
+    <string name="database_error">A problem occur with th database:</string>
+    <string name="details">Details</string>
+    <string name="tracks_select">Select a track</string>
+    <string name="use_gps">Use the GPS</string>
+    <string name="speed_type">Displacement type</string>
+    <string name="WALK">Walk</string>
+    <string name="RUNNING">Run</string>
+    <string name="BICYCLE">Bicycle</string>
+    <string name="CAR">Car</string>
+    <string name="use_rdm_music">Random Music</string>
+    <string name="directory">Directory</string>
+</resources>

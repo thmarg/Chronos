@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="5dp"
+    android:layout_marginStart="5dp">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+
+        <Switch
+            android:id="@+id/swt_dsp_startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pref_dsp_sttd" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <Switch
+            android:id="@+id/swt_dsp_startTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pref_dsp_sttt" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <Switch
+            android:id="@+id/swt_allow_rm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pref_allow_rm_run_clock" />
+    </TableRow>
+
+
+    <!--<CheckBox-->
+    <!--android:id="@+id/ckb_dsp_startDate"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_row="0"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="@string/pref_dsp_sttd"-->
+    <!--android:textSize="20sp" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView1"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_row="1"-->
+    <!--android:background="#ff535353"-->
+    <!--android:paddingTop="10dp"-->
+    <!--/>-->
+
+    <!--<CheckBox-->
+    <!--android:id="@+id/ckb_dsp_startTime"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_row="2"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="@string/pref_dsp_sttt"-->
+    <!--android:textSize="20sp" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView2"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_row="3"-->
+    <!--android:background="#ff535353"-->
+    <!--android:paddingTop="10dp"-->
+    <!--/>-->
+
+    <!--<CheckBox-->
+    <!--android:id="@+id/ckb_allow_rm"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_column="0"-->
+    <!--android:layout_row="4"-->
+    <!--android:paddingTop="10dp"-->
+    <!--android:text="@string/pref_allow_rm_run_clock"-->
+    <!--android:textSize="20sp" />-->
+
+</TableLayout>

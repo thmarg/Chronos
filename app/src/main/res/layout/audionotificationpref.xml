@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ ${NAME}
+  ~
+  ~ Copyright (c) 2015 Thierry Margenstern under MIT license
+  ~ http://opensource.org/licenses/MIT
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/idpreftimer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/ckb_music_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/button_marginLeft"
+        android:layout_marginStart="5dp"
+        android:text="@string/label_soundFile"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+
+    <TextView
+        android:id="@+id/txv_selected_music_file"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/button_marginLeft"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txv_song_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/button_marginLeft"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textAlignment="viewEnd"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <TextView
+        android:id="@+id/txv_view_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ff535353" />
+
+    <CheckBox
+        android:id="@+id/ckb_ringtone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_marginLeft"
+        android:layout_marginStart="5dp"
+        android:text="@string/label_ringtone"
+        android:textAppearance="@android:style/TextAppearance.Large" />
+
+
+    <TextView
+        android:id="@+id/txv_selected_ringtone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/button_marginLeft"
+        android:paddingEnd="5dp"
+        android:paddingStart="5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txt_view_line2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ff535353" />
+
+    <CheckBox
+        android:id="@+id/ckb_vol_fixe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/button_marginLeft"
+        android:text="@string/lab_volFixe_text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <CheckBox
+        android:id="@+id/ckb_vol_variable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/button_marginLeft"
+        android:text="@string/lab_volVariable_text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/vol_variable_params"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:visibility="visible">
+
+        <TextView
+            android:labelFor="@+id/edt_vol_variable_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vol_variable_time" />
+
+        <EditText
+            android:id="@+id/edt_vol_variable_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="3"
+            android:inputType="number"
+            />
+
+        <TextView
+            android:labelFor="@+id/edt_vol_variable_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/vol_variable_step"
+            />
+
+        <EditText
+            android:id="@+id/edt_vol_variable_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="2"
+            android:inputType="number"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lab_VolLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/button_marginLeft"
+        android:text="@string/lab_VolLevel"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <view
+        android:id="@+id/seek_bar_custom"
+        class="tm.android.chronos.uicomponent.MinMaxSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/TenDP"
+        android:layout_marginTop="@dimen/TenDP" />
+
+    <LinearLayout
+        android:id="@+id/layout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginBottom="@dimen/TenDP"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:layout_marginTop="@dimen/TenDP"
+            android:background="@drawable/playall96x96"
+            android:contentDescription="@string/btn_play_alarm" />
+
+        <ImageButton
+            android:id="@+id/btn_stop"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginBottom="@dimen/TenDP"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:layout_marginTop="@dimen/TenDP"
+            android:background="@drawable/stop128x128"
+            android:contentDescription="@string/btn_stop_alarm" />
+
+        <TextView
+            android:id="@+id/txv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="30dp"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_time1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/lab_duration"
+            android:labelFor="@+id/edt_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:text="@string/lab_duration"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edt_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:ems="6"
+            android:inputType="datetime|time"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_time2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lab_repeatCount"
+            android:labelFor="@+id/edt_repeatCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:text="@string/lab_playcount"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edt_repeatCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:ems="2"
+            android:inputType="number"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_view_line3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#ff535353" />
+
+    <CheckBox
+        android:id="@+id/ckb_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="@dimen/button_marginLeft"
+        android:text="@string/lab_vibrate"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:id="@+id/layout_vibrate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/lab_vibrate_duration"
+            android:labelFor="@+id/edt_vibrate_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:text="@string/lab_duration"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/edt_vibrate_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:ems="6"
+            android:inputType="datetime|time" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/all_selected_days"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txt_view_line4"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#ff535353" />
+
+        <CheckBox
+            android:id="@+id/ckb_all_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:text="@string/lab_all_days"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/txv_all_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="@dimen/button_marginLeft"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+    </LinearLayout>
+
+</LinearLayout>

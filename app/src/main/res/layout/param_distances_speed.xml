@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ param_distances_speed
+  ~
+  ~ Copyright (c) 2015 Thierry Margenstern under MIT license
+  ~ http://opensource.org/licenses/MIT
+  -->
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow
+        android:id="@+id/rowDistanceUnit"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/txt_view_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:text="@string/txt_view_units"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/txt_view_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txt_view_d_text"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+        <Spinner
+            android:id="@+id/spin_units_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="3"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:spinnerMode="dropdown" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/rowSpeedUnit"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="5dp">
+
+        <TextView
+            android:id="@+id/txt_view_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txt_view_speed_text"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+        <Spinner
+            android:id="@+id/spin_speed"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="3" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/rowDistance"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:id="@+id/txt_view_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginStart="5dp"
+            android:text="@string/txt_view_distance_text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/edt_txt_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_column="2"
+            android:layout_span="2"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+    </TableRow>
+</TableLayout>

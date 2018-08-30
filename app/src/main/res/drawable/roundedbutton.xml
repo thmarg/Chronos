@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ roundedbutton
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
+  -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:shape="rectangle"
+    android:thickness="@dimen/dividerHeight">
+    <solid android:color="#6E6E6E" /> <!-- this one is ths color of the Rounded Button -->
+    <corners
+        android:bottomLeftRadius="10dp"
+        android:bottomRightRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp" />
+
+</shape>

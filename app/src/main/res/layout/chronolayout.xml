@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~   chronolayout
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainlayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="false"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:background="@android:color/black">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/chronos_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#211f1f"
+        android:elevation="4dp"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+    <LinearLayout
+        android:id="@+id/fond"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:clickable="false"
+        android:isScrollContainer="false"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/img_btn_moins"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:background="@drawable/moins"
+            android:contentDescription="@string/img_btn_moins"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:id="@+id/btn_start"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:background="@drawable/playall96x96"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:id="@+id/btn_stop"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:background="@drawable/stop128x128"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:id="@+id/btn_pause"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:background="@drawable/pause128x128"
+            android:longClickable="true"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:id="@+id/btn_reset"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/reset128x128"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:id="@+id/img_btn_plus"
+            android:layout_width="@dimen/button_size"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:background="@drawable/plus"
+            android:onClick="onClick" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_size"
+            android:layout_marginEnd="@dimen/button_marginLeft"
+            android:layout_marginStart="@dimen/button_marginLeft"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+</RelativeLayout>

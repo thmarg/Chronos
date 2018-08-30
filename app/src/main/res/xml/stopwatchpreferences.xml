@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ audionotificatiopref
+  ~ XML preference UI
+  ~
+  ~ Copyright (c) 2015 Thierry Margenstern under MIT license
+  ~ http://opensource.org/licenses/MIT
+  -->
+
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:icon="@android:drawable/ic_menu_preferences">
+
+    <tm.android.chronos.preference.StopwatchPreference android:title="@string/stopwatch_settings" />
+</PreferenceScreen>

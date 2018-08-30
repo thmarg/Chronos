@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ $SRC
+  ~
+  ~   Copyright (c) 2014 Thierry Margenstern under MIT license
+  ~   http://opensource.org/licenses/MIT
+  -->
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/chronos_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#211f1f"
+        android:elevation="4dp"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        />
+
+    <Button
+        android:id="@+id/btn_StopwatchAcitvity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="@dimen/ChronosButtonVSpacing"
+        android:background="@drawable/roundedbutton"
+        android:onClick="onClick"
+        android:paddingLeft="@dimen/button_marginLeft"
+        android:paddingRight="@dimen/button_marginLeft"
+        android:text="@string/btn_stopwatchActivity" />
+
+    <Button
+        android:id="@+id/btn_timerActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/ChronosButtonVSpacing"
+        android:background="@drawable/roundedbutton"
+        android:onClick="onClick"
+        android:paddingLeft="@dimen/button_marginLeft"
+        android:paddingRight="@dimen/button_marginLeft"
+        android:text="@string/btn_timerActivity" />
+
+    <Button
+        android:id="@+id/btn_alarmActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/ChronosButtonVSpacing"
+        android:background="@drawable/roundedbutton"
+        android:onClick="onClick"
+        android:paddingLeft="@dimen/button_marginLeft"
+        android:paddingRight="@dimen/button_marginLeft"
+        android:text="@string/btn_alarmActivity" />
+
+    <Button
+        android:id="@+id/btn_metronomeActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/roundedbutton"
+        android:onClick="onClick"
+        android:paddingLeft="@dimen/button_marginLeft"
+        android:paddingRight="@dimen/button_marginLeft"
+        android:text="@string/btn_metronome" />
+
+</LinearLayout>
